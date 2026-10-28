@@ -374,7 +374,7 @@ function DifficultyPicker({ value, onChange }) {
 function Overlay({ children }) {
   return (
     <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 text-center">
-      <div className="pointer-events-auto rounded-xl border bg-card/95 p-5 shadow-paper-1">
+      <div className="pointer-events-auto rounded-xl border bg-card p-5 shadow-paper-1">
         {children}
       </div>
     </div>

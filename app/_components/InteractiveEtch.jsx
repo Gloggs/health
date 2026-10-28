@@ -3,7 +3,7 @@
 /**
  * The brand interaction, distilled to one widget.
  *
- * Etch's whole gesture is "tap once → a stroke is etched". Showing it
+ * Health's whole gesture is "tap once → a stroke is etched". Showing it
  * with copy alone is weaker than letting the visitor try it. This
  * widget renders an empty paper card with a "Tap to etch" cue; each
  * click adds a tally stroke that draws in via SVG stroke-dashoffset —
@@ -83,7 +83,7 @@ export default function InteractiveEtch() {
 
   // Each stroke's stroke-dashoffset goes from full length (hidden) to 0
   // (fully drawn) over STROKE_DRAW_MS — same trick as EtchAnimation.jsx.
-  const strokeLen = 48; // px — slightly longer than 12→60 to cover endpoints
+  const strokeLen = 48; // px, slightly longer than 12→60 to cover endpoints
   const diagLen = useMemo(() => {
     const dx = DIAGONAL.x2 - DIAGONAL.x1;
     const dy = DIAGONAL.y2 - DIAGONAL.y1;
@@ -93,16 +93,16 @@ export default function InteractiveEtch() {
   const caption = !touched
     ? count === 0
       ? "Watch the paper."
-      : "Your turn — tap the paper."
+      : "Your turn, tap the paper."
     : count === 0
-    ? "Tap the paper to etch."
+    ? "Tap the paper to log."
     : count < 5
     ? `${count} of 5.`
-    : "etched.";
+    : "logged.";
 
   return (
     <div
-      className="relative inline-flex w-full max-w-xs select-none flex-col items-center gap-3 rounded-2xl bg-card/70 p-6 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2"
+      className="relative inline-flex w-full max-w-xs select-none flex-col items-center gap-3 rounded-2xl bg-card p-6 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2"
       role="region"
       aria-label="Interactive tally-mark demo"
     >
@@ -114,10 +114,10 @@ export default function InteractiveEtch() {
         onClick={handleTap}
         aria-label={
           isComplete
-            ? "Reset and etch one stroke"
-            : `Etch a stroke (${count} of 5)`
+            ? "Reset and log one stroke"
+            : `Health a stroke (${count} of 5)`
         }
-        className="group relative flex h-24 w-full items-center justify-center rounded-xl border border-dashed border-border/60 bg-card/80 transition-all hover:border-primary/60 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card active:scale-[0.99]"
+        className="group relative flex h-24 w-full items-center justify-center rounded-xl border border-dashed border-border/60 bg-card transition-all hover:border-primary/60 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card active:scale-[0.99]"
       >
         <svg
           viewBox="0 0 72 72"
@@ -162,7 +162,7 @@ export default function InteractiveEtch() {
           })}
 
           {/* The diagonal crossing draws in only when the 5th stroke
-              lands — completes the cluster. Drawn over the verticals so
+              lands, completes the cluster. Drawn over the verticals so
               it visually "crosses" them. */}
           <line
             x1={DIAGONAL.x1}

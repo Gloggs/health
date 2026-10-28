@@ -28,7 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCountUp, useInView } from "@/lib/hooks";
 import { formatDuration, formatWater, formatMinutes } from "@/lib/format";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 import InteractiveEtch from "./_components/InteractiveEtch";
 import GameSection from "./_components/games/GameSection";
 
@@ -199,7 +199,7 @@ function HeroMock() {
             <li
               key={i}
               className={`flex items-center gap-3 rounded-lg border p-2 text-xs transition-colors ${
-                ex.done ? "border-success/30 bg-success/5" : "border-border bg-card/30"
+                ex.done ? "border-success/30 bg-success/5" : "border-border bg-card"
               }`}
             >
               <div
@@ -303,15 +303,12 @@ function Header() {
         {/* Brand lockup: tally mark IS the logo (BRAND.md §2). Wordmark
             in Source Serif so the landing reads as on-brand the moment
             it lands above the fold. */}
-        <a href="#top" aria-label="Etch — home" className="flex items-center gap-2.5 group">
+        <a href="#top" aria-label="Health, home" className="flex items-center gap-2.5 group">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center transition-transform group-hover:-rotate-2">
-            <EtchMark size={36} />
+            <HealthMark size={36} />
           </span>
           <div className="hidden flex-col leading-none sm:flex">
-            <span className="font-serif text-base font-bold">Etch</span>
-            <span className="font-handwritten text-[11px] text-muted-foreground">
-              track less. notice more.
-            </span>
+            <span className="font-serif text-base font-bold">Health</span>
           </div>
         </a>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
@@ -342,22 +339,13 @@ function Hero() {
 
       <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-6 py-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div className="space-y-7">
-          <div className="inline-flex animate-fade-up items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
-            <span className="relative inline-flex h-1.5 w-1.5">
-              <span className="animate-pulse-ring absolute inline-flex rounded-full" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-            </span>
-            Track less. Notice more.
-          </div>
 
           <h1
             className="animate-fade-up text-balance font-serif text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
             style={{ animationDelay: "100ms" }}
           >
             The family health app that makes you{" "}
-            <span className="bg-gradient-to-r from-primary via-chart-2 to-primary bg-clip-text text-transparent animate-shimmer bg-[length:200%_100%]">
-              show up.
-            </span>
+show up.
           </h1>
 
           <p
@@ -383,9 +371,9 @@ function Hero() {
               asChild
               size="lg"
               variant="outline"
-              className="h-12 bg-card/70 px-6 text-base"
+              className="h-12 bg-card px-6 text-base"
             >
-              <Link href="/start">Start etching</Link>
+              <Link href="/start">Get started</Link>
             </Button>
             <a
               href="#features"
@@ -398,12 +386,12 @@ function Hero() {
             className="animate-fade-up -mt-2 text-xs text-muted-foreground"
             style={{ animationDelay: "340ms" }}
           >
-            The demo is the real app on sample data — no sign-up, nothing saved.
+            The demo is the real app on sample data, no sign-up, nothing saved.
           </p>
 
           {/* The brand gesture, distilled. Lets the visitor experience
-              the etch interaction before signing in — clicks add tally
-              strokes via the same SVG animation the in-app etch uses. */}
+              the log interaction before signing in, clicks add tally
+              strokes via the same SVG animation the in-app log uses. */}
           <div
             className="animate-fade-up"
             style={{ animationDelay: "380ms" }}
@@ -538,7 +526,7 @@ function How() {
         <div className={`mx-auto max-w-2xl text-center ${inView ? "animate-fade-up" : "opacity-0"}`}>
           <p className="text-xs font-medium uppercase tracking-wider text-primary">How it works</p>
           <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-            Three steps. Etched.
+            Three steps.
           </h2>
         </div>
         <div className="relative mt-14 grid gap-8 md:grid-cols-3">
@@ -584,7 +572,7 @@ function Preview() {
       <Blobs />
       <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center">
         <div className={`space-y-5 ${inView ? "animate-fade-up" : "opacity-0"}`}>
-          <p className="text-xs font-medium uppercase tracking-wider text-primary">A day, etched</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-primary">A day in Health</p>
           <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             One screen. One tap per thing. No AI doing it for you.
           </h2>
@@ -636,7 +624,7 @@ function Preview() {
           </div>
 
           {/* Meals card */}
-          <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+          <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <UtensilsCrossed className="h-4 w-4 text-primary" />
@@ -650,7 +638,7 @@ function Preview() {
               {meals.map((m) => (
                 <li
                   key={m.slot}
-                  className="flex items-center justify-between rounded-lg border bg-card/60 px-2.5 py-1.5 text-xs"
+                  className="flex items-center justify-between rounded-lg border bg-card px-2.5 py-1.5 text-xs"
                 >
                   <span className="font-medium">{m.slot}</span>
                   <span className="flex items-center gap-2">
@@ -673,7 +661,7 @@ function Preview() {
           </div>
 
           {/* Family room preview */}
-          <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+          <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
               <p className="text-sm font-medium">Family room</p>
@@ -752,7 +740,7 @@ function FinalCTA() {
         className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.20),transparent_60%)]"
       />
       <div className="mx-auto max-w-3xl px-6 text-center">
-        <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
+        <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1 text-xs text-muted-foreground backdrop-blur">
           <Zap className="h-3 w-3 text-primary" /> Sign in once, you're done
         </div>
         <h2 className="text-balance font-serif text-4xl font-bold tracking-tight sm:text-5xl">
@@ -765,7 +753,7 @@ function FinalCTA() {
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="h-12 px-6 text-base">
             <Link href="/start">
-              Start etching
+              Get started
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -773,7 +761,7 @@ function FinalCTA() {
             asChild
             size="lg"
             variant="outline"
-            className="h-12 bg-card/70 px-6 text-base"
+            className="h-12 bg-card px-6 text-base"
           >
             <Link href="/demo">Try the demo first</Link>
           </Button>
@@ -789,9 +777,9 @@ function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-xs text-muted-foreground sm:flex-row">
         <div className="flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center">
-            <EtchMark size={22} />
+            <HealthMark size={22} />
           </span>
-          <span>© {new Date().getFullYear()} Etch · the family health app that makes you show up</span>
+          <span>© {new Date().getFullYear()} Health</span>
         </div>
         <div className="flex items-center gap-4">
           <Link href="/privacy" className="transition-colors hover:text-foreground">

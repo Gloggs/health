@@ -5,7 +5,7 @@ import Link from "next/link";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Public request-an-invite page. Posts to /api/invite-requests, which emails
 // the founder. No account is created here; approval is manual. Client
@@ -57,13 +57,10 @@ export default function RequestInvitePage() {
   return (
     <div className="min-h-[100dvh] bg-background">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Etch — home" className="flex items-center gap-2.5">
-          <EtchMark size={34} />
+        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+          <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Etch</span>
-            <span className="block font-handwritten text-sm text-muted-foreground">
-              track less. notice more.
-            </span>
+            <span className="block font-serif text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -86,7 +83,7 @@ export default function RequestInvitePage() {
           </span>
           <h1 className="mt-4 font-serif text-4xl font-bold tracking-tight">Request an invite</h1>
           <p className="mt-3 text-base text-muted-foreground">
-            Etch is invite-only for now. Tell us a little about you and we'll be in
+            Health is invite-only for now. Tell us a little about you and we'll be in
             touch when a spot opens. In the meantime, the{" "}
             <Link href="/start" className="font-semibold text-primary hover:underline">
               live demo

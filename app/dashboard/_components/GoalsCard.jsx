@@ -55,7 +55,7 @@ export default function GoalsCard() {
   };
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-primary" />
@@ -79,7 +79,7 @@ export default function GoalsCard() {
         <EmptyState
           compact
           title="no goals yet"
-          body='Add one — "Bench 100kg" or "Weigh 75kg" — to track progress here.'
+          body='Add one, "Bench 100kg" or "Weigh 75kg", to track progress here.'
         />
       ) : (
         <ul className="space-y-3">
@@ -139,7 +139,7 @@ function GoalRow({ goal, onEdit, onDelete }) {
     hit || junkOk ? "bg-success" : overLimit ? "bg-destructive" : "bg-primary";
 
   return (
-    <li className="rounded-xl border bg-card/60 p-3">
+    <li className="rounded-xl border bg-card p-3">
       <div className="flex items-start justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <div
@@ -419,7 +419,7 @@ function GoalDialog({ open, onOpenChange, goal, exercises, onSaved }) {
               Cancel
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? "Etching…" : isEdit ? "Save" : "Etch it"}
+              {saving ? "Saving…" : isEdit ? "Save" : "Save"}
             </Button>
           </DialogFooter>
         </form>

@@ -19,7 +19,7 @@ import {
   LineChart as ChartIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 import {
   Tooltip,
   TooltipContent,
@@ -98,18 +98,15 @@ export default function Sidebar() {
         <Link
           href="/dashboard"
           className="flex items-center gap-2.5 border-b px-4 py-4 transition-colors hover:bg-accent/40"
-          aria-label="Etch — back to Today"
+          aria-label="Health, back to Today"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center">
-            <EtchMark size={36} />
+            <HealthMark size={36} />
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
               <p className="font-serif text-base font-bold leading-tight tracking-tight">
-                Etch
-              </p>
-              <p className="font-handwritten text-sm leading-tight text-muted-foreground">
-                track less. notice more.
+                Health
               </p>
             </div>
           )}
@@ -201,7 +198,7 @@ export default function Sidebar() {
               {user?.picture ? (
                 <Image src={user.picture} alt="user" width={36} height={36} className="rounded-full border" />
               ) : (
-                <Image src="/etch-mark.svg" alt="Etch" width={36} height={36} className="rounded-full border bg-card p-1" />
+                <Image src="/health-mark.svg" alt="Health" width={36} height={36} className="rounded-full border bg-card p-1" />
               )}
               {!collapsed && (
                 <div className="min-w-0 flex-1">

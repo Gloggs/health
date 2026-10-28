@@ -191,7 +191,7 @@ function MealsLogPageInner() {
       {grouped !== null && grouped.length > 0 ? (
         <ul className="space-y-4">
           {grouped.map(([date, meals]) => (
-            <li key={date} className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+            <li key={date} className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
               <p className="mb-3 text-sm font-semibold">{prettyDate(date)}</p>
               <ul className="space-y-2">
                 {meals.map((m) => {
@@ -200,7 +200,7 @@ function MealsLogPageInner() {
                   return (
                     <li
                       key={m.id}
-                      className="flex items-start gap-3 rounded-xl border bg-card/60 p-3"
+                      className="flex items-start gap-3 rounded-xl border bg-card p-3"
                     >
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                         <Icon className="h-4 w-4" />
@@ -362,7 +362,7 @@ function KpiCard({ label, value, tone }) {
   const toneCls =
     tone === "destructive" ? "text-destructive" : tone === "success" ? "text-success" : "text-foreground";
   return (
-    <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
       <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
       <p className={cn("mt-1 text-2xl font-bold tabular-nums", toneCls)}>{value}</p>
     </div>

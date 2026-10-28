@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 // Friendly fallback for any /demo/* path that isn't a built demo surface
 // yet (e.g. a deep link rewritten from /dashboard/plans/123). Keeps the demo
 // from ever 404-ing as we add surfaces one at a time.
-export const metadata = { title: "Not in the demo · Etch" };
+export const metadata = { title: "Not in the demo" };
 
 export default function DemoCatchAll() {
   return (

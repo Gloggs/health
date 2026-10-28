@@ -75,7 +75,7 @@ export default function CloseTodayCard({
   const showNudge = useMemo(() => {
     if (isClosed) return false;
     const promptTime = preset?.closeDayPromptTime;
-    if (!promptTime) return false; // Calm — never auto-nudge
+    if (!promptTime) return false; // Calm, never auto-nudge
     const [h, m] = promptTime.split(":").map(Number);
     const now = new Date();
     const promptDate = new Date();
@@ -94,7 +94,7 @@ export default function CloseTodayCard({
       // Slower, more deliberate etch — the close-day stroke is meant to
       // feel weightier than a quick water tap. We bump the message to
       // match. The animation duration is still preset-driven.
-      etched({ message: "Today, etched." });
+      etched({ message: "Today, done." });
       setExpanding(false);
       onChanged?.();
     } catch (err) {
@@ -137,7 +137,7 @@ export default function CloseTodayCard({
                 Closed
               </p>
               <p className="mt-0.5 font-serif text-xl font-bold leading-tight">
-                Today, etched.
+                Today, done.
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
                 Closed at {hhmm}
@@ -159,7 +159,7 @@ export default function CloseTodayCard({
           </button>
         </div>
         {note ? (
-          <p className="mt-3 rounded-lg border border-dashed border-primary/30 bg-card/60 p-3 text-sm leading-relaxed">
+          <p className="mt-3 rounded-lg border border-dashed border-primary/30 bg-card p-3 text-sm leading-relaxed">
             {note}
           </p>
         ) : null}
@@ -170,7 +170,7 @@ export default function CloseTodayCard({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture transition-colors",
+        "rounded-2xl bg-card p-5 shadow-paper-1 paper-texture transition-colors",
         showNudge && "border-primary/40 bg-primary/[0.04]"
       )}
     >
@@ -187,12 +187,12 @@ export default function CloseTodayCard({
               {count}
             </p>
             <p className="text-xs text-muted-foreground">
-              of {total} etched today
+              of {total} logged today
             </p>
           </div>
           <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
             {showNudge
-              ? "A quiet moment to seal what you did. Tap below when you're ready — no rush."
+              ? "A quiet moment to seal what you did. Tap below when you're ready, no rush."
               : "When you're done for the day, seal it. No fanfare. Just a quieter line under today."}
           </p>
         </div>

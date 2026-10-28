@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Shared shell for the Privacy + Terms pages. Server component — purely
 // presentational, fed a sections array so the two legal pages stay in sync
@@ -11,13 +11,10 @@ export default function LegalPage({ title, updated, intro, sections }) {
   return (
     <div className="min-h-[100dvh] bg-background">
       <header className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Etch — home" className="flex items-center gap-2.5">
-          <EtchMark size={34} />
+        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+          <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Etch</span>
-            <span className="block font-handwritten text-sm text-muted-foreground">
-              track less. notice more.
-            </span>
+            <span className="block font-serif text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">

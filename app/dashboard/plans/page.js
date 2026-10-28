@@ -134,7 +134,7 @@ export default function PlansPage() {
           {plans.map((p) => (
             <div
               key={p.id}
-              className="hover-lift rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture transition-all"
+              className="hover-lift rounded-2xl bg-card p-5 shadow-paper-1 paper-texture transition-all"
             >
               <div className="flex items-start justify-between gap-2">
                 <Link href={`/dashboard/plans/${p.id}`} className="min-w-0 flex-1">
@@ -155,7 +155,7 @@ export default function PlansPage() {
                         ? "border-warning/40 bg-warning/10 text-warning"
                         : "border-border text-muted-foreground"
                     }`}
-                    title={p.repeatWeekly === false ? "One-off — expires 7 days after activation" : "Repeats every week"}
+                    title={p.repeatWeekly === false ? "One-off, expires 7 days after activation" : "Repeats every week"}
                   >
                     {p.repeatWeekly === false ? "One-off" : "Repeats"}
                   </span>

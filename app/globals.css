@@ -3,88 +3,92 @@
 @tailwind utilities;
 
 @layer base {
-  /* Light (default — Etch "paper")
-   * Per BRAND.md §4 Direction A: Ink & Paper.
-   * Hex sources documented inline so future-you can verify HSL conversions
-   * against the canonical reference.
+  /* Harbour palette. See docs/DESIGN.md.
+   * Ink #142B38, chalk #F1F1EF, harbour #2F6B8A, sky #70B2CE, flame #EB6E3A,
+   * stone #586068, line #D6D8D8. Bright colours fill shapes; words sit in ink
+   * on light grounds, or chalk on ink. Light by default, dark follows the device.
    */
   :root {
-    --background: 40 39% 95%;            /* #F8F5EF paper */
-    --foreground: 24 24% 8%;             /* #1A1410 ink */
-    --card: 40 35% 90%;                  /* #EFE9DB parchment */
-    --card-foreground: 24 24% 8%;
-    --popover: 40 35% 90%;
-    --popover-foreground: 24 24% 8%;
+    --background: 60 7% 94%;             /* chalk */
+    --foreground: 202 47% 15%;           /* ink */
+    --card: 0 0% 100%;                   /* white panels */
+    --card-foreground: 202 47% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 202 47% 15%;
 
-    --primary: 4 69% 38%;                /* #A4271E ox-blood (Etch accent) */
-    --primary-foreground: 40 39% 95%;    /* paper text on ox-blood buttons */
-    --primary-soft: 7 45% 57%;           /* #C26B5F muted terracotta */
+    --primary: 202 47% 15%;              /* ink buttons */
+    --primary-foreground: 60 7% 94%;     /* chalk text on ink */
+    --primary-soft: 198 49% 62%;         /* sky */
 
-    --secondary: 40 33% 88%;             /* slightly darker parchment */
-    --secondary-foreground: 24 24% 8%;
-    --muted: 40 33% 88%;
-    --muted-foreground: 31 14% 32%;      /* #5C5346 wash */
-    --accent: 7 45% 92%;                 /* soft wash of accent-soft for hover bg */
-    --accent-foreground: 4 69% 28%;      /* deeper ox-blood for text on tint */
+    --secondary: 180 4% 90%;
+    --secondary-foreground: 202 47% 15%;
+    --muted: 180 4% 90%;
+    --muted-foreground: 210 8% 38%;      /* stone */
+    --accent: 200 24% 93%;               /* light harbour tint for hover and selected */
+    --accent-foreground: 202 47% 15%;
 
-    --destructive: 0 65% 45%;
-    --destructive-foreground: 40 39% 95%;
-    --success: 89 36% 36%;               /* #5D7E3C sage */
-    --success-foreground: 40 39% 95%;
-    --warning: 31 50% 48%;               /* #B8843E amber */
-    --warning-foreground: 40 39% 95%;
+    --destructive: 4 76% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 200 49% 36%;              /* harbour */
+    --success-foreground: 0 0% 100%;
+    --warning: 19 73% 37%;               /* deep flame, readable as text */
+    --warning-foreground: 0 0% 100%;
 
-    --border: 40 33% 78%;                /* #D8CFB8 rule */
-    --input: 40 33% 78%;
-    --ring: 4 69% 38%;                   /* ox-blood focus ring */
-    --radius: 0.625rem;                  /* slightly tighter than iOS default (BRAND.md anti-patterns) */
+    --border: 180 2% 84%;                /* line */
+    --input: 202 47% 15%;                /* inputs get an ink outline */
+    --ring: 200 49% 36%;                 /* harbour focus ring */
+    --radius: 0rem;                      /* sharp corners everywhere */
 
-    /* Chart palette — tone-on-tone using ink, ox-blood, sage, amber, terracotta */
-    --chart-1: 4 69% 38%;                /* ox-blood */
-    --chart-2: 89 36% 36%;               /* sage */
-    --chart-3: 31 50% 48%;               /* amber */
-    --chart-4: 7 45% 57%;                /* terracotta */
-    --chart-5: 24 24% 25%;               /* deep ink-grey */
+    --flame: 18 82% 57%;
+    --sky: 198 49% 62%;
+    --harbour: 200 49% 36%;
+
+    --chart-1: 200 49% 36%;              /* harbour */
+    --chart-2: 198 49% 62%;              /* sky */
+    --chart-3: 18 82% 57%;               /* flame */
+    --chart-4: 199 40% 51%;              /* mid blue */
+    --chart-5: 202 47% 15%;              /* ink */
   }
 
-  /* Dark (after dark — Etch "ink")
-   * Warm near-black, never pure black. Cream text, brightened ox-blood for contrast.
-   */
   .dark {
-    --background: 24 22% 6%;             /* #15110D paper-dark */
-    --foreground: 45 44% 89%;            /* #F0EAD8 ink-dark (warm cream) */
-    --card: 24 25% 9%;                   /* #1E1812 parchment-dark */
-    --card-foreground: 45 44% 89%;
-    --popover: 24 25% 9%;
-    --popover-foreground: 45 44% 89%;
+    --background: 202 47% 10%;
+    --foreground: 60 7% 94%;
+    --card: 202 47% 15%;
+    --card-foreground: 60 7% 94%;
+    --popover: 202 47% 15%;
+    --popover-foreground: 60 7% 94%;
 
-    --primary: 5 65% 54%;                /* #D8483A accent-dark (brightened ox-blood) */
-    --primary-foreground: 45 44% 89%;
-    --primary-soft: 7 31% 32%;
+    --primary: 60 7% 94%;                /* chalk buttons, ink text */
+    --primary-foreground: 202 47% 15%;
+    --primary-soft: 198 49% 62%;
 
-    --secondary: 34 17% 20%;             /* #3C342A rule-dark as secondary surface */
-    --secondary-foreground: 45 44% 89%;
-    --muted: 34 17% 15%;
-    --muted-foreground: 36 13% 56%;      /* #9C9281 wash-dark */
-    --accent: 7 31% 20%;                 /* dark wash for hover bg */
-    --accent-foreground: 5 65% 70%;
+    --secondary: 202 42% 18%;
+    --secondary-foreground: 60 7% 94%;
+    --muted: 202 42% 18%;
+    --muted-foreground: 202 16% 71%;
+    --accent: 202 42% 18%;
+    --accent-foreground: 60 7% 94%;
 
-    --destructive: 0 65% 55%;
-    --destructive-foreground: 45 44% 89%;
-    --success: 89 26% 49%;               /* #7A9B5C */
-    --success-foreground: 24 22% 6%;
-    --warning: 33 58% 57%;               /* #D49E51 */
-    --warning-foreground: 24 22% 6%;
+    --destructive: 7 82% 68%;
+    --destructive-foreground: 202 47% 10%;
+    --success: 198 49% 62%;
+    --success-foreground: 202 47% 10%;
+    --warning: 18 82% 57%;
+    --warning-foreground: 202 47% 10%;
 
-    --border: 34 17% 20%;                /* #3C342A rule-dark */
-    --input: 34 17% 20%;
-    --ring: 5 65% 54%;
+    --border: 202 32% 24%;
+    --input: 202 16% 71%;
+    --ring: 198 49% 62%;
 
-    --chart-1: 5 65% 54%;
-    --chart-2: 89 26% 49%;
-    --chart-3: 33 58% 57%;
-    --chart-4: 7 31% 49%;
-    --chart-5: 45 44% 70%;
+    --flame: 18 82% 57%;
+    --sky: 198 49% 62%;
+    --harbour: 198 49% 62%;
+
+    --chart-1: 198 49% 62%;
+    --chart-2: 199 40% 51%;
+    --chart-3: 18 82% 57%;
+    --chart-4: 200 49% 46%;
+    --chart-5: 60 7% 94%;
   }
 }
 
@@ -92,13 +96,7 @@
   * { @apply border-border; }
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
-    /* Subtle paper grain per BRAND.md §9. Inline SVG noise at ~4% opacity
-       sits behind every card so the warm cream background gets a tactile
-       feel without competing with content. Cards lay on parchment colour
-       on top, so the texture only shows in the gaps + scrolls smoothly. */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
-    background-attachment: fixed;
+    font-variant-numeric: tabular-nums;
   }
 }
 
@@ -158,15 +156,14 @@ button, a, [role="button"], input, textarea, select, label {
  * only keyboard / programmatic focus does. Matches macOS / Windows
  * convention.
  *
- * The ring picks up the brand accent (ox-blood) for warmth.
+ * The ring uses the harbour focus colour.
  */
 button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid hsl(var(--primary) / 0.7);
+  outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
-  border-radius: inherit;
 }
 
 /* Skip-to-content link. Visually hidden until keyboard focus lands on
@@ -181,13 +178,11 @@ a:focus-visible,
   padding: 0.5rem 0.75rem;
   background: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
-  border-radius: 0 0 0.5rem 0;
   font-weight: 600;
   font-size: 0.875rem;
   text-decoration: none;
   z-index: 100;
   transform: translateY(-110%);
-  transition: transform 150ms ease;
 }
 .skip-link:focus,
 .skip-link:focus-visible {
@@ -197,288 +192,29 @@ a:focus-visible,
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background-color: hsl(var(--border)); border-radius: 999px; }
+::-webkit-scrollbar-thumb { background-color: hsl(var(--border)); }
 ::-webkit-scrollbar-thumb:hover { background-color: hsl(var(--muted-foreground) / 0.4); }
 
 .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
 
-/* Etch elevation — paper-on-paper subtle lift, never 3D depth simulation.
- * BRAND.md anti-pattern: "no drop shadows that suggest 3D depth — we're flat,
- * paper-like." Light mode uses very subtle warm shadows; dark mode keeps
- * meaningful contrast to surface cards.
+/* Flat surfaces. The old paper effects (shadows, grain, lifts, tilted
+ * handwriting) are retired. These classes are kept as no-ops while the
+ * screens are rebuilt one by one, then removed from the markup.
  */
-.elevation-1 {
-  box-shadow:
-    0 1px 2px hsl(24 24% 8% / 0.06),
-    0 1px 3px hsl(24 24% 8% / 0.04);
-}
-.elevation-2 {
-  box-shadow:
-    0 4px 12px hsl(24 24% 8% / 0.08),
-    0 2px 4px hsl(24 24% 8% / 0.05);
-}
-.dark .elevation-1 {
-  box-shadow:
-    0 1px 2px hsl(0 0% 0% / 0.18),
-    0 1px 3px hsl(0 0% 0% / 0.12);
-}
-.dark .elevation-2 {
-  box-shadow:
-    0 6px 18px hsl(0 0% 0% / 0.30),
-    0 2px 4px hsl(0 0% 0% / 0.16);
-}
+.elevation-1, .elevation-2, .shadow-paper-1, .shadow-paper-2 { box-shadow: none; }
+.hover-lift, .hover-paper, .paper-texture, .ink-bleed, .scribbled, .scribbled-r,
+.scribbled-soft, .enter-paper, .rule-handdrawn, .journal-rule { }
 
-.hover-lift {
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 8px 20px hsl(24 24% 8% / 0.10),
-    0 2px 4px hsl(24 24% 8% / 0.06);
-}
-.dark .hover-lift:hover {
-  box-shadow: 0 10px 24px hsl(0 0% 0% / 0.35);
-}
-
-/* === DEPTH + LIFE UTILITIES (Phase I.1) ===
- *
- * The cards in Etch were "shadcn card with brand colours". This adds
- * paper-like depth: visible texture grain, warm layered shadows that
- * read as "paper sitting on paper", and a few hand-crafted micro-
- * details (slight rotation on handwritten accents, gentle entry
- * animation, ink-bleed hover state).
- *
- * Used sparingly: not every surface gets all of these. Hierarchy:
- *   - Hero cards (active plan, etched-today, family-name)  → texture + warm-shadow-2 + scribbled
- *   - Section cards (Daily 4, Meals)                       → warm-shadow-1 + paper-tint
- *   - Tiles                                                → flat + brighten on hover
- *   - Inline pills, buttons, inputs                        → no depth
+/* Hover changes are instant. Motion is kept only where it shows that
+ * something happened (dialogs opening, bars filling).
  */
-
-/* Paper grain texture. Subtle warm noise overlay. Apply via .paper-texture
- * on any element that should feel like it was printed on actual paper.
- * Uses CSS background-image so it doesn't require an asset request and
- * stays sharp at any zoom. Density tuned to be visible but not noisy.
- */
-.paper-texture {
-  position: relative;
-  isolation: isolate;
-}
-.paper-texture::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  border-radius: inherit;
-  opacity: 0.07;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  background-size: 180px 180px;
-}
-.paper-texture > * {
-  position: relative;
-  z-index: 1;
-}
-.dark .paper-texture::before {
-  opacity: 0.10;
-  mix-blend-mode: screen;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.86  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* Warm layered shadow — like a sheet of paper resting on a desk pad.
- * Replaces .elevation-1 / .elevation-2 on surfaces that should feel
- * tactile rather than card-like. Two layers: a tight close shadow that
- * grounds the element + a soft ambient shadow that picks up the warm
- * paper tone underneath.
- */
-.shadow-paper-1 {
-  box-shadow:
-    0 1px 0 hsl(24 30% 70% / 0.10),
-    0 2px 4px hsl(24 25% 25% / 0.06),
-    0 6px 14px hsl(24 25% 25% / 0.04);
-}
-.shadow-paper-2 {
-  box-shadow:
-    0 1px 0 hsl(24 30% 70% / 0.14),
-    0 3px 8px hsl(24 25% 25% / 0.10),
-    0 12px 28px hsl(24 25% 25% / 0.06);
-}
-.dark .shadow-paper-1 {
-  box-shadow:
-    0 1px 0 hsl(24 15% 14% / 0.6),
-    0 2px 4px hsl(0 0% 0% / 0.30),
-    0 6px 14px hsl(0 0% 0% / 0.18);
-}
-.dark .shadow-paper-2 {
-  box-shadow:
-    0 1px 0 hsl(24 15% 14% / 0.8),
-    0 4px 10px hsl(0 0% 0% / 0.40),
-    0 14px 32px hsl(0 0% 0% / 0.30);
-}
-
-/* Hover lift but warm-toned, for cards that already have shadow-paper-*. */
-.hover-paper {
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-.hover-paper:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 1px 0 hsl(24 30% 70% / 0.14),
-    0 6px 14px hsl(24 25% 25% / 0.10),
-    0 18px 36px hsl(24 25% 25% / 0.08);
-}
-.dark .hover-paper:hover {
-  box-shadow:
-    0 1px 0 hsl(24 15% 14% / 0.8),
-    0 8px 18px hsl(0 0% 0% / 0.45),
-    0 18px 40px hsl(0 0% 0% / 0.32);
-}
-
-/* Slight rotation for handwritten accents — the kind of imperfection a
- * pen would make. Pairs naturally with font-handwritten. Three variants
- * so successive uses don't all tilt the same way and read as a pattern.
- */
-.scribbled { transform: rotate(-0.8deg); transform-origin: left bottom; }
-.scribbled-r { transform: rotate(0.6deg); transform-origin: left bottom; }
-.scribbled-soft { transform: rotate(-0.3deg); transform-origin: center; }
-
-/* Gentle card-entry animation. When applied, the element fades up
- * subtly on first paint. Cheap visual that makes the dashboard feel
- * less "instant grid" and more "page being printed". Combined with
- * .stagger-children on a parent to ripple through siblings.
- */
-.enter-paper {
-  animation: enter-paper 380ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-@keyframes enter-paper {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* === TYPOGRAPHY PRESETS (Phase I.2) ===
- *
- * Three "voices" the user can pick from Settings → Display → Type.
- * Applied via a data-attribute on <html> (data-type="classic" by
- * default; "journal" or "modern" override). The CSS-variable level
- * swap means EVERY use of font-sans / font-serif Tailwind utility
- * tokens picks up the new preset without per-component changes.
- *
- * Important: --font-handwritten and --font-mono stay locked across
- * all three presets. Caveat is the brand accent and JetBrains Mono
- * is the "this is a number, it's etched" register — those can't be
- * preset-swappable without diluting the brand.
- */
-[data-type="journal"] {
-  /* Serif everywhere except mono + handwritten. */
-  --font-sans: var(--font-serif);
-}
-[data-type="modern"] {
-  /* Sans everywhere including headlines. Mono + handwritten stay. */
-  --font-serif: var(--font-sans);
-}
-
-/* Soft ink-bleed effect for hover on accent surfaces. Used on the
- * "Etch it" CTA and other primary actions — a barely-visible pulse
- * out from the button as the user is about to commit. Honors
- * prefers-reduced-motion via the bottom of this file.
- */
-.ink-bleed {
-  position: relative;
-  overflow: visible;
-}
-.ink-bleed::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: hsl(var(--primary) / 0);
-  transition: background 0.25s ease, inset 0.25s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-.ink-bleed:hover::after {
-  background: hsl(var(--primary) / 0.18);
-  inset: -6px;
-}
-
-
+.transition-colors, .transition-opacity, .transition-all { transition-duration: 0s !important; }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-up { animation: fade-up 0.6s ease-out both; }
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-14px) rotate(2deg); }
-}
-.animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
-
-@keyframes float-slower {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-22px) rotate(-3deg); }
-}
-.animate-float-slower { animation: float-slower 11s ease-in-out infinite; }
-
-@keyframes blob-drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -25px) scale(1.08); }
-  66% { transform: translate(-20px, 30px) scale(0.94); }
-}
-.animate-blob { animation: blob-drift 18s ease-in-out infinite; }
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  100% { transform: scale(2); opacity: 0; }
-}
-.animate-pulse-ring::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background: hsl(var(--primary));
-  animation: pulse-ring 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.animate-shimmer {
-  background-size: 200% 100%;
-  animation: shimmer 3.5s linear infinite;
-}
-
-/* UX-PATTERNS.md §3 — etch animation reward layer.
- * Fired by lib/etchFeedback.js etched() via a CustomEvent that
- * app/dashboard/_components/EtchAnimation.jsx listens for. The slash
- * draws in via stroke-dasharray, then the whole element fades out.
- * Default durations below match the Steady personality preset; Calm and
- * Warm overrides are supplied as inline `style={{ animationDuration }}`
- * (inline style beats class specificity, so the override always wins).
- * Honors prefers-reduced-motion via the @media block at the bottom of
- * this file.
- */
-@keyframes etch-stroke-in {
-  from { stroke-dasharray: 36; stroke-dashoffset: 36; }
-  to { stroke-dasharray: 36; stroke-dashoffset: 0; }
-}
-.animate-etch-stroke {
-  animation: etch-stroke-in 300ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-@keyframes etch-fade {
-  0%   { opacity: 0; transform: translateY(8px); }
-  20%  { opacity: 1; transform: translateY(0); }
-  80%  { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-4px); }
-}
-.animate-etch-fade {
-  display: inline-block;
-  animation: etch-fade 1200ms ease-out forwards;
-}
+.animate-fade-up { animation: fade-up 0.2s ease-out both; }
 
 @keyframes bar-grow {
   from { transform: scaleY(0); }
@@ -486,95 +222,21 @@ a:focus-visible,
 }
 .animate-bar-grow {
   transform-origin: bottom;
-  animation: bar-grow 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: bar-grow 0.4s ease-out forwards;
 }
 
-.stagger-children > * {
-  opacity: 0;
-  animation: fade-up 0.45s ease-out forwards;
-}
-.stagger-children > *:nth-child(1) { animation-delay: 40ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 80ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 160ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 240ms; }
-.stagger-children > *:nth-child(7) { animation-delay: 280ms; }
-.stagger-children > *:nth-child(8) { animation-delay: 320ms; }
-.stagger-children > *:nth-child(n+9) { animation-delay: 360ms; }
-
-/* Journal ruled-line background. Subtle horizontal lines at body-text
- * cadence, anchored from the top so they line up with a stretch of
- * running copy. Used on Today header + close-day surfaces to land the
- * "writing in a notebook" feeling without committing to skeuomorphic
- * paper textures. The line colour pulls from --rule which is set in
- * both light/dark palettes.
- */
-.journal-rule {
-  background-image: linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(1.6em - 1px),
-    hsl(var(--border)) calc(1.6em - 1px),
-    hsl(var(--border)) 1.6em
-  );
-  background-size: 100% 1.6em;
-  background-repeat: repeat-y;
-  background-position: 0 0;
-}
-
-/* Single ruled line, used as a hand-drawn divider beneath section
- * titles. Wavy instead of perfectly straight so it reads as a pen
- * stroke under a heading, not a CSS border.
- */
-.rule-handdrawn {
-  position: relative;
-  padding-bottom: 6px;
-}
-.rule-handdrawn::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 4'><path d='M0 2 Q15 0 30 2 T60 2 T90 2 T120 2' stroke='%231A1410' stroke-width='1.2' fill='none' opacity='0.55'/></svg>");
-  background-repeat: repeat-x;
-  background-size: 120px 4px;
-}
-.dark .rule-handdrawn::after {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 4'><path d='M0 2 Q15 0 30 2 T60 2 T90 2 T120 2' stroke='%23F0EAD8' stroke-width='1.2' fill='none' opacity='0.45'/></svg>");
-}
-
-/* Heat-map cell tones. Light mode "empty" needs a darker parchment so heat-1
-   reads as activity rather than blending into the paper background. */
-.heat-empty { background-color: hsl(40 30% 82%); }
-.dark .heat-empty { background-color: hsl(var(--muted)); }
-.heat-1 { background-color: hsl(var(--primary) / 0.30); }
-.heat-2 { background-color: hsl(var(--primary) / 0.55); }
-.heat-3 { background-color: hsl(var(--primary) / 0.80); }
-.heat-4 { background-color: hsl(var(--primary)); }
+/* Calendar cells. Empty days are outlined, logged days fill with sky, then harbour. */
+.heat-empty { background-color: transparent; box-shadow: inset 0 0 0 1px hsl(var(--border)); }
+.heat-1 { background-color: hsl(var(--sky) / 0.45); }
+.heat-2 { background-color: hsl(var(--sky)); }
+.heat-3 { background-color: hsl(var(--harbour) / 0.8); }
+.heat-4 { background-color: hsl(var(--harbour)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .stagger-children > *,
-  .animate-fade-up,
-  .animate-float-slow,
-  .animate-float-slower,
-  .animate-blob,
-  .animate-pulse-ring::after,
-  .animate-shimmer,
-  .animate-bar-grow,
-  .animate-etch-stroke,
-  .animate-etch-fade,
-  .enter-paper {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  .hover-lift:hover,
-  .hover-paper:hover { transform: none !important; }
-  .scribbled,
-  .scribbled-r,
-  .scribbled-soft { transform: none !important; }
-  .ink-bleed:hover::after { inset: -2px !important; }
 }

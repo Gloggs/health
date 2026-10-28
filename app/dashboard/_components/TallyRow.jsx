@@ -8,7 +8,7 @@
 // Each group is a single self-contained SVG (verticals + diagonal sized to
 // the group), which is robust — the previous version positioned the diagonal
 // with a negative margin and it didn't line up across the strokes.
-export default function TallyRow({ count = 0, total = 7, label = "etched today" }) {
+export default function TallyRow({ count = 0, total = 7, label = "logged today" }) {
   if (count <= 0) return null;
   const clamped = Math.min(count, 14);
 
@@ -23,7 +23,7 @@ export default function TallyRow({ count = 0, total = 7, label = "etched today" 
   const tilts = ["-1.5deg", "1deg", "-0.5deg"];
 
   return (
-    <div className="rounded-2xl border border-dashed bg-card/30 px-5 py-4">
+    <div className="rounded-2xl border border-dashed bg-card px-5 py-4">
       <div className="flex items-center gap-3">
         <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
           ── {label} ──

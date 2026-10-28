@@ -34,7 +34,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-card/95 backdrop-blur md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-card backdrop-blur md:hidden">
       <div className="pb-safe grid grid-cols-5">
         {TABS.map(({ label, href, icon: Icon, aliases }) => {
           const active = isActive(pathname, href, aliases);

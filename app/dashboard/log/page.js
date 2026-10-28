@@ -65,7 +65,7 @@ export default function LogHubPage() {
       <PageHero
         eyebrow="log"
         title="Off the mat"
-        subtitle="Sleep, water, mood, body, walks, meals — every history at a glance."
+        subtitle="Sleep, water, mood, body, walks, meals, every history at a glance."
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -73,7 +73,7 @@ export default function LogHubPage() {
           <Link
             key={href}
             href={href}
-            className="hover-lift group flex items-center gap-4 rounded-xl bg-card/50 p-4 transition-colors hover:bg-card"
+            className="hover-lift group flex items-center gap-4 rounded-xl bg-card p-4 transition-colors hover:bg-card"
           >
             <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tone}`}>
               <Icon className="h-5 w-5" />

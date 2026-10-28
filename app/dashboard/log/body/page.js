@@ -143,7 +143,7 @@ function BodyPageInner() {
         subtitle="Weight weekly, measurements monthly."
       />
 
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Log for</p>
           <Input
@@ -223,12 +223,12 @@ function BodyPageInner() {
 
         <div className="mt-4 flex justify-end">
           <Button onClick={save} disabled={saving}>
-            <Save className="mr-1.5 h-4 w-4" /> {saving ? "Etching…" : "Etch it"}
+            <Save className="mr-1.5 h-4 w-4" /> {saving ? "Saving…" : "Save"}
           </Button>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Last 90 days</p>
         {history === null ? (
           <Skeleton className="h-32 w-full rounded-xl" />
@@ -239,7 +239,7 @@ function BodyPageInner() {
             {history.map((h) => (
               <li
                 key={h.id}
-                className="flex items-center justify-between rounded-xl border bg-card/60 px-4 py-2.5"
+                className="flex items-center justify-between rounded-xl border bg-card px-4 py-2.5"
               >
                 <div className="min-w-0">
                   <p className="text-sm font-medium">{prettyDate(h.date)}</p>

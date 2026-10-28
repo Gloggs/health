@@ -43,7 +43,7 @@ export default function MeHubPage() {
   const [discipline, setDiscipline] = useState(null);
   const [userCtx, setUserCtx] = useState(null);
   // Pulls the editable in-app profile (displayName, age, height) so we can
-  // show the user's Etch name rather than the Kinde-derived first/last
+  // show the user's Health name rather than the Kinde-derived first/last
   // pair. Without this the Family page would say "Mike" while Me said
   // "Michael Ijisonu" — same person, different names.
   const [me, setMe] = useState(null);
@@ -74,7 +74,7 @@ export default function MeHubPage() {
     setExporting(true);
     try {
       const r = await GlobalApi.ExportAll();
-      downloadJson(`etch-export-${today}.json`, r.data);
+      downloadJson(`health-export-${today}.json`, r.data);
       toast.success("Exported");
     } catch {
       toast.error("Export failed");
@@ -87,13 +87,13 @@ export default function MeHubPage() {
     <div className="space-y-6 p-4 md:p-6">
       <PageHero
         eyebrow="me"
-        title="You, etched"
-        subtitle="Discipline, insights, reminders, and your data — all on your row only."
+        title="You"
+        subtitle="Discipline, insights, reminders, and your data, all on your row only."
       />
 
       {/* Profile + sign out. The sidebar carries this on desktop, but the mobile
           bottom-nav doesn't - so the only sign-out path on mobile lives here. */}
-      <div className="flex items-center gap-3 rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+      <div className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
         {user?.picture ? (
           <Image src={user.picture} width={44} height={44} alt="Profile" className="rounded-full border" />
         ) : (
@@ -148,7 +148,7 @@ export default function MeHubPage() {
               <p className="font-serif text-base font-semibold">Set your goals</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 What you're working on, what to avoid, what you prefer. Private
-                to you — useful shorthand for when you come back after a few
+                to you, useful shorthand for when you come back after a few
                 weeks. 30 seconds.
               </p>
             </div>
@@ -158,7 +158,7 @@ export default function MeHubPage() {
       ) : null}
 
       {/* This week's discipline */}
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted-foreground">This week</p>
@@ -204,7 +204,7 @@ export default function MeHubPage() {
       <div className="grid gap-3 sm:grid-cols-2">
         {/* Trends is also reachable from the desktop sidebar, but on
             mobile the only path is via this hub. Promoted to first slot
-            here so it doesn't get buried — discovered in the J.1 a11y
+            here so it doesn't get buried, discovered in the J.1 a11y
             audit (no path on mobile bottom nav). */}
         <HubTile href="/dashboard/me/trends" icon={TrendingUp} label="Trends" desc="Weekly + monthly charts, no AI" />
         <HubTile href="/dashboard/chat" icon={MessageCircle} label="Chat" desc="Family room + private journal" />
@@ -213,7 +213,7 @@ export default function MeHubPage() {
         <button
           onClick={exportAll}
           disabled={exporting}
-          className="hover-lift group flex items-center gap-4 rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture text-left disabled:opacity-50"
+          className="hover-lift group flex items-center gap-4 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture text-left disabled:opacity-50"
         >
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Download className="h-5 w-5" />
@@ -232,7 +232,7 @@ function HubTile({ href, icon: Icon, label, desc }) {
   return (
     <Link
       href={href}
-      className="hover-lift group flex items-center gap-4 rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture"
+      className="hover-lift group flex items-center gap-4 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture"
     >
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="h-5 w-5" />

@@ -69,7 +69,7 @@ export default function MiniWorkoutsCard({ todayRows, configured, today, onChang
   const [configOpen, setConfigOpen] = useState(false);
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -171,7 +171,7 @@ function MiniTile({ slot, exercise, count, today, onChanged }) {
     // reverts to exactly what was there before the tap.
     const previousCount = count;
     etched({
-      message: `+${n} ${exercise.label.toLowerCase()} etched`,
+      message: `+${n} ${exercise.label.toLowerCase()} logged`,
       onUndo: () => save(previousCount),
     });
     save(Math.max(0, count + n));
@@ -343,7 +343,7 @@ function ConfigDialog({ open, onOpenChange, exercises, onSaved }) {
         </p>
         <div className="mt-3 space-y-3">
           {draft.map((row, i) => (
-            <div key={i} className="space-y-1.5 rounded-md border bg-card/60 p-3">
+            <div key={i} className="space-y-1.5 rounded-md border bg-card p-3">
               <div className="grid grid-cols-[1fr_90px] gap-2">
                 <div>
                   <Label htmlFor={`mini-label-${i}`}>Slot {i + 1}</Label>

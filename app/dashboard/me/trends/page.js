@@ -746,7 +746,7 @@ function WeightTrendCard({ loading, weightSeries, weightGoal }) {
     : `${pointCount} weigh-ins. Solid line = raw, dotted = 14-day average.`;
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture sm:p-6">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6">
       <div className="mb-5 flex items-start gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Scale className="h-4 w-4" />
@@ -850,7 +850,7 @@ function WeightStat({ label, value, date, tone }) {
   const toneCls =
     tone === "success" ? "text-success" : tone === "warning" ? "text-warning" : "text-foreground";
   return (
-    <div className="rounded-xl border bg-card/60 p-3">
+    <div className="rounded-xl border bg-card p-3">
       <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
       <p className={cn("mt-1 text-base font-semibold tabular-nums", toneCls)}>{value}</p>
       {date ? <p className="text-[10px] text-muted-foreground">{prettyDate(date)}</p> : null}
@@ -869,11 +869,11 @@ function MiniSparklineCard({ exercise, series, stats }) {
     () => (target ? series.filter((d) => Number(d.value) >= target).length : null),
     [series, target]
   );
-  const label = exercise?.label ?? "—";
+  const label = exercise?.label ?? "-";
 
   if (total === 0) {
     return (
-      <div className="rounded-xl border border-dashed bg-card/40 p-3">
+      <div className="rounded-xl border border-dashed bg-card p-3">
         <p className="truncate text-xs font-medium text-muted-foreground">{label}</p>
         <p className="mt-2 text-[11px] italic text-muted-foreground">
           No reps logged yet.
@@ -884,7 +884,7 @@ function MiniSparklineCard({ exercise, series, stats }) {
   }
 
   return (
-    <div className="rounded-xl border bg-card/60 p-3">
+    <div className="rounded-xl border bg-card p-3">
       <div className="flex items-baseline justify-between gap-1.5">
         <p className="min-w-0 truncate text-xs font-medium" title={label}>{label}</p>
         {target ? (
@@ -941,7 +941,7 @@ function MiniSparklineCard({ exercise, series, stats }) {
 
 function KpiCard({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2">
+    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2">
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {label}
@@ -964,7 +964,7 @@ function ChartCard({ icon: Icon, title, subtitle, srSummary, children }) {
   // numeric summary ("Average sleep this week: 7.2 hours, down from 7.5").
   return (
     <div
-      className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture sm:p-6"
+      className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6"
       role="img"
       aria-label={srSummary ? `${title}. ${srSummary}` : `${title}. ${subtitle}`}
     >
@@ -1062,7 +1062,7 @@ function WeekCompare({ today }) {
   }, [d, thisMonday, lastMonday, lastSunday, today]);
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="mb-4 flex items-start gap-3">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <TrendingUp className="h-4 w-4" />
@@ -1129,7 +1129,7 @@ function CompareCard({ icon: Icon, label, now, prev, format }) {
     trend === "up" ? "text-success" : trend === "down" ? "text-destructive" : "text-muted-foreground";
 
   return (
-    <div className="rounded-xl border bg-card/60 p-3">
+    <div className="rounded-xl border bg-card p-3">
       <div className="flex items-center gap-1.5 text-muted-foreground">
         <Icon className="h-3.5 w-3.5" />
         <p className="text-[10px] uppercase tracking-wider">{label}</p>

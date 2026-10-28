@@ -70,12 +70,12 @@ export default function ChatPage() {
         title={tab === "family" ? "Family room" : "Journal"}
         subtitle={
           tab === "family"
-            ? "The shared room — quick check-ins, no notifications until you turn them on."
+            ? "The shared room, quick check-ins, no notifications until you turn them on."
             : "Just you. Nobody else sees this, ever."
         }
       />
 
-      <div className="flex gap-1 rounded-lg bg-card/50 p-1">
+      <div className="flex gap-1 rounded-lg bg-card p-1">
         <TabButton
           active={tab === "family"}
           onClick={() => switchTab("family")}
@@ -293,7 +293,7 @@ function FamilyChatView() {
   };
 
   return (
-    <div className="flex h-[calc(100dvh-260px)] min-h-[420px] flex-col gap-3 rounded-2xl bg-card/70 shadow-paper-1 paper-texture sm:h-[calc(100dvh-240px)]">
+    <div className="flex h-[calc(100dvh-260px)] min-h-[420px] flex-col gap-3 rounded-2xl bg-card shadow-paper-1 paper-texture sm:h-[calc(100dvh-240px)]">
       <header className="border-b border-border/60 px-4 py-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -323,7 +323,7 @@ function FamilyChatView() {
           <EmptyState
             icon={MessageCircle}
             title="nothing said yet"
-            body="Say hi to the family. Etch chat lives here."
+            body="Say hi to the family. Family chat lives here."
           />
         ) : (
           <ul className="space-y-2 pb-2">
@@ -346,7 +346,7 @@ function FamilyChatView() {
           e.preventDefault();
           send();
         }}
-        className="flex items-end gap-2 border-t border-border/60 bg-card/40 px-3 py-2.5"
+        className="flex items-end gap-2 border-t border-border/60 bg-card px-3 py-2.5"
       >
         <textarea
           ref={composerRef}
@@ -617,10 +617,10 @@ function JournalView() {
             rows={4}
           />
           <div className="mt-2 flex items-center justify-between gap-2 border-t pt-2">
-            <p className="text-[11px] text-muted-foreground">Cmd/Ctrl + Enter to etch</p>
+            <p className="text-[11px] text-muted-foreground">Cmd or Ctrl + Enter to save</p>
             <Button onClick={submit} disabled={!content.trim() || saving} size="sm" className="shrink-0">
               <Send className="mr-1.5 h-3.5 w-3.5" />
-              {saving ? "Etching…" : "Etch it"}
+              {saving ? "Saving…" : "Save"}
             </Button>
           </div>
         </div>

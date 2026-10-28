@@ -2,6 +2,10 @@
 
 Short records of the main choices, newest first.
 
+## October 2026: Harbour colours, Barlow, and a new mark
+
+Health needed its own look, distinct from the sister app Here., while keeping the same black and white skeleton. Harbour (navy ink, chalk, harbour blue, sky, flame) came from a sports palette, so it reads as fitness without shouting. Barlow Condensed gives numbers a scoreboard feel, and Barlow keeps body text plain. The mark is a pulse line on a flame square. Every colour is a CSS variable, so light and dark use the same names, and corners and shadows are switched off in the Tailwind theme itself rather than screen by screen.
+
 ## October 2026: redesign for everyday use
 
 The first version worked, but in daily use it was not polished. Logging took too many taps, useful screens were buried, and there was decoration that got in the way: mini-games on the landing page, a handwriting font, personality and typeface presets, and animations on every tap. The redesign keeps the features and cuts the noise. Today becomes a short list of what is left to log. Every screen is reachable from five tabs, a search box and one "You" menu. The plan is in [DESIGN.md](./DESIGN.md).

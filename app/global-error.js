@@ -8,7 +8,7 @@ import { useEffect } from "react";
 //
 // Inline styles only — at the point this renders, the global CSS might
 // not have loaded (the layout crashed before it could). Uses BRAND
-// palette hex values directly so the page still feels like Etch.
+// palette hex values directly so the page still feels like Health.
 export default function GlobalError({ error, reset }) {
   useEffect(() => {
     console.error("[app/global-error] caught:", error?.message ?? error);
@@ -76,7 +76,7 @@ export default function GlobalError({ error, reset }) {
                 color: "#7a716a",
               }}
             >
-              Etch
+              Health
             </p>
             <h1
               style={{
@@ -97,7 +97,7 @@ export default function GlobalError({ error, reset }) {
                 color: "#3a322c",
               }}
             >
-              Something went wrong at the root. Your data is safe — try
+              Something went wrong at the root. Your data is safe, try
               reloading the page.
             </p>
             {error?.digest ? (

@@ -231,7 +231,7 @@ export async function POST(req) {
       .limit(1);
     const result = await sendInviteEmail({
       to: email,
-      familyName: family?.name ?? "Etch",
+      familyName: family?.name ?? "Health",
       inviterName: inviter?.displayName ?? inviter?.email ?? "your family",
       joinUrl: `${process.env.APP_URL ?? ""}/join/${token}`,
     });

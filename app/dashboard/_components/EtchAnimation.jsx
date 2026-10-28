@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getEffectivePersonality, setPersonalityClient } from "@/lib/personality";
 
 /**
- * Etch animation overlay - the reward-layer "tally mark draws in" moment
+ * Health animation overlay - the reward-layer "tally mark draws in" moment
  * from UX-PATTERNS.md §3. Mounted once in the dashboard layout; listens
  * for `etch:mark` CustomEvents fired by lib/etchFeedback.js etched() and
  * spawns an animated SVG slash in the bottom-right of the viewport.

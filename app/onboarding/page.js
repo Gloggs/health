@@ -12,7 +12,7 @@ import {
   Loader2,
   Mail,
 } from "lucide-react";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -149,8 +149,8 @@ export default function OnboardingPage() {
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
-          <EtchMark size={28} />
-          <p className="font-serif text-sm font-semibold">Etch</p>
+          <HealthMark size={28} />
+          <p className="font-serif text-sm font-semibold">Health</p>
         </div>
         <div className="flex items-center gap-1.5">
           {steps.map((_s, i) => (
@@ -207,7 +207,7 @@ export default function OnboardingPage() {
         )}
       </main>
 
-      <footer className="pb-safe fixed inset-x-0 bottom-0 z-20 border-t bg-card/95 backdrop-blur">
+      <footer className="pb-safe fixed inset-x-0 bottom-0 z-20 border-t bg-card backdrop-blur">
         <div className="mx-auto flex w-full max-w-md items-center gap-2 px-4 py-3 sm:max-w-lg sm:px-6">
           {step > 0 ? (
             <Button
@@ -272,7 +272,7 @@ function StepFamily({ value, onChange, stepLabel }) {
           className="h-14 text-lg"
         />
       </div>
-      <div className="rounded-xl border border-dashed bg-card/60 p-4">
+      <div className="rounded-xl border border-dashed bg-card p-4">
         <div className="flex items-start gap-3">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Mail className="h-4 w-4" />

@@ -112,7 +112,7 @@ export default function RemindersPage() {
         </p>
       </div>
 
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">
           New reminder
         </p>
@@ -192,14 +192,14 @@ export default function RemindersPage() {
         {items === null ? (
           <Skeleton className="h-24 w-full rounded-2xl" />
         ) : items.length === 0 ? (
-          <EmptyState compact title="nothing queued yet" body="Add one above — water, meals, weigh-ins, supplements." />
+          <EmptyState compact title="nothing queued yet" body="Add one above, water, meals, weigh-ins, supplements." />
         ) : (
           items.map((r) => {
             const Icon = ICON_FOR[r.kind] ?? Bell;
             return (
               <div
                 key={r.id}
-                className="flex items-center gap-3 rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture"
+                className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" />

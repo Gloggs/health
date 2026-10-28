@@ -208,7 +208,7 @@ function InviteManager({ onMembersChanged }) {
       } else {
         // Resend not configured / failed — surface the link so the
         // inviter can share it manually.
-        toast.success("Invite created — copy the link to share");
+        toast.success("Invite created, copy the link to share");
       }
     } catch (err) {
       const msg =
@@ -231,7 +231,7 @@ function InviteManager({ onMembersChanged }) {
   };
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -324,7 +324,7 @@ function PendingInviteRow({ invite, onRevoke }) {
       toast.success("Link copied");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Couldn't copy — long-press to copy manually");
+      toast.error("Couldn't copy, long-press to copy manually");
     }
   };
 
@@ -369,7 +369,7 @@ function LastIssuedRow({ invite, onDismiss }) {
       toast.success("Link copied");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Couldn't copy — long-press to copy manually");
+      toast.error("Couldn't copy, long-press to copy manually");
     }
   };
   return (
@@ -433,7 +433,7 @@ function ActivityFeed() {
   const items = data?.items ?? [];
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -601,7 +601,7 @@ function FamilyTile({ member, myRole, onChanged }) {
       <Link
         href={href}
         className={cn(
-          "hover-lift group block rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture",
+          "hover-lift group block rounded-2xl bg-card p-4 shadow-paper-1 paper-texture",
           member.isMe && "border-primary/40"
         )}
       >
@@ -651,7 +651,7 @@ function FamilyTile({ member, myRole, onChanged }) {
       </div>
 
       {/* 7-day strip per SURFACES.md §3 — small dots representing each of
-          the last 7 days, density = number of categories etched that day.
+          the last 7 days, density = number of categories logged that day.
           Today is the rightmost slot. Gives a glance-friendly read of
           whether this member has been active recently without revealing
           per-category details (visibility-respected on the server). */}
@@ -668,7 +668,7 @@ function FamilyTile({ member, myRole, onChanged }) {
                     ? isToday
                       ? "Nothing today yet"
                       : "Nothing"
-                    : `${c} etched`
+                    : `${c} logged`
                 }
               >
                 <span
@@ -701,7 +701,7 @@ function FamilyTile({ member, myRole, onChanged }) {
           <span className="font-mono font-bold tabular-nums text-foreground">
             {member.etchedTodayCount ?? 0}
           </span>{" "}
-          of 7 etched today
+          of 7 logged today
         </p>
       </div>
 
@@ -802,7 +802,7 @@ function MemberMenu({ member, myRole, onChanged }) {
         <button
           type="button"
           aria-label="Member actions"
-          className="absolute right-1.5 top-1.5 z-10 flex h-11 w-11 items-center justify-center rounded-md bg-card/80 text-muted-foreground backdrop-blur transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          className="absolute right-1.5 top-1.5 z-10 flex h-11 w-11 items-center justify-center rounded-md bg-card text-muted-foreground backdrop-blur transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         >
           <MoreVertical className="h-4 w-4" />
         </button>
@@ -833,8 +833,8 @@ function MemberMenu({ member, myRole, onChanged }) {
             title={`Remove ${member.displayName ?? "member"} from the family?`}
             description={
               targetRole === "admin"
-                ? `${member.displayName ?? "They"}'ll lose admin powers and access to family data. They can be re-invited later — their personal data stays with them.`
-                : `${member.displayName ?? "They"}'ll lose access to family data. They can be re-invited later — their personal data stays with them.`
+                ? `${member.displayName ?? "They"}'ll lose admin powers and access to family data. They can be re-invited later, their personal data stays with them.`
+                : `${member.displayName ?? "They"}'ll lose access to family data. They can be re-invited later, their personal data stays with them.`
             }
             confirmLabel="Remove"
             onConfirm={remove}

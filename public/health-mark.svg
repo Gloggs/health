@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="512" height="512">
+  <!-- Health mark: a flame square with an ink pulse line. See docs/DESIGN.md. -->
+  <rect width="22" height="22" fill="#EB6E3A"/>
+  <path d="M4 13h4l2-6 3 10 2-4h3" fill="none" stroke="#142B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

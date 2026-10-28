@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { AlertTriangle, RotateCcw, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Route-segment error boundary. Renders any time a page / layout under
 // the app/ tree throws during render or in a Server Action. Catches the
@@ -25,10 +25,10 @@ export default function ErrorPage({ error, reset }) {
     <div className="flex min-h-[100dvh] items-center justify-center bg-background p-6">
       <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-paper-2 sm:p-8">
         <div className="mx-auto flex h-12 w-12 items-center justify-center">
-          <EtchMark size={48} />
+          <HealthMark size={48} />
         </div>
         <p className="mt-3 font-serif text-sm font-semibold tracking-tight text-muted-foreground">
-          Etch
+          Health
         </p>
         <div className="mt-5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/15 text-destructive">
           <AlertTriangle className="h-5 w-5" />
@@ -37,7 +37,7 @@ export default function ErrorPage({ error, reset }) {
           Something cracked.
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Etch hit an unexpected error rendering this page. Your data's safe —
+          Health hit an unexpected error rendering this page. Your data's safe,
           entries only write when you tap.
         </p>
         {error?.digest ? (
