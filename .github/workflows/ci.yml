@@ -1,0 +1,31 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Pure logic (usuals, dates) runs with Node's own test runner.
+      - run: npm test
+      # The build needs these to exist, not to be real. No secrets in CI.
+      - run: npm run build
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost/ci
+          KINDE_CLIENT_ID: ci
+          KINDE_CLIENT_SECRET: ci
+          KINDE_ISSUER_URL: https://ci.kinde.com
+          KINDE_SITE_URL: http://localhost:3000
+          NEXT_TELEMETRY_DISABLED: "1"

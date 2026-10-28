@@ -54,13 +54,18 @@ On every screen: search (logs, exercises, plans, family, settings), notification
 ## Behaviour
 
 - Logging takes one or two taps and starts from the last entry.
-- Saving shows one quiet "Saved" with Undo. No confirm dialogs for everyday taps. Deleting data still asks first.
+- Saving or deleting an entry shows one quiet line with Undo. No "are you sure" for everyday changes. Deleting a whole account or leaving a family still asks first.
 - The workout screen fills in last session's weights and keeps working on a weak signal.
 - No streak guilt, confetti, pop-ups or count-up animations. Motion only shows that something happened, and stops when the device asks for reduced motion.
 
 ## Writing
 
-UK spelling. Short sentences and everyday words. Buttons say what happens ("Add 250 ml", "Start workout"). No long dashes, no exclamation marks, no buzzwords.
+Plain language is part of the look, as much as the black and white skeleton.
+
+- Headings are names, not slogans. "Health and fitness tracker", "Water", "Log sheet". Never "Log your day in ten seconds" or "Shared, not exposed".
+- Say what something is or does, in the fewest everyday words. No sales talk, no clever phrasing.
+- Buttons say what happens: "Save 250 ml", "Start workout", "Undo".
+- UK spelling. Short sentences. No long dashes, no exclamation marks, no buzzwords.
 
 ## Order of work
 
@@ -68,10 +73,10 @@ Each step is one pull request on a `claude/*` branch.
 
 1. Import into this repository
 2. Rename to Health, Harbour colours and Barlow, sharp corners, copy pass
-3. Five tabs, top bar, desktop sidebar, search, the You menu
-4. Today rebuilt around what is left to log
-5. Faster logging with undo, journal moved into Log
-6. Gym mode for workouts, with an offline queue
+3. The log sheet: one way to log water, sleep, weight, mood, meals and cardio, with usuals, a ruler, Undo and mood tags
+4. Five tabs, top bar, desktop sidebar, search, the You menu, and Today rebuilt around the log list
+5. Landing page with a live log sheet, and the guided demo
+6. Gym mode for workouts, with an offline queue and next-weight suggestions
 7. Trends tab, family chat in Family, settings trimmed
-8. One-screen landing page, guided demo, About page
-9. Hardening: Next.js 15, security headers, tests for the family checks, accessibility, delete my data
+8. Reminders that actually send, at most once a day
+9. Hardening: Next.js 15, security headers, tests for the family checks against a real database, browser and accessibility tests, delete my data

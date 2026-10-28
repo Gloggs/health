@@ -1,91 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Bed,
-  Droplet,
-  Smile,
-  Scale,
-  Footprints,
-  UtensilsCrossed,
-  ArrowRight,
-} from "lucide-react";
-import PageHero from "../_components/PageHero";
+import { ChevronRight } from "lucide-react";
+import { useLog } from "@/components/log/LogProvider";
 
-// Tile palette mirrors the Today dashboard tones so the modules read as the
-// same modules - purple for sleep, cyan for water, etc.
-const TILES = [
-  {
-    href: "/dashboard/log/sleep",
-    label: "Sleep",
-    desc: "Bedtime, wake, quality",
-    icon: Bed,
-    tone: "bg-[hsl(var(--chart-5)/0.14)] text-[hsl(var(--chart-5))]",
-  },
-  {
-    href: "/dashboard/log/water",
-    label: "Water",
-    desc: "Tap to add intake",
-    icon: Droplet,
-    tone: "bg-[hsl(var(--chart-4)/0.14)] text-[hsl(var(--chart-4))]",
-  },
-  {
-    href: "/dashboard/log/mood",
-    label: "Mood + energy",
-    desc: "Daily check-in",
-    icon: Smile,
-    tone: "bg-[hsl(var(--chart-2)/0.18)] text-[hsl(var(--chart-2))]",
-  },
-  {
-    href: "/dashboard/log/body",
-    label: "Body",
-    desc: "Weight + measurements",
-    icon: Scale,
-    tone: "bg-primary/10 text-primary",
-  },
-  {
-    href: "/dashboard/log/cardio",
-    label: "Walks + cardio",
-    desc: "Walks, runs, cycles",
-    icon: Footprints,
-    tone: "bg-[hsl(var(--chart-3)/0.14)] text-[hsl(var(--chart-3))]",
-  },
-  {
-    href: "/dashboard/log/meals",
-    label: "Meals",
-    desc: "Breakfast, lunch, dinner, snacks",
-    icon: UtensilsCrossed,
-    tone: "bg-primary/10 text-primary",
-  },
+// Every kind of log in one list. The row opens its history; the button on
+// the right opens the log sheet straight away.
+const ROWS = [
+  { kind: "sleep", label: "Sleep", detail: "Bedtime, wake time, how you slept", href: "/dashboard/log/sleep" },
+  { kind: "water", label: "Water", detail: "Your containers, day total", href: "/dashboard/log/water" },
+  { kind: "weight", label: "Weight and body", detail: "Weight, measurements", href: "/dashboard/log/body" },
+  { kind: "cardio", label: "Cardio", detail: "Walks, runs, rides, swims", href: "/dashboard/log/cardio" },
+  { kind: "meal", label: "Meals", detail: "Breakfast, lunch, dinner, snacks", href: "/dashboard/log/meals" },
+  { kind: "mood", label: "Mood and energy", detail: "How you feel, and what played a part", href: "/dashboard/log/mood" },
 ];
 
 export default function LogHubPage() {
-  return (
-    <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-6">
-      <PageHero
-        eyebrow="log"
-        title="Off the mat"
-        subtitle="Sleep, water, mood, body, walks, meals, every history at a glance."
-      />
+  const { openLog } = useLog();
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {TILES.map(({ href, label, desc, icon: Icon, tone }) => (
-          <Link
-            key={href}
-            href={href}
-            className="hover-lift group flex items-center gap-4 rounded-xl bg-card p-4 transition-colors hover:bg-card"
-          >
-            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tone}`}>
-              <Icon className="h-5 w-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold">{label}</p>
-              <p className="truncate text-xs text-muted-foreground">{desc}</p>
-            </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-          </Link>
+  return (
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 p-4 md:p-6">
+      <h1 className="font-display text-4xl font-extrabold uppercase leading-none">Log</h1>
+
+      <ul className="border border-border bg-card">
+        {ROWS.map((r) => (
+          <li key={r.kind} className="flex items-center border-b border-border last:border-b-0">
+            <Link href={r.href} className="flex min-h-[64px] min-w-0 flex-1 items-center gap-2 px-4 py-2">
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="text-[17px] font-semibold">{r.label}</span>
+                <span className="truncate text-sm text-muted-foreground">{r.detail}</span>
+              </span>
+              <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+            </Link>
+            <button
+              type="button"
+              onClick={() => openLog(r.kind)}
+              aria-label={`Log ${r.label.toLowerCase()}`}
+              className="mr-3 h-10 border border-foreground px-4 text-sm font-semibold"
+            >
+              Log
+            </button>
+          </li>
         ))}
-      </div>
+        <li className="flex items-center">
+          <Link href="/dashboard/chat?tab=journal" className="flex min-h-[64px] min-w-0 flex-1 items-center gap-2 px-4 py-2">
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span className="text-[17px] font-semibold">Journal</span>
+              <span className="truncate text-sm text-muted-foreground">Private. Only you can read it.</span>
+            </span>
+            <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+          </Link>
+        </li>
+      </ul>
     </div>
   );
 }

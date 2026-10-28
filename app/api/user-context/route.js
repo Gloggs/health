@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { USER_CONTEXT } from "@/utils/schema";
 import { normaliseMiniExercises } from "@/lib/mini";
+import { normaliseContainers } from "@/lib/usuals";
 import { normalisePersonality } from "@/lib/personality";
 import { withFamily, withFamilyWrite, familyFilter } from "@/lib/auth";
 
@@ -52,6 +53,9 @@ export const PUT = withFamilyWrite(async (req, _ctx, { userId, familyId }) => {
   if ("waterTargetMl" in body) {
     const v = body.waterTargetMl;
     update.waterTargetMl = v == null || Number(v) <= 0 ? null : Math.round(Number(v));
+  }
+  if ("waterContainers" in body) {
+    update.waterContainers = body.waterContainers == null ? null : normaliseContainers(body.waterContainers);
   }
   if ("miniExercises" in body) {
     update.miniExercises = body.miniExercises == null ? null : normaliseMiniExercises(body.miniExercises);
