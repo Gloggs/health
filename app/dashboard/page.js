@@ -72,7 +72,7 @@ const MonthCalendar = dynamic(() => import("./_components/MonthCalendar"), {
 });
 import ExerciseRow from "./_components/ExerciseRow";
 import RestTimer from "./_components/RestTimer";
-import MealsCard from "./_components/MealsCard";
+import TodayLogList from "./_components/TodayLogList";
 import AdHocTraining from "./_components/AdHocTraining";
 import MiniWorkoutsCard from "./_components/MiniWorkoutsCard";
 import CloseTodayCard from "./_components/CloseTodayCard";
@@ -100,14 +100,6 @@ function weekDots(activeDates) {
   return out;
 }
 
-function hoursBetween(bedtime, wakeTime) {
-  if (!bedtime || !wakeTime) return null;
-  const [bh, bm] = bedtime.split(":").map(Number);
-  const [wh, wm] = wakeTime.split(":").map(Number);
-  let mins = wh * 60 + wm - (bh * 60 + bm);
-  if (mins < 0) mins += 24 * 60;
-  return Math.round((mins / 60) * 100) / 100;
-}
 
 // `cache: 'no-store'` is load-bearing - without it the browser can serve
 // stale dashboard responses, which makes optimistic updates appear to revert.
@@ -128,17 +120,6 @@ function upsertByDate(arr, date, patch) {
   return [{ date, ...patch }, ...(arr ?? [])];
 }
 
-// Adjust the daily water aggregate for `date` by `deltaMl` (can be negative).
-function bumpHistoryWater(arr, date, deltaMl) {
-  const idx = (arr ?? []).findIndex((r) => r.date === date);
-  if (idx >= 0) {
-    const next = Number(arr[idx].totalMl || 0) + deltaMl;
-    const copy = arr.slice();
-    copy[idx] = { ...copy[idx], totalMl: Math.max(0, next) };
-    return copy;
-  }
-  return deltaMl > 0 ? [{ date, totalMl: deltaMl }, ...(arr ?? [])] : (arr ?? []);
-}
 
 // Suspense wrapper so useSearchParams (via useViewing) doesn't bail out of
 // Next's static-render contract. The inner component holds all the actual
@@ -420,53 +401,6 @@ function TodayPageInner() {
     }
   };
 
-  const addWater = (ml) => {
-    // Etched feedback (UX-PATTERNS.md §1 + §3): haptic + on-brand toast
-    // with Undo affordance for ~3s. removeLastWater is defined below and
-    // captured by closure - safe because the onClick fires well after
-    // both fns are bound to the component instance.
-    etched({
-      message: `${ml} ml logged`,
-      onUndo: () => removeLastWater(),
-    });
-    return optimisticUpdate(
-      (cur) => ({
-        ...cur,
-        today: {
-          ...cur.today,
-          water: {
-            entries: [
-              { id: `tmp-${Date.now()}`, amountMl: ml, date: today, createdAt: new Date().toISOString() },
-              ...(cur.today.water?.entries ?? []),
-            ],
-            totalMl: (cur.today.water?.totalMl ?? 0) + ml,
-          },
-        },
-        history: { ...cur.history, water: bumpHistoryWater(cur.history.water, today, ml) },
-      }),
-      () => GlobalApi.AddWater({ date: today, amountMl: ml })
-    );
-  };
-
-  const removeLastWater = () => {
-    const last = water?.entries?.[0];
-    if (!last) return;
-    return optimisticUpdate(
-      (cur) => ({
-        ...cur,
-        today: {
-          ...cur.today,
-          water: {
-            entries: cur.today.water.entries.slice(1),
-            totalMl: Math.max(0, cur.today.water.totalMl - last.amountMl),
-          },
-        },
-        history: { ...cur.history, water: bumpHistoryWater(cur.history.water, today, -last.amountMl) },
-      }),
-      () => GlobalApi.DeleteWater(last.id)
-    );
-  };
-
   const saveResistance = (val) =>
     optimisticUpdate(
       (cur) => ({
@@ -551,7 +485,7 @@ function TodayPageInner() {
   };
 
   // Single onSaved/onChanged handler used by every Today subcomponent.
-  // When a child can describe what changed (currently just MealsCard), it
+  // When a child can describe what changed, it
   // passes a small patch object so the SWR cache updates instantly without
   // waiting for the network refetch. Otherwise (Sleep/Cardio/Weight tiles
   // etc.) we just revalidate. A background `mutate()` always fires after
@@ -963,35 +897,21 @@ function TodayPageInner() {
 
       {/* Quick-log tiles - four trackable areas, inline. Mood was replaced
           by the Daily 4 below; full mood logging still lives at Log → Mood. */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {loading ? (
-          [0, 1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-[112px] rounded-2xl" />
-          ))
-        ) : (
-          <>
-            <SleepTile
-              sleep={sleep}
-              lastSleep={allTracked.sleep.find((s) => s.date !== today) ?? null}
-              onSaved={load}
-              today={today}
-            />
-            <WaterTile
-              water={water}
-              addWater={addWater}
-              removeLast={removeLastWater}
-              targetMl={userCtx?.waterTargetMl}
-            />
-            <CardioTile cardio={todayCardio} onSaved={load} today={today} />
-            <WeightTile
-              latest={latestBody}
-              previous={(allTracked.body ?? [])[1] ?? null}
-              onSaved={load}
-              today={today}
-            />
-          </>
-        )}
-      </div>
+      {loading ? (
+        <Skeleton className="h-[420px] w-full" />
+      ) : (
+        <TodayLogList
+          today={today}
+          sleep={sleep}
+          water={water}
+          body={latestBody}
+          cardio={todayCardio}
+          cardioHistory={allTracked.cardio}
+          meals={todayMeals}
+          mood={todayMood}
+          userCtx={userCtx}
+        />
+      )}
 
       {/* Weekly recap (J.6 / UX-PATTERNS "closing the week"). Self-mutes
           unless today is Sunday AND after 18:00 AND user has any activity
@@ -1017,8 +937,6 @@ function TodayPageInner() {
         />
       )}
 
-      {/* Meals - full-width card, 4 slot rows, inline log */}
-      <MealsCard meals={todayMeals} today={today} onChanged={load} />
 
       {/* Daily check-in (resistance) - HTML <details> for native progressive
           disclosure (J.6). Expands by default when resistance is already
@@ -1377,528 +1295,6 @@ function TodayPageInner() {
         onChangeSeconds={setRestSeconds}
       />
     </div>
-  );
-}
-
-// ===== Tile components =====
-
-// Per-tile colour palette - pulls from the same chart vars used in Trends so
-// the dashboard reads as varied without inventing new tokens.
-const TILE_TONES = {
-  sleep: "bg-[hsl(var(--chart-5)/0.14)] text-[hsl(var(--chart-5))]",
-  water: "bg-[hsl(var(--chart-4)/0.14)] text-[hsl(var(--chart-4))]",
-  mood: "bg-[hsl(var(--chart-2)/0.18)] text-[hsl(var(--chart-2))]",
-  cardio: "bg-[hsl(var(--chart-3)/0.14)] text-[hsl(var(--chart-3))]",
-  weight: "bg-primary/10 text-primary",
-};
-
-function TileShell({ icon: Icon, label, value, sub, expanded, onToggle, children, fullHref, tone = "weight" }) {
-  return (
-    <div className="group rounded-xl bg-card p-4 transition-colors hover:bg-card">
-      <div className="flex items-start gap-2.5">
-        <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", TILE_TONES[tone] ?? TILE_TONES.weight)}>
-          <Icon className="h-4 w-4" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-handwritten text-base leading-none text-muted-foreground">{label.toLowerCase()}</p>
-          <p className="mt-1 font-mono text-2xl font-bold leading-none tabular-nums">{value}</p>
-        </div>
-        {onToggle ? (
-          <button
-            onClick={onToggle}
-            className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            aria-label={expanded ? "Collapse" : "Expand"}
-          >
-            {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          </button>
-        ) : null}
-      </div>
-      {/* `sub` can be a string or a node (progress bar / dots etc) so render
-          inside a div, not a p - avoids invalid nested-block markup. */}
-      {sub ? <div className="mt-2 text-[11px] text-muted-foreground">{sub}</div> : null}
-      {children ? <div className="mt-2.5">{children}</div> : null}
-      {fullHref ? (
-        <Link
-          href={fullHref}
-          className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          History <ArrowRight className="h-3 w-3" />
-        </Link>
-      ) : null}
-    </div>
-  );
-}
-
-function SleepTile({ sleep, lastSleep, onSaved, today }) {
-  const [expanded, setExpanded] = useState(!sleep);
-  const [bedtime, setBedtime] = useState(sleep?.bedtime ?? lastSleep?.bedtime ?? "");
-  const [wakeTime, setWakeTime] = useState(sleep?.wakeTime ?? lastSleep?.wakeTime ?? "");
-  const [quality, setQuality] = useState(sleep?.quality ?? 0);
-
-  useEffect(() => {
-    setBedtime(sleep?.bedtime ?? lastSleep?.bedtime ?? "");
-    setWakeTime(sleep?.wakeTime ?? lastSleep?.wakeTime ?? "");
-    setQuality(sleep?.quality ?? 0);
-    setExpanded(!sleep);
-  }, [sleep, lastSleep]);
-
-  const hours = hoursBetween(bedtime, wakeTime);
-
-  const save = async () => {
-    try {
-      await GlobalApi.SaveSleep({
-        date: today,
-        bedtime: bedtime || null,
-        wakeTime: wakeTime || null,
-        hours,
-        quality: quality || null,
-        note: sleep?.note ?? null,
-      });
-      toast.success("Sleep saved");
-      onSaved?.();
-    } catch { toast.error("Failed"); }
-  };
-
-  const subNode = sleep?.quality ? (
-    <div className="flex items-center gap-1.5">
-      <span className="text-muted-foreground">Quality</span>
-      <div className="flex gap-0.5" aria-label={`Quality ${sleep.quality} of 5`}>
-        {[1, 2, 3, 4, 5].map((n) => (
-          <span
-            key={n}
-            className={cn(
-              "h-1.5 w-3 rounded-full",
-              n <= sleep.quality ? "bg-[hsl(var(--chart-5))]" : "bg-muted"
-            )}
-          />
-        ))}
-      </div>
-    </div>
-  ) : (
-    "tap to log last night"
-  );
-
-  return (
-    <TileShell
-      icon={Bed}
-      tone="sleep"
-      label="Sleep"
-      value={sleep?.hours ? formatDuration(sleep.hours) : "-"}
-      sub={subNode}
-      expanded={expanded}
-      onToggle={() => setExpanded((s) => !s)}
-      fullHref="/dashboard/log/sleep"
-    >
-      {expanded && (
-        <div className="space-y-2 border-t pt-2.5">
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              type="time"
-              value={bedtime}
-              onChange={(e) => setBedtime(e.target.value)}
-              className="rounded-md border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-              placeholder="bedtime"
-            />
-            <input
-              type="time"
-              value={wakeTime}
-              onChange={(e) => setWakeTime(e.target.value)}
-              className="rounded-md border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-              placeholder="wake"
-            />
-          </div>
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((n) => (
-              <button
-                key={n}
-                onClick={() => setQuality(n)}
-                className={cn(
-                  "flex-1 rounded-md border py-1 text-[10px] font-semibold tabular-nums transition-colors",
-                  quality === n
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border hover:border-primary"
-                )}
-              >
-                {n}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={save}
-            className="w-full rounded-md bg-primary py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Save{hours ? ` (${formatDuration(hours)})` : ""}
-          </button>
-        </div>
-      )}
-    </TileShell>
-  );
-}
-
-function WaterTile({ water, addWater, removeLast, targetMl }) {
-  const total = water?.totalMl ?? 0;
-  const totalAnim = useCountUp(total);
-  const [custom, setCustom] = useState("");
-  const submitCustom = () => {
-    const ml = Number(custom);
-    if (!ml || ml <= 0) return;
-    addWater(ml);
-    setCustom("");
-  };
-  const goalMl = targetMl && targetMl > 0 ? targetMl : 2500;
-  // Bar scales 0..150% of goal so over-target intake is visible rather than
-  // pinning at "full". Goal sits at 100% (= 2/3 of the bar's width). When
-  // total >= goal the fill turns green to confirm the target was hit.
-  const BAR_CAP_PCT = 150;
-  const rawPct = Math.round((total / goalMl) * 100);
-  const fillPct = Math.min(BAR_CAP_PCT, Math.max(0, rawPct));
-  const fillWidth = (fillPct / BAR_CAP_PCT) * 100;
-  const goalLabel = formatWater(goalMl);
-  const over = total - goalMl;
-  const subNode = (
-    <div className="space-y-1.5">
-      <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted">
-        <div
-          className={cn(
-            "h-full rounded-full transition-all duration-500",
-            total >= goalMl ? "bg-success" : "bg-[hsl(var(--chart-4))]"
-          )}
-          style={{ width: fillWidth + "%" }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-y-0 w-0.5 bg-foreground/70"
-          style={{ left: `calc(${100 / 1.5}% - 1px)` }}
-        />
-      </div>
-      <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-        <span>
-          {rawPct}% of {goalLabel}
-          {over > 0 ? <span className="ml-1 font-medium text-success">+{formatMl(over)}</span> : null}
-        </span>
-        <span>tap to add</span>
-      </div>
-    </div>
-  );
-  return (
-    <TileShell
-      icon={Droplet}
-      tone="water"
-      label="Water"
-      value={
-        <>
-          {Math.round(totalAnim)} <span className="text-xs font-medium text-muted-foreground">ml</span>
-        </>
-      }
-      sub={subNode}
-      fullHref="/dashboard/log/water"
-    >
-      <div className="grid grid-cols-2 gap-1.5">
-        <button
-          onClick={() => addWater(250)}
-          className="rounded-lg border px-2 py-1 text-xs font-semibold transition-colors hover:border-primary"
-        >
-          +250
-        </button>
-        <button
-          onClick={() => addWater(500)}
-          className="rounded-lg border px-2 py-1 text-xs font-semibold transition-colors hover:border-primary"
-        >
-          +500
-        </button>
-      </div>
-      <form
-        onSubmit={(e) => { e.preventDefault(); submitCustom(); }}
-        className="mt-1.5 flex gap-1.5"
-      >
-        <input
-          type="number"
-          value={custom}
-          onChange={(e) => setCustom(e.target.value)}
-          placeholder="ml"
-          min={1}
-          aria-label="Custom water amount in millilitres"
-          className="min-w-0 flex-1 rounded-lg border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-        />
-        <button
-          type="submit"
-          disabled={!custom || Number(custom) <= 0}
-          className="rounded-lg border px-2.5 py-1 text-xs font-semibold transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Add
-        </button>
-      </form>
-      {water?.entries?.length ? (
-        <button
-          onClick={removeLast}
-          className="mt-1.5 w-full rounded-lg border border-dashed border-border/60 px-2 py-1 text-[10px] font-medium text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
-        >
-          Undo last ({formatMl(water.entries[0].amountMl)})
-        </button>
-      ) : null}
-    </TileShell>
-  );
-}
-
-function CardioTile({ cardio, onSaved, today }) {
-  const [expanded, setExpanded] = useState(false);
-  const [type, setType] = useState("Walk");
-  const [duration, setDuration] = useState("30");
-  const entries = cardio ?? [];
-  const totalMins = entries.reduce((s, r) => s + (r.durationMinutes ?? 0), 0);
-  const totalAnim = useCountUp(totalMins);
-
-  // Most-recent entry is the easiest to undo. Backend stores createdAt desc
-  // already so entries[0] is the latest.
-  const lastEntry = entries[0] ?? null;
-
-  const remove = async (id) => {
-    try {
-      await GlobalApi.DeleteCardio(id);
-      onSaved?.();
-    } catch { toast.error("Failed"); }
-  };
-  const undoLast = () => {
-    if (!lastEntry) return;
-    return remove(lastEntry.id);
-  };
-
-  const quickLog = async (mins) => {
-    try {
-      const res = await GlobalApi.AddCardio({
-        date: today,
-        type: "Walk",
-        durationMinutes: mins,
-        distanceKm: null,
-        steps: null,
-        note: null,
-      });
-      // Etched feedback (UX-PATTERNS.md §1 + §3). Undo deletes the row
-      // we just created using the id from the API response.
-      const newId = res?.data?.id ?? null;
-      etched({
-        message: `${mins} min walk logged`,
-        onUndo: newId ? () => remove(newId) : undefined,
-      });
-      onSaved?.();
-    } catch { toast.error("Failed"); }
-  };
-
-  const saveCustom = async () => {
-    const mins = Number(duration);
-    if (!mins || mins <= 0) return;
-    try {
-      const res = await GlobalApi.AddCardio({
-        date: today,
-        type,
-        durationMinutes: mins,
-        distanceKm: null,
-        steps: null,
-        note: null,
-      });
-      const newId = res?.data?.id ?? null;
-      etched({
-        message: `${mins} min ${type.toLowerCase()} logged`,
-        onUndo: newId ? () => remove(newId) : undefined,
-      });
-      onSaved?.();
-      setExpanded(false);
-    } catch { toast.error("Failed"); }
-  };
-
-  return (
-    <TileShell
-      icon={Footprints}
-      tone="cardio"
-      label="Cardio"
-      value={
-        <>
-          {Math.round(totalAnim)} <span className="text-xs font-medium text-muted-foreground">min</span>
-        </>
-      }
-      sub={cardio?.length ? `${cardio.length} entr${cardio.length === 1 ? "y" : "ies"} today` : "tap to log a walk"}
-      expanded={expanded}
-      onToggle={() => setExpanded((s) => !s)}
-      fullHref="/dashboard/log/cardio"
-    >
-      <div className="grid grid-cols-2 gap-1.5">
-        <button
-          onClick={() => quickLog(15)}
-          className="rounded-lg border px-2 py-1 text-xs font-semibold transition-colors hover:border-primary"
-        >
-          15 min walk
-        </button>
-        <button
-          onClick={() => quickLog(30)}
-          className="rounded-lg border px-2 py-1 text-xs font-semibold transition-colors hover:border-primary"
-        >
-          30 min walk
-        </button>
-      </div>
-      {lastEntry ? (
-        <button
-          onClick={undoLast}
-          className="mt-1.5 w-full rounded-lg border border-dashed border-border/60 px-2 py-1 text-[10px] font-medium text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
-        >
-          Undo last ({lastEntry.durationMinutes ?? 0} min {lastEntry.type ?? "cardio"})
-        </button>
-      ) : null}
-      {expanded && (
-        <div className="mt-2 space-y-2 border-t pt-2.5">
-          {entries.length > 0 ? (
-            <ul className="space-y-1">
-              {entries.map((e) => (
-                <li
-                  key={e.id}
-                  className="flex items-center justify-between gap-2 rounded-md border bg-background px-2 py-1 text-[11px]"
-                >
-                  <span className="truncate">
-                    <span className="font-medium">{e.type ?? "Cardio"}</span>
-                    <span className="text-muted-foreground"> · {e.durationMinutes ?? 0} min</span>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => remove(e.id)}
-                    aria-label="Remove entry"
-                    className="text-muted-foreground transition-colors hover:text-destructive"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full rounded-md border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-          >
-            {["Walk", "Run", "Cycle", "Swim", "Hike", "Other"].map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
-          <input
-            type="number"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            min={1}
-            className="w-full rounded-md border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-            placeholder="minutes"
-          />
-          <button
-            onClick={saveCustom}
-            className="w-full rounded-md bg-primary py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Save
-          </button>
-        </div>
-      )}
-    </TileShell>
-  );
-}
-
-function WeightTile({ latest, previous, onSaved, today }) {
-  const [expanded, setExpanded] = useState(false);
-  const [weight, setWeight] = useState("");
-
-  const save = async () => {
-    const w = Number(weight);
-    if (!w || w <= 0) return;
-    try {
-      await GlobalApi.SaveBody({ date: today, weightKg: w });
-      toast.success("Weight saved");
-      setWeight("");
-      setExpanded(false);
-      onSaved?.();
-    } catch { toast.error("Failed"); }
-  };
-
-  const daysAgo = useMemo(() => {
-    if (!latest?.date) return null;
-    const a = new Date(latest.date + "T00:00:00");
-    const b = new Date(today + "T00:00:00");
-    return Math.max(0, Math.floor((b - a) / 86400000));
-  }, [latest?.date, today]);
-  const isStale = daysAgo !== null && daysAgo > 14;
-
-  // Delta vs previous entry - direction-agnostic; we don't know if user is
-  // cutting or bulking, so just surface the change with a neutral arrow.
-  const delta = useMemo(() => {
-    if (latest?.weightKg == null || previous?.weightKg == null) return null;
-    const d = Number(latest.weightKg) - Number(previous.weightKg);
-    if (Math.abs(d) < 0.05) return null;
-    return d;
-  }, [latest, previous]);
-
-  let subNode;
-  if (!latest?.date) {
-    subNode = "tap to log today";
-  } else if (isStale) {
-    subNode = (
-      <span className="inline-flex items-center gap-1 text-warning">
-        <AlertTriangle className="h-3 w-3" />
-        last {daysAgo} days ago - log a new one?
-      </span>
-    );
-  } else if (delta != null) {
-    subNode = (
-      <span className="inline-flex items-center gap-1.5">
-        <span
-          className={cn(
-            "inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0 text-[10px] font-semibold tabular-nums",
-            delta > 0 ? "border-warning/40 text-warning" : "border-success/40 text-success"
-          )}
-        >
-          {formatWeightDelta(delta)}
-        </span>
-        <span className="text-muted-foreground">
-          since {previous.date}
-        </span>
-      </span>
-    );
-  } else if (daysAgo === 0) {
-    subNode = "logged today";
-  } else {
-    subNode = `last: ${latest.date}`;
-  }
-
-  return (
-    <TileShell
-      icon={Scale}
-      label="Weight"
-      value={
-        latest?.weightKg ? (
-          <>
-            <span className="font-mono">{latest.weightKg}</span> <span className="text-xs font-medium text-muted-foreground">kg</span>
-          </>
-        ) : (
-          "-"
-        )
-      }
-      sub={subNode}
-      expanded={expanded}
-      onToggle={() => setExpanded((s) => !s)}
-      fullHref="/dashboard/log/body"
-    >
-      {expanded && (
-        <div className="space-y-2 border-t pt-2.5">
-          <input
-            type="number"
-            step="0.1"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            placeholder={latest?.weightKg ? `last ${latest.weightKg} kg` : "kg"}
-            className="w-full rounded-md border bg-background px-2 py-1 text-xs outline-none focus:border-primary"
-          />
-          <button
-            onClick={save}
-            className="w-full rounded-md bg-primary py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Save
-          </button>
-        </div>
-      )}
-    </TileShell>
   );
 }
 

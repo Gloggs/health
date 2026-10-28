@@ -52,8 +52,16 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem(TAB_STORAGE_KEY);
-    if (saved === "family" || saved === "journal") setTab(saved);
+    // ?tab=journal (from the Log list) wins over the remembered tab.
+    const asked = new URLSearchParams(window.location.search).get("tab");
+    let saved = null;
+    try {
+      saved = window.localStorage.getItem(TAB_STORAGE_KEY);
+    } catch {
+      // Storage can be blocked; fall back to the default tab.
+    }
+    const pick = asked ?? saved;
+    if (pick === "family" || pick === "journal") setTab(pick);
   }, []);
 
   const switchTab = (next) => {

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import DemoShell from "./_components/DemoShell";
 import MockProvider from "./_mock/MockProvider";
+import { LogProvider } from "@/components/log/LogProvider";
 
 export const metadata = {
   title: "Live demo",
@@ -14,7 +15,9 @@ export default function DemoLayout({ children }) {
   return (
     <DemoShell>
       <Suspense fallback={null}>
-        <MockProvider>{children}</MockProvider>
+        <MockProvider>
+          <LogProvider>{children}</LogProvider>
+        </MockProvider>
       </Suspense>
     </DemoShell>
   );

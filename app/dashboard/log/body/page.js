@@ -11,6 +11,7 @@ import { todayDateStr, daysAgoStr, prettyDate } from "@/lib/dates";
 import { formatWeight } from "@/lib/format";
 import GlobalApi from "@/app/_services/GlobalApi";
 import PageHeader from "../../_components/PageHeader";
+import { useLog } from "@/components/log/LogProvider";
 import EmptyState from "../../_components/states/EmptyState";
 
 function safeDateParam(raw, today) {
@@ -41,6 +42,7 @@ export default function BodyPage() {
 }
 
 function BodyPageInner() {
+  const { openLog } = useLog();
   const today = todayDateStr();
   const searchParams = useSearchParams();
   const [date, setDate] = useState(() => safeDateParam(searchParams.get("date"), today));
@@ -136,12 +138,16 @@ function BodyPageInner() {
 
   return (
     <div className="space-y-6 p-4 md:p-6">
-      <PageHeader
-        fallback="/dashboard/log"
-        icon={Scale}
-        title="Body"
-        subtitle="Weight weekly, measurements monthly."
-      />
+      <PageHeader fallback="/dashboard/log" title="Weight and body" />
+
+      <button
+        type="button"
+        onClick={() => openLog("weight", { onSaved: load })}
+        className="h-14 w-full bg-foreground text-lg font-bold text-background"
+      >
+        Log weight
+      </button>
+      <h2 className="font-display text-xl font-bold uppercase">Measurements</h2>
 
       <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <div className="mb-4 flex items-center justify-between gap-3">

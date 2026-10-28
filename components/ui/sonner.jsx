@@ -1,29 +1,33 @@
 "use client";
-import { useTheme } from "next-themes"
-import { Toaster as Sonner } from "sonner"
+import { useTheme } from "next-themes";
+import { Toaster as Sonner } from "sonner";
 
-const Toaster = ({
-  ...props
-}) => {
-  const { theme = "system" } = useTheme()
+// One quiet line at the bottom of the screen: ink bar, chalk text, and an
+// Undo action in sky. Square, flat and readable in both themes.
+const Toaster = ({ ...props }) => {
+  const { theme = "system" } = useTheme();
 
   return (
-    (<Sonner
+    <Sonner
       theme={theme}
       className="toaster group"
+      offset={88}
       toastOptions={{
+        unstyled: true,
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
+            "flex w-full min-h-[52px] items-center justify-between gap-3 bg-[#142B38] py-2 pl-4 pr-1 font-sans text-[15px] text-[#F1F1EF] dark:bg-[#F1F1EF] dark:text-[#142B38]",
+          title: "font-medium",
+          description: "text-sm opacity-80",
           actionButton:
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "h-11 shrink-0 px-3 font-bold text-[#70B2CE] dark:text-[#2F6B8A]",
+          cancelButton: "h-11 shrink-0 px-3 font-semibold opacity-80",
+          error: "bg-[#B42318] text-white dark:bg-[#F07A6A] dark:text-[#142B38]",
         },
       }}
-      {...props} />)
+      {...props}
+    />
   );
-}
+};
 
-export { Toaster }
+export { Toaster };

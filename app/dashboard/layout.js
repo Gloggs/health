@@ -3,6 +3,7 @@ import Sidebar from "./_components/Sidebar";
 import TopBar from "./_components/TopBar";
 import BottomNav from "./_components/BottomNav";
 import ViewingBanner from "./_components/ViewingBanner";
+import { LogProvider } from "@/components/log/LogProvider";
 
 // `h-[100dvh]` instead of h-screen so mobile browsers don't include the
 // dynamic URL bar / chrome in the viewport - that's the cause of the
@@ -21,6 +22,7 @@ import ViewingBanner from "./_components/ViewingBanner";
 // `pb-24` (vs old pb-20) gives the bottom nav + safe-area inset enough room.
 export default function DashboardLayout({ children }) {
   return (
+    <LogProvider>
     <div className="flex h-[100dvh] w-full overflow-hidden bg-background">
       {/* Skip-to-content for keyboard / screen-reader users. Hidden visually
           until focused, then pops to top-left. WCAG 2.4.1. */}
@@ -48,5 +50,6 @@ export default function DashboardLayout({ children }) {
       </div>
       <BottomNav />
     </div>
+    </LogProvider>
   );
 }
