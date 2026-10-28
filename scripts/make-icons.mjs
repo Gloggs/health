@@ -1,28 +1,26 @@
-// Rasterises the brand tally mark (app/icon.svg geometry) into the PNG
-// icons the PWA layer needs:
+// Rasterises the Health mark (app/icon.svg geometry) into the PNG icons
+// the installable app needs:
 //   app/apple-icon.png   180x180  (Next serves it as apple-touch-icon)
-//   public/icon-512.png  512x512  (manifest icon, purpose "any maskable")
+//   public/icon-512.png  512x512  (manifest icon, "any" and "maskable")
 //
-// Pure Node - no deps. Geometry is drawn full-bleed (no rounded corners)
-// because iOS and Android maskable icons apply their own masks.
+// The mark is a flame square with an ink pulse line. It is drawn full-bleed
+// because iOS and Android apply their own masks, and the line sits inside
+// the central safe zone that maskable icons keep.
 //
-//   node scripts/make-icons.mjs
+// Pure Node, no packages:  node scripts/make-icons.mjs
 import { deflateSync } from "node:zlib";
 import { writeFileSync } from "node:fs";
 
-// ── icon.svg geometry, in its 512-unit space ──
-const PAPER = [0xf8, 0xf5, 0xef]; // BRAND.md paper
-const INK = [0x1a, 0x14, 0x10]; // BRAND.md ink
-const OXBLOOD = [0xa4, 0x27, 0x1e]; // BRAND.md accent
-const STROKES = [
-  // 4 vertical ink strokes, width 32
-  { x1: 128, y1: 128, x2: 128, y2: 384, w: 32, c: INK },
-  { x1: 200, y1: 128, x2: 200, y2: 384, w: 32, c: INK },
-  { x1: 272, y1: 128, x2: 272, y2: 384, w: 32, c: INK },
-  { x1: 344, y1: 128, x2: 344, y2: 384, w: 32, c: INK },
-  // 5th diagonal slash, width 40, drawn on top
-  { x1: 96, y1: 384, x2: 376, y2: 128, w: 40, c: OXBLOOD },
-];
+const FLAME = [0xeb, 0x6e, 0x3a];
+const INK = [0x14, 0x2b, 0x38];
+
+// The pulse line from app/icon.svg (a 22-unit square), scaled to 512.
+const K = 512 / 22;
+const POINTS = [[4, 13], [8, 13], [10, 7], [13, 17], [15, 13], [18, 13]];
+const STROKES = POINTS.slice(1).map(([x2, y2], i) => {
+  const [x1, y1] = POINTS[i];
+  return { x1: x1 * K, y1: y1 * K, x2: x2 * K, y2: y2 * K, w: 2 * K, c: INK };
+});
 
 function distToSegment(px, py, { x1, y1, x2, y2 }) {
   const dx = x2 - x1;
@@ -41,7 +39,7 @@ function raster(size) {
       // Pixel centre in 512-space.
       const ux = (x + 0.5) / s;
       const uy = (y + 0.5) / s;
-      let [r, g, b] = PAPER;
+      let [r, g, b] = FLAME;
       for (const st of STROKES) {
         const d = distToSegment(ux, uy, st);
         // Round caps fall out of segment distance. 1px anti-alias edge

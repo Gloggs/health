@@ -74,7 +74,7 @@ export default function MealsCard({ meals, today, onChanged, label }) {
   };
 
   return (
-    <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -222,7 +222,7 @@ function SlotRow({ slot, meals, today, onChanged }) {
         "rounded-xl p-3 transition-colors",
         isEmpty
           ? "border border-dashed border-border/60 bg-transparent hover:border-primary/40"
-          : "border border-border bg-card/60"
+          : "border border-border bg-card"
       )}
     >
       <div className="flex items-start gap-3">
@@ -260,7 +260,7 @@ function SlotRow({ slot, meals, today, onChanged }) {
               onClick={() => setExpanded(true)}
               className="mt-0.5 text-xs text-muted-foreground transition-colors hover:text-primary"
             >
-              tap to etch
+              tap to log
             </button>
           ) : null}
 
@@ -411,7 +411,7 @@ function SlotRow({ slot, meals, today, onChanged }) {
                   disabled={saving}
                   className="rounded-md bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
-                  {saving ? "Etching…" : "Etch it"}
+                  {saving ? "Saving…" : "Save"}
                 </button>
               </div>
             </form>

@@ -211,7 +211,7 @@ export default function ExerciseRow({
   return (
     <li
       className={cn(
-        "rounded-xl border bg-card/60 p-3 transition-opacity",
+        "rounded-xl border bg-card p-3 transition-opacity",
         skipped && "opacity-50",
         allTargetDone && !skipped && "border-success/40"
       )}

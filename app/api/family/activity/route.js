@@ -178,8 +178,8 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       ts: r.createdAt,
       summary:
         r.hours != null
-          ? `etched sleep · ${Number(r.hours)}h${r.quality ? ` · ${r.quality}/5` : ""}`
-          : `etched sleep`,
+          ? `logged sleep · ${Number(r.hours)}h${r.quality ? ` · ${r.quality}/5` : ""}`
+          : `logged sleep`,
     });
   }
   for (const r of moodRows) {
@@ -194,7 +194,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.createdAt,
-      summary: `etched ${parts.join(" · ")}`,
+      summary: `logged ${parts.join(" · ")}`,
     });
   }
   for (const r of cardioRows) {
@@ -212,7 +212,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.createdAt,
-      summary: body ? `etched ${body}` : null,
+      summary: body ? `logged ${body}` : null,
     });
   }
   for (const r of bodyRows) {
@@ -223,7 +223,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.createdAt,
-      summary: `etched a weigh-in · ${Number(r.weightKg).toFixed(1)}kg`,
+      summary: `logged a weigh-in · ${Number(r.weightKg).toFixed(1)}kg`,
     });
   }
   for (const r of mealRows) {
@@ -237,7 +237,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.createdAt,
-      summary: `etched ${slot}${qualityNote}`,
+      summary: `logged ${slot}${qualityNote}`,
     });
   }
   for (const r of miniRows) {
@@ -250,7 +250,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.updatedAt,
-      summary: `etched Daily 4 · ${r.count} reps`,
+      summary: `logged Daily 4 · ${r.count} reps`,
     });
   }
   for (const r of sessionRows) {
@@ -262,7 +262,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
       userName: nameById.get(r.userId),
       date: r.date,
       ts: r.createdAt,
-      summary: `etched ${r.planDayLabel || "a session"}`,
+      summary: `logged ${r.planDayLabel || "a session"}`,
     });
   }
 

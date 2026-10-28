@@ -28,7 +28,7 @@ export default function LoadingState({ shape = "card", count = 1, className = ""
         {items.map((_, i) => (
           <div
             key={i}
-            className="rounded-xl bg-card/50 p-4"
+            className="rounded-xl bg-card p-4"
             aria-hidden="true"
           >
             <Skeleton className="h-9 w-9 rounded-xl" />
@@ -46,7 +46,7 @@ export default function LoadingState({ shape = "card", count = 1, className = ""
         {items.map((_, i) => (
           <li
             key={i}
-            className="flex items-center gap-3 rounded-xl bg-card/40 p-3"
+            className="flex items-center gap-3 rounded-xl bg-card p-3"
             aria-hidden="true"
           >
             <Skeleton className="h-9 w-9 shrink-0 rounded-full" />
@@ -74,7 +74,7 @@ export default function LoadingState({ shape = "card", count = 1, className = ""
     return (
       <div
         className={cn(
-          "rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture sm:p-6",
+          "rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6",
           className
         )}
         aria-hidden="true"
@@ -97,7 +97,7 @@ export default function LoadingState({ shape = "card", count = 1, className = ""
       {items.map((_, i) => (
         <div
           key={i}
-          className="rounded-2xl bg-card/70 p-5 shadow-paper-1"
+          className="rounded-2xl bg-card p-5 shadow-paper-1"
           aria-hidden="true"
         >
           <div className="flex items-start gap-3">

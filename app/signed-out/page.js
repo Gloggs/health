@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Etch-branded sign-out confirmation page. Reached after Kinde logout.
 // Visual language matches the rest of the app: paper background, ink
@@ -23,17 +23,17 @@ export default function SignedOutPage() {
       <div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-paper-2">
         <div className="flex flex-col items-center text-center">
           <div className="flex h-12 w-12 items-center justify-center">
-            <EtchMark size={48} />
+            <HealthMark size={48} />
           </div>
           <p className="mt-3 font-serif text-sm font-semibold tracking-tight">
-            Etch
+            Health
           </p>
           <h1 className="mt-4 font-serif text-2xl font-bold tracking-tight">
             Signed out.
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Today's marks will be waiting when you come back. Nothing's
-            lost — Etch only writes when you tap.
+            lost, Health only saves when you tap.
           </p>
 
           <Button asChild className="mt-6 w-full" size="lg">

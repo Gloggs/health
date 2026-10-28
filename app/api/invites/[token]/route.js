@@ -65,7 +65,7 @@ export async function GET(_req, { params }) {
   return NextResponse.json({
     status: "pending",
     email: invite.email,
-    familyName: family?.name ?? "Etch",
+    familyName: family?.name ?? "Health",
     inviterName: inviter?.displayName ?? "your family",
     expiresAt: invite.expiresAt,
     role: invite.role,

@@ -93,7 +93,7 @@ const MEMBER_PROFILES = [
     sessionDays: [1, 4],
     miniScale: 0.9,
     mealQuality: [3, 3, 3],
-    missAt: null, // the streak queen — unbroken across the whole window
+    missAt: null, // the streak queen, unbroken across the whole window
     visibility: null,
   },
   {
@@ -172,7 +172,7 @@ function generateMember(profile) {
   const data = {
     sleep: [],
     mood: [],
-    waterDaily: [], // [{date, totalMl}] — range GET aggregates by day
+    waterDaily: [], // [{date, totalMl}], range GET aggregates by day
     cardio: [],
     body: [],
     meals: [],
@@ -486,7 +486,7 @@ function seed(mode) {
     id: 1,
     userId: DEMO_USER_ID,
     goals: "Show up daily. 76 kg by September.",
-    restrictions: "Left knee — no deep lunges.",
+    restrictions: "Left knee, no deep lunges.",
     preferences: "Mornings. Short sessions over long ones.",
     chatRetentionDays: null,
     waterTargetMl: 2500,
@@ -499,7 +499,7 @@ function seed(mode) {
   const journal = [
     { date: daysAgo(6), time: "21:42", content: "Skipped the snack drawer after dinner. Small thing, felt big." },
     { date: daysAgo(4), time: "07:55", content: "Walked before work instead of after. Better. Keep that." },
-    { date: daysAgo(3), time: "22:01", content: "Bench felt heavy today. Slept 6h the night before — related, probably." },
+    { date: daysAgo(3), time: "22:01", content: "Bench felt heavy today. Slept 6h the night before, related, probably." },
     { date: daysAgo(1), time: "21:30", content: "Three healthy meals, no junk. First clean day this week." },
   ].map((j) => ({
     id: nextId(),
@@ -559,7 +559,7 @@ function seed(mode) {
     today,
     me: {
       id: DEMO_USER_ID,
-      email: "you@demo.etch",
+      email: "you@example.com",
       displayName: "You",
       dateOfBirth: "1996-05-01",
       age: 30,
@@ -860,42 +860,42 @@ function buildActivity() {
       for (const r of inRange(h.sleep, since, null))
         items.push({
           kind: "sleep", userId: p.id, userName: p.name, date: r.date, ts: r.createdAt,
-          summary: `etched sleep · ${Number(r.hours)}h${r.quality ? ` · ${r.quality}/5` : ""}`,
+          summary: `logged sleep · ${Number(r.hours)}h${r.quality ? ` · ${r.quality}/5` : ""}`,
         });
     if (visible("cardio"))
       for (const r of inRange(h.cardio, since, null)) {
         const type = (r.type || "cardio").toLowerCase();
         items.push({
           kind: "cardio", userId: p.id, userName: p.name, date: r.date, ts: r.createdAt,
-          summary: `etched ${r.durationMinutes} min ${type}${r.distanceKm ? ` · ${Number(r.distanceKm)}km` : ""}`,
+          summary: `logged ${r.durationMinutes} min ${type}${r.distanceKm ? ` · ${Number(r.distanceKm)}km` : ""}`,
         });
       }
     if (visible("body"))
       for (const r of inRange(h.body, since, null))
         items.push({
           kind: "body", userId: p.id, userName: p.name, date: r.date, ts: r.createdAt,
-          summary: `etched a weigh-in · ${Number(r.weightKg).toFixed(1)}kg`,
+          summary: `logged a weigh-in · ${Number(r.weightKg).toFixed(1)}kg`,
         });
     if (visible("meals"))
       for (const r of inRange(h.meals, since, null)) {
         const q = r.quality === 1 ? " · junk" : r.quality === 3 ? " · healthy" : "";
         items.push({
           kind: "meals", userId: p.id, userName: p.name, date: r.date, ts: r.createdAt,
-          summary: `etched ${r.slot}${q}`,
+          summary: `logged ${r.slot}${q}`,
         });
       }
     for (const r of inRange(h.mini, since, null))
       if (Number(r.count) > 0)
         items.push({
           kind: "mini", userId: p.id, userName: p.name, date: r.date, ts: r.updatedAt,
-          summary: `etched Daily 4 · ${r.count} reps`,
+          summary: `logged Daily 4 · ${r.count} reps`,
         });
     if (visible("workouts"))
       for (const r of inRange(h.sessions, since, null))
         if (r.completed)
           items.push({
             kind: "session", userId: p.id, userName: p.name, date: r.date, ts: r.createdAt,
-            summary: `etched ${r.planDayLabel || "a session"}`,
+            summary: `logged ${r.planDayLabel || "a session"}`,
           });
   }
   items.sort((a, b) => {
@@ -910,7 +910,7 @@ function buildActivity() {
 // The page polls every 1.5s, so the whole exchange feels live.
 const REPLIES = [
   "Look at you. Six of seven.",
-  "Etched. That's the whole job.",
+  "Logged. That's the whole job.",
   "Saw that. Keep going.",
 ];
 let replyIdx = 0;
@@ -1401,7 +1401,7 @@ function routeApi(method, rawUrl, body) {
         createdAt: new Date().toISOString(),
         expiresAt: iso(daysAgo(-14), "12:00"),
         token,
-        link: `https://demo.etch/join/${token}`,
+        link: `https://health.guilduk.com/join/${token}`,
       };
       store.invites.unshift(invite);
       return { status: 200, data: { invite, emailDelivered: false } };
@@ -1442,7 +1442,7 @@ function routeApi(method, rawUrl, body) {
   if (path === "/api/export") {
     return {
       status: 200,
-      data: { note: "Demo export — sign up for the real thing.", today: t, journal: store.journal },
+      data: { note: "Demo export, sign up for the real thing.", today: t, journal: store.journal },
     };
   }
 

@@ -1,8 +1,8 @@
 import LegalPage from "../_components/LegalPage";
 
 export const metadata = {
-  title: "Privacy · Etch",
-  description: "What Etch collects, why, and the choices you have.",
+  title: "Privacy",
+  description: "What Health collects, why, and the choices you have.",
 };
 
 const SECTIONS = [
@@ -10,7 +10,7 @@ const SECTIONS = [
     heading: "What we collect",
     body: [
       "Account details: your name and email address, handled through our authentication provider, Kinde.",
-      "What you log: the health information you choose to enter — workouts, sleep, water, mood, meals, body measurements and journal notes.",
+      "What you log: the health information you choose to enter, workouts, sleep, water, mood, meals, body measurements and journal notes.",
       "Basic technical logs (such as error and access records) needed to keep the service running and secure.",
     ],
   },
@@ -29,7 +29,7 @@ const SECTIONS = [
     ],
   },
   {
-    heading: "Who helps us run Etch",
+    heading: "Who helps us run Health",
     body: [
       "We use trusted providers to operate the service: Kinde (sign-in), Neon (database), Vercel (hosting) and Resend (email). They process data on our behalf, under their own terms.",
     ],
@@ -49,7 +49,7 @@ const SECTIONS = [
   {
     heading: "Children",
     body: [
-      "Etch is made for families. A parent or guardian is responsible for any information they choose to add about a child.",
+      "Health is made for families. A parent or guardian is responsible for any information they choose to add about a child.",
     ],
   },
   {
@@ -61,7 +61,7 @@ const SECTIONS = [
   {
     heading: "Changes and contact",
     body: [
-      "We will update this notice as Etch grows beyond the beta. Questions? Email michael@guilduk.com.",
+      "We will update this notice as Health grows beyond the beta. Questions? Email michael@guilduk.com.",
     ],
   },
 ];
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
     <LegalPage
       title="Privacy"
       updated="2 June 2026"
-      intro="Etch is a health app for families, currently in a private beta. This notice explains what we collect, why, and the choices you have. It covers the beta and may evolve before public launch."
+      intro="Health is a health app for families, currently in a private beta. This notice explains what we collect, why, and the choices you have. It covers the beta and may evolve before public launch."
       sections={SECTIONS}
     />
   );

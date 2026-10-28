@@ -13,8 +13,7 @@ export default {
       screens: { "2xl": "1280px" },
     },
     screens: {
-      // Extra-small breakpoint for narrow phones (≥380px). Above this we
-      // can fit text labels on the 6-tab BottomNav; below, icon-only.
+      // Extra-small breakpoint for narrow phones (380px and up).
       xs: "380px",
       sm: "640px",
       md: "768px",
@@ -22,19 +21,23 @@ export default {
       xl: "1280px",
       "2xl": "1536px",
     },
+    // Sharp corners and flat surfaces everywhere (docs/DESIGN.md).
+    borderRadius: {
+      none: "0", sm: "0", DEFAULT: "0", md: "0", lg: "0", xl: "0", "2xl": "0", "3xl": "0", full: "0",
+    },
+    boxShadow: {
+      sm: "none", DEFAULT: "none", md: "none", lg: "none", xl: "none", "2xl": "none", inner: "none", none: "none",
+    },
     extend: {
+      // Barlow for text, Barlow Condensed for numbers and headings
+      // (docs/DESIGN.md). The serif and mono names are kept as aliases so
+      // older markup picks up the new faces until each screen is rebuilt.
       fontFamily: {
-        // Body / UI - default for all running text
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        // Display / headlines per BRAND.md §3 - use for hero/H1/H2
-        serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
-        // Data / numbers per BRAND.md §3 - use for streak, weights, dates
-        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
-        // Handwritten accent per BRAND.md §3 - SPARINGLY for journal-note
-        // moments: today's date caption, streak subtitle, margin scribbles.
-        // Overuse cheapens the effect; rule of thumb is one or two glyphs
-        // per surface, never paragraphs.
-        handwritten: ["var(--font-handwritten)", "Caveat", "Comic Sans MS", "cursive"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        handwritten: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       // Fluid type scale (clamp-based) — added in J.4. Avoids the jarring
       // jump from mobile→desktop sizes by interpolating against viewport
@@ -100,6 +103,9 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        flame: "hsl(var(--flame))",
+        harbour: "hsl(var(--harbour))",
+        "brand-sky": "hsl(var(--sky))",
         chart: {
           1: "hsl(var(--chart-1))",
           2: "hsl(var(--chart-2))",
@@ -107,11 +113,6 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "fade-in": {

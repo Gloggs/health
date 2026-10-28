@@ -1,21 +1,21 @@
 import LegalPage from "../_components/LegalPage";
 
 export const metadata = {
-  title: "Terms · Etch",
-  description: "The terms that cover your use of Etch during the private beta.",
+  title: "Terms",
+  description: "The terms that cover your use of Health during the private beta.",
 };
 
 const SECTIONS = [
   {
     heading: "The service",
     body: [
-      "Etch is a family health-tracking app, offered in a private beta and provided on an “as is” basis. Features may change as we develop it.",
+      "Health is a family health-tracking app, offered in a private beta and provided on an “as is” basis. Features may change as we develop it.",
     ],
   },
   {
     heading: "Not medical advice",
     body: [
-      "Etch helps you record and reflect on your habits. It is not a medical device and does not provide medical advice. Please talk to a qualified professional for health decisions.",
+      "Health helps you record and reflect on your habits. It is not a medical device and does not provide medical advice. Please talk to a qualified professional for health decisions.",
     ],
   },
   {
@@ -27,7 +27,7 @@ const SECTIONS = [
   {
     heading: "Acceptable use",
     body: [
-      "Please don't misuse Etch: no attempts to break security, disrupt the service, or upload unlawful or harmful content.",
+      "Please don't misuse Health: no attempts to break security, disrupt the service, or upload unlawful or harmful content.",
     ],
   },
   {
@@ -39,25 +39,25 @@ const SECTIONS = [
   {
     heading: "Beta expectations",
     body: [
-      "This is an early beta. Expect the occasional bug or downtime, and please keep your own copy of anything important — we can't guarantee against data loss during the beta.",
+      "This is an early beta. Expect the occasional bug or downtime, and please keep your own copy of anything important, we can't guarantee against data loss during the beta.",
     ],
   },
   {
     heading: "Liability",
     body: [
-      "To the fullest extent the law allows, Etch is not liable for indirect or consequential losses arising from your use of the service.",
+      "To the fullest extent the law allows, Health is not liable for indirect or consequential losses arising from your use of the service.",
     ],
   },
   {
     heading: "Ending your use",
     body: [
-      "You can stop using Etch whenever you like. We may suspend or end access for accounts that misuse the service.",
+      "You can stop using Health whenever you like. We may suspend or end access for accounts that misuse the service.",
     ],
   },
   {
     heading: "Changes and governing law",
     body: [
-      "We may update these terms as Etch develops. These terms are governed by the laws of England and Wales.",
+      "We may update these terms as Health develops. These terms are governed by the laws of England and Wales.",
     ],
   },
   {
@@ -71,7 +71,7 @@ export default function TermsPage() {
     <LegalPage
       title="Terms"
       updated="2 June 2026"
-      intro="These terms cover your use of Etch during our private beta. By using Etch, you agree to them."
+      intro="These terms cover your use of Health during our private beta. By using Health, you agree to them."
       sections={SECTIONS}
     />
   );

@@ -95,10 +95,10 @@ function WaterPageInner() {
         fallback="/dashboard/log"
         icon={Droplet}
         title="Water"
-        subtitle={`Tap to add. Target ${formatMl(targetMl)} — change it in Settings → Goals.`}
+        subtitle={`Tap to add. Target ${formatMl(targetMl)}, change it in Settings → Goals.`}
       />
 
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Log for</p>
           <Input
@@ -153,7 +153,7 @@ function WaterPageInner() {
             onChange={(e) => setCustom(e.target.value)}
             min={1}
           />
-          <Button onClick={submitCustom}>Etch it</Button>
+          <Button onClick={submitCustom}>Save</Button>
         </div>
 
         {dayData?.entries?.length ? (
@@ -189,7 +189,7 @@ function WaterPageInner() {
         ) : null}
       </div>
 
-      <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
         <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Last 14 days</p>
         {history === null ? (
           <Skeleton className="h-24 w-full rounded-xl" />

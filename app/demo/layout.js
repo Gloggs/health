@@ -3,8 +3,8 @@ import DemoShell from "./_components/DemoShell";
 import MockProvider from "./_mock/MockProvider";
 
 export const metadata = {
-  title: "Live demo · Etch",
-  description: "A hands-on demo of Etch running on sample data. Nothing is saved.",
+  title: "Live demo",
+  description: "A hands-on demo of Health running on sample data. Nothing is saved.",
 };
 
 // The demo frame is always visible; MockProvider wraps only the page content

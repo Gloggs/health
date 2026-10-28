@@ -426,7 +426,7 @@ function TodayPageInner() {
     // captured by closure - safe because the onClick fires well after
     // both fns are bound to the component instance.
     etched({
-      message: `${ml} ml etched`,
+      message: `${ml} ml logged`,
       onUndo: () => removeLastWater(),
     });
     return optimisticUpdate(
@@ -798,9 +798,9 @@ function TodayPageInner() {
       {/* Header — Today's hero. Stripped of the outer card chrome so the
           streak reads as the page itself (paper bg) rather than a tile
           floating on paper. Date in Caveat handwritten + Source Serif
-          mix. Streak goes display-scale; "X of 7 etched today" is the
+          mix. Streak goes display-scale; "X of 7 logged today" is the
           quiet honest line under it. Family ribbon trails along, family
-          column on the right doubles as the etch progress.
+          column on the right doubles as the log progress.
 
           Hand-drawn rule beneath the whole block is the only divider;
           the rest of the layout breathes. Anti-Tailwind-dashboard.
@@ -827,7 +827,7 @@ function TodayPageInner() {
 
             {/* The streak. Display-scale, mono, tight. No card around it.
                 Fluid clamp(72→112px) via the `text-streak` Tailwind token
-                added in J.4 — no more discrete sm: breakpoint jump. */}
+                added in J.4, no more discrete sm: breakpoint jump. */}
             <div className="mt-5 flex items-baseline gap-3">
               <span className="font-mono text-streak font-bold tracking-[-0.04em] tabular-nums">
                 {Math.round(streakAnim)}
@@ -840,15 +840,15 @@ function TodayPageInner() {
               {streak === 0
                 ? "Start with one entry."
                 : streak === 1
-                ? "Day one. Etched."
-                : "Etched."}
+                ? "Day one."
+                : "Logged today."}
             </p>
             <p className="mt-4 text-xs">
               <span className="font-mono text-base font-bold tabular-nums text-foreground">
                 {etchedTodayCount}
               </span>
               <span className="ml-1.5 text-muted-foreground">
-                of 7 etched today
+                of 7 logged today
               </span>
             </p>
           </div>
@@ -905,8 +905,8 @@ function TodayPageInner() {
                 )}
                 title={
                   m.etchedToday
-                    ? `${m.displayName ?? "Unnamed"} etched today`
-                    : `${m.displayName ?? "Unnamed"} — nothing yet`
+                    ? `${m.displayName ?? "Unnamed"} logged today`
+                    : `${m.displayName ?? "Unnamed"}, nothing yet`
                 }
               >
                 <span
@@ -1023,11 +1023,11 @@ function TodayPageInner() {
       {/* Daily check-in (resistance) - HTML <details> for native progressive
           disclosure (J.6). Expands by default when resistance is already
           set (so the user sees their answer + can change it). Collapsed
-          by default when blank — Today is busy enough without a 3-button
+          by default when blank, Today is busy enough without a 3-button
           row taking up vertical space the user hasn't engaged with.
           Colour on the buttons encodes effort, left→right friction. */}
       <details
-        className="group rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture [&_summary::-webkit-details-marker]:hidden"
+        className="group rounded-2xl bg-card p-5 shadow-paper-1 paper-texture [&_summary::-webkit-details-marker]:hidden"
         open={checkIn?.resistance != null || !!checkIn?.intentionalRest}
       >
         <summary className="flex cursor-pointer flex-wrap items-baseline justify-between gap-2 [&::-webkit-details-marker]:hidden">
@@ -1127,7 +1127,7 @@ function TodayPageInner() {
 
       {/* Close-the-day ritual (UX-PATTERNS §5). Always rendered when not
           viewing-other; visually escalates after the Personality preset's
-          nightly prompt time. Counts "X of 7 etched today" from the same
+          nightly prompt time. Counts "X of 7 logged today" from the same
           data the streak uses. */}
       {!isViewingOther && !loading ? (
         <CloseTodayCard
@@ -1158,7 +1158,7 @@ function TodayPageInner() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+          <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div
@@ -1340,7 +1340,7 @@ function TodayPageInner() {
             )}
           </div>
 
-          <div className="rounded-2xl bg-card/70 p-5 shadow-paper-1 paper-texture">
+          <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
             <div className="mb-3 flex items-start justify-between gap-2">
               <div>
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">Calendar</p>
@@ -1363,11 +1363,11 @@ function TodayPageInner() {
         </div>
       )}
 
-      {/* Bottom tally row — visualises today's etched count as hand-drawn
+      {/* Bottom tally row — visualises today's logged count as hand-drawn
           tally marks (SURFACES.md §1 footer). Renders nothing when count
           is zero so the empty state stays calm. */}
       {!isViewingOther && !loading ? (
-        <TallyRow count={etchedTodayCount} total={7} label="etched today" />
+        <TallyRow count={etchedTodayCount} total={7} label="logged today" />
       ) : null}
 
       <RestTimer
@@ -1394,7 +1394,7 @@ const TILE_TONES = {
 
 function TileShell({ icon: Icon, label, value, sub, expanded, onToggle, children, fullHref, tone = "weight" }) {
   return (
-    <div className="group rounded-xl bg-card/50 p-4 transition-colors hover:bg-card">
+    <div className="group rounded-xl bg-card p-4 transition-colors hover:bg-card">
       <div className="flex items-start gap-2.5">
         <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", TILE_TONES[tone] ?? TILE_TONES.weight)}>
           <Icon className="h-4 w-4" />
@@ -1475,7 +1475,7 @@ function SleepTile({ sleep, lastSleep, onSaved, today }) {
       </div>
     </div>
   ) : (
-    "tap to etch last night"
+    "tap to log last night"
   );
 
   return (
@@ -1677,7 +1677,7 @@ function CardioTile({ cardio, onSaved, today }) {
       // we just created using the id from the API response.
       const newId = res?.data?.id ?? null;
       etched({
-        message: `${mins} min walk etched`,
+        message: `${mins} min walk logged`,
         onUndo: newId ? () => remove(newId) : undefined,
       });
       onSaved?.();
@@ -1698,7 +1698,7 @@ function CardioTile({ cardio, onSaved, today }) {
       });
       const newId = res?.data?.id ?? null;
       etched({
-        message: `${mins} min ${type.toLowerCase()} etched`,
+        message: `${mins} min ${type.toLowerCase()} logged`,
         onUndo: newId ? () => remove(newId) : undefined,
       });
       onSaved?.();
@@ -1716,7 +1716,7 @@ function CardioTile({ cardio, onSaved, today }) {
           {Math.round(totalAnim)} <span className="text-xs font-medium text-muted-foreground">min</span>
         </>
       }
-      sub={cardio?.length ? `${cardio.length} entr${cardio.length === 1 ? "y" : "ies"} today` : "tap to etch a walk"}
+      sub={cardio?.length ? `${cardio.length} entr${cardio.length === 1 ? "y" : "ies"} today` : "tap to log a walk"}
       expanded={expanded}
       onToggle={() => setExpanded((s) => !s)}
       fullHref="/dashboard/log/cardio"
@@ -1832,7 +1832,7 @@ function WeightTile({ latest, previous, onSaved, today }) {
 
   let subNode;
   if (!latest?.date) {
-    subNode = "tap to etch today";
+    subNode = "tap to log today";
   } else if (isStale) {
     subNode = (
       <span className="inline-flex items-center gap-1 text-warning">
@@ -2477,7 +2477,7 @@ function WeekDelta({ delta, suffix }) {
 function TrendCard({ icon: Icon, title, metric, sub, isPrivate, children }) {
   if (isPrivate) {
     return (
-      <div className="rounded-2xl border border-dashed bg-card/60 p-4">
+      <div className="rounded-2xl border border-dashed bg-card p-4">
         <div className="flex items-start gap-2.5">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
             <Lock className="h-4 w-4" />
@@ -2493,7 +2493,7 @@ function TrendCard({ icon: Icon, title, metric, sub, isPrivate, children }) {
     );
   }
   return (
-    <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
       <div className="flex items-start gap-2.5">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Icon className="h-4 w-4" />
@@ -2643,7 +2643,7 @@ function WeightTrendChart({ series }) {
 function ViewingStat({ icon: Icon, label, value, sub, isPrivate }) {
   if (isPrivate) {
     return (
-      <div className="rounded-2xl border border-dashed bg-card/60 p-4">
+      <div className="rounded-2xl border border-dashed bg-card p-4">
         <div className="flex items-start gap-2.5">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
             <Lock className="h-4 w-4" />
@@ -2659,7 +2659,7 @@ function ViewingStat({ icon: Icon, label, value, sub, isPrivate }) {
     );
   }
   return (
-    <div className="rounded-2xl bg-card/70 p-4 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
       <div className="flex items-start gap-2.5">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Icon className="h-4 w-4" />

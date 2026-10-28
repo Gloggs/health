@@ -1,9 +1,0 @@
-<svg width="300" height="80" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .title {
-      font: bold 28px 'Segoe UI', sans-serif;
-      fill: #333;
-    }
-  </style>
-  <text x="10" y="50" class="title">Attendance Tracker💡</text>
-</svg>

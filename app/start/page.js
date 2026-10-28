@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Public entry hub for the private-beta + public-demo model.
 //
@@ -16,9 +16,9 @@ import EtchMark from "@/components/EtchMark";
 // Not behind the auth middleware (matcher only covers /dashboard +
 // /onboarding), so it's reachable without a session.
 export const metadata = {
-  title: "Get started · Etch",
+  title: "Get started",
   description:
-    "Etch is a health app for families, in private beta. Try the live demo with no sign-up, or request an invite.",
+    "Health is a health app for families, in private beta. Try the live demo with no sign-up, or request an invite.",
 };
 
 function Bullet({ children, muted = false }) {
@@ -39,13 +39,10 @@ export default function StartPage() {
     <div className="min-h-[100dvh] bg-background">
       {/* Header */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Etch — home" className="flex items-center gap-2.5">
-          <EtchMark size={34} />
+        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+          <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Etch</span>
-            <span className="block font-handwritten text-sm text-muted-foreground">
-              track less. notice more.
-            </span>
+            <span className="block font-serif text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -61,10 +58,10 @@ export default function StartPage() {
             Private beta
           </span>
           <h1 className="mt-4 font-serif text-4xl font-bold tracking-tight sm:text-5xl">
-            Take Etch for a spin
+            Take Health for a spin
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Etch is a health app for families. It's in private beta while we get it
+            Health is a health app for families. It's in private beta while we get it
             right, so full accounts are invite-only for now. The demo below is
             complete and hands-on, with no sign-up needed.
           </p>

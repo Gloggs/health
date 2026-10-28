@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Compass, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Branded 404 page (Next.js App Router convention: any thrown notFound()
-// or unmatched route renders this). Keeps the Etch wordmark + paper
+// or unmatched route renders this). Keeps the Health wordmark + paper
 // background instead of the generic Next.js black-on-white "404 — This
 // page could not be found." default.
 export const metadata = {
-  title: "Off the page · Etch",
+  title: "Off the page",
 };
 
 export default function NotFound() {
@@ -16,10 +16,10 @@ export default function NotFound() {
     <div className="flex min-h-[100dvh] items-center justify-center bg-background p-6">
       <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-paper-1 sm:p-8">
         <div className="mx-auto flex h-12 w-12 items-center justify-center">
-          <EtchMark size={48} />
+          <HealthMark size={48} />
         </div>
         <p className="mt-3 font-serif text-sm font-semibold tracking-tight text-muted-foreground">
-          Etch
+          Health
         </p>
         <div className="mt-5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-muted-foreground">
           <Compass className="h-5 w-5" />
@@ -28,7 +28,7 @@ export default function NotFound() {
           Off the page.
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          That URL doesn't lead anywhere we recognise. The trail's gone cold —
+          That URL doesn't lead anywhere we recognise. The trail's gone cold,
           might be a mistyped link or a route that's moved.
         </p>
         <div className="mt-6 flex flex-col items-stretch gap-2">

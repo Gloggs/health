@@ -2,15 +2,15 @@ import Link from "next/link";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 
 // Honest "how it's built" page for the curious (and recruiters). Linked from
 // /start's footer. Every claim here is kept true to what's actually in the
 // codebase — no compliance/certification claims that haven't been earned.
 export const metadata = {
-  title: "How it's built · Etch",
+  title: "How it's built",
   description:
-    "The stack, architecture, security and accessibility behind Etch — a real, deployed multi-tenant health app.",
+    "The stack, architecture, security and accessibility behind Health, a real, deployed multi-tenant health app.",
 };
 
 const SECTIONS = [
@@ -65,13 +65,10 @@ export default function HowItsBuiltPage() {
   return (
     <div className="min-h-[100dvh] bg-background">
       <header className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Etch — home" className="flex items-center gap-2.5">
-          <EtchMark size={34} />
+        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+          <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Etch</span>
-            <span className="block font-handwritten text-sm text-muted-foreground">
-              track less. notice more.
-            </span>
+            <span className="block font-serif text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -92,10 +89,10 @@ export default function HowItsBuiltPage() {
             Under the hood
           </p>
           <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight">
-            How Etch is built
+            How Health is built
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-            Etch is a real, deployed product, not a prototype. A family uses it for
+            Health is a real, deployed product, not a prototype. A family uses it for
             real every day. Here's what's under the hood.
           </p>
         </div>

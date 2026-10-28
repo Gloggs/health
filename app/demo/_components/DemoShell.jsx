@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 import { resetStore } from "../_mock/store";
 
 // Demo-only app frame. Mirrors the real dashboard layout's look (sidebar +
@@ -101,7 +101,7 @@ export default function DemoShell({ children }) {
         <p className="flex min-w-0 items-center gap-2 text-xs font-medium text-foreground">
           <span aria-hidden className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
           <span className="truncate">
-            Demo<span className="hidden sm:inline"> — nothing is saved</span>
+            Demo<span className="hidden sm:inline">, nothing is saved</span>
           </span>
         </p>
         <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
@@ -145,12 +145,9 @@ export default function DemoShell({ children }) {
         {/* Sidebar (md+) */}
         <aside className="hidden w-60 shrink-0 flex-col border-r bg-card md:flex">
           <Link href="/demo" className="flex items-center gap-2.5 border-b px-4 py-4">
-            <EtchMark size={32} />
+            <HealthMark size={32} />
             <span className="leading-none">
-              <span className="block font-serif text-base font-bold">Etch</span>
-              <span className="block font-handwritten text-xs text-muted-foreground">
-                track less. notice more.
-              </span>
+              <span className="block font-serif text-base font-bold">Health</span>
             </span>
           </Link>
           <nav className="flex-1 space-y-0.5 p-3">
@@ -175,7 +172,7 @@ export default function DemoShell({ children }) {
           </nav>
           <div className="flex items-center gap-3 border-t p-3">
             <span className="flex h-9 w-9 items-center justify-center rounded-full border bg-background">
-              <EtchMark size={20} />
+              <HealthMark size={20} />
             </span>
             <div className="min-w-0">
               <p className="truncate text-sm font-medium">You</p>

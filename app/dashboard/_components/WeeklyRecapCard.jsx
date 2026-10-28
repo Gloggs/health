@@ -46,8 +46,8 @@ export default function WeeklyRecapCard({ daysActive = 0, streak = 0 }) {
       : daysActive >= 4
       ? "A solid week. Sealed."
       : daysActive >= 2
-      ? "A few etches this week."
-      : "Quiet week — etched once.";
+      ? "A few days logged this week."
+      : "Quiet week, logged once.";
 
   return (
     <div className="rounded-2xl bg-primary/5 p-5 shadow-paper-1 paper-texture">
@@ -66,7 +66,7 @@ export default function WeeklyRecapCard({ daysActive = 0, streak = 0 }) {
             <span className="font-mono font-bold tabular-nums text-foreground">
               {daysActive}
             </span>{" "}
-            of 7 days etched this week
+            of 7 days logged this week
             {streak > 0 ? (
               <>
                 {" "}

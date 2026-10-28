@@ -15,12 +15,6 @@ import {
   normalisePersonality,
   setPersonalityClient,
 } from '@/lib/personality';
-import {
-  TYPE_PRESETS,
-  DEFAULT_TYPOGRAPHY,
-  applyTypography,
-  getStoredTypography,
-} from '@/lib/typography';
 import { etched } from '@/lib/etchFeedback';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -64,7 +58,6 @@ function SettingsPageInner() {
   const initialTab = VALID_TABS.includes(tabParam) ? tabParam : 'profile';
   const [unit, setUnit] = useState('kg');
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [typeId, setTypeId] = useState(DEFAULT_TYPOGRAPHY);
   const [ctx, setCtx] = useState(null);
   // Snapshot of what the server has - used to detect unsaved changes and to
   // prove the save round-tripped (we replace it with the server response).
@@ -84,10 +77,6 @@ function SettingsPageInner() {
     if (typeof window === 'undefined') return;
     const u = localStorage.getItem(UNIT_KEY);
     if (u) setUnit(u);
-    // Read the saved typography preset so the picker reflects what's
-    // currently applied. ThemeProvider has already applied it on mount;
-    // we just mirror state so the UI's selection matches.
-    setTypeId(getStoredTypography());
     GlobalApi.GetUserContext()
       .then((r) => {
         setCtx(r.data);
@@ -261,17 +250,11 @@ function SettingsPageInner() {
     toast.success(`Switched to ${next} mode`);
   };
 
-  const handleType = (next) => {
-    const applied = applyTypography(next);
-    setTypeId(applied);
-    toast.success(`Type set to ${TYPE_PRESETS[applied].label}`);
-  };
-
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-5">
       <PageHero
         eyebrow="settings"
-        title="Tune Etch"
+        title="Settings"
         subtitle="Profile, goals, personality, privacy, theme, and account."
       />
 
@@ -389,9 +372,9 @@ function SettingsPageInner() {
                   </div>
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{user?.email ?? '—'}</p>
+                  <p className="truncate text-sm font-medium">{user?.email ?? '-'}</p>
                   <p className="text-xs text-muted-foreground">
-                    Signed in via Kinde — your email lives there, not here.
+                    Signed in via Kinde, your email lives there, not here.
                     Profile name, age and height live in the Profile tab above.
                   </p>
                 </div>
@@ -405,7 +388,7 @@ function SettingsPageInner() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Target className="h-5 w-5 text-primary" /> Goals</CardTitle>
               <CardDescription>
-                What you're working on, what to avoid, what you prefer. Kept on your row only —
+                What you're working on, what to avoid, what you prefer. Kept on your row only,
                 nothing in here is shared with the family. Short answers work fine.
               </CardDescription>
             </CardHeader>
@@ -546,11 +529,11 @@ function SettingsPageInner() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" /> How Etch feels
+                <Sparkles className="h-5 w-5 text-primary" /> How Health feels
               </CardTitle>
               <CardDescription>
                 Same product, different volume. Pick the tempo that matches
-                you — change any time. Tap to apply; you'll feel the new
+                you, change any time. Tap to apply; you'll feel the new
                 preset on the very next log.
               </CardDescription>
             </CardHeader>
@@ -603,8 +586,8 @@ function SettingsPageInner() {
                   </div>
                   <div className="rounded-lg border border-dashed border-border/60 p-3 text-[11px] leading-relaxed text-muted-foreground">
                     <p>
-                      Etch automatically falls back to Calm when your device
-                      has Reduce Motion enabled — no setting needed.
+                      Health automatically falls back to Calm when your device
+                      has Reduce Motion enabled, no setting needed.
                     </p>
                     <p className="mt-1">
                       Advanced controls (animation speed slider, sound choice,
@@ -726,67 +709,6 @@ function SettingsPageInner() {
                   </button>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Type</CardTitle>
-              <CardDescription>
-                Pick how Etch reads. The number register (mono) and the
-                handwritten accents stay the same in every preset — those
-                <em> are</em> the brand.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-3 sm:grid-cols-3">
-                {Object.values(TYPE_PRESETS).map((p) => {
-                  const selected = typeId === p.id;
-                  // Live samples render in the actual preset font so the
-                  // user previews before committing. data-type on the
-                  // sample card forces the CSS-var swap locally without
-                  // affecting the rest of the page.
-                  return (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => handleType(p.id)}
-                      aria-pressed={selected}
-                      data-type={p.id}
-                      className={cn(
-                        'flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-colors',
-                        selected
-                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                          : 'border-border bg-card hover:border-primary/40'
-                      )}
-                    >
-                      <span className="font-handwritten text-base leading-none text-muted-foreground">
-                        {p.label.toLowerCase()}
-                      </span>
-                      <span className="font-serif text-lg font-bold leading-tight">
-                        {p.sampleTitle}
-                      </span>
-                      <span className="text-xs leading-relaxed text-muted-foreground">
-                        {p.sampleBody}
-                      </span>
-                      <span
-                        className={cn(
-                          'mt-auto inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider',
-                          selected
-                            ? 'border-primary text-primary'
-                            : 'border-border text-muted-foreground'
-                        )}
-                      >
-                        {selected ? 'On' : 'Pick'}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-[11px] text-muted-foreground">
-                Saved per-device. Different on your phone vs laptop is fine
-                — pick what reads best where you're sitting.
-              </p>
             </CardContent>
           </Card>
 

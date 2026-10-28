@@ -260,7 +260,7 @@ function DaySummary({ date, summary }) {
             <Link
               key={key}
               href={`${href}?date=${date}`}
-              className="flex flex-col items-center gap-1 rounded-md border border-border/60 bg-card/60 px-1 py-1.5 text-[10px] font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              className="flex flex-col items-center gap-1 rounded-md border border-border/60 bg-card px-1 py-1.5 text-[10px] font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
             >
               <Icon className="h-3.5 w-3.5" />
               {label}

@@ -16,7 +16,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import EtchMark from "@/components/EtchMark";
+import HealthMark from "@/components/HealthMark";
 import GlobalApi from "@/app/_services/GlobalApi";
 
 // Public landing for invite links. Two main jobs:
@@ -135,8 +135,8 @@ export default function JoinPage() {
     <div className="flex min-h-[100dvh] flex-col bg-background">
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
-          <EtchMark size={28} />
-          <p className="font-serif text-sm font-semibold">Etch</p>
+          <HealthMark size={28} />
+          <p className="font-serif text-sm font-semibold">Health</p>
         </div>
       </header>
 
@@ -183,11 +183,11 @@ export default function JoinPage() {
                   {invite.inviterName}
                 </span>{" "}
                 wants you on their family health log. Sleep, meals, workouts,
-                weigh-ins — tracked by hand, shared with the people who keep
+                weigh-ins, tracked by hand, shared with the people who keep
                 you honest.
               </p>
             </div>
-            <div className="rounded-xl border bg-card/60 p-4 text-left">
+            <div className="rounded-xl border bg-card p-4 text-left">
               <div className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                 <div className="min-w-0 flex-1">
@@ -262,7 +262,7 @@ function ErrorView({ errorBody, token }) {
     action = (
       <Button asChild className="h-12 w-full">
         <Link href="/dashboard">
-          Open Etch <ArrowRight className="ml-1.5 h-4 w-4" />
+          Open Health <ArrowRight className="ml-1.5 h-4 w-4" />
         </Link>
       </Button>
     );
