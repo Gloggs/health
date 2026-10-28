@@ -1,0 +1,1 @@
+ALTER TABLE "user_context" ADD COLUMN "personality" varchar(10);

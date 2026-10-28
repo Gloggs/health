@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Etch square mark — same 5-stroke tally as app/icon.svg but on a
+  TRANSPARENT background and slightly tighter padding, intended for
+  use inside paper-coloured containers (Kinde square-logo slot, email
+  signatures, social avatars on light themes).
+
+  The app/icon.svg version is what Next.js serves as the PWA icon /
+  favicon — that one keeps the rounded paper card because favicons
+  render on arbitrary tab backgrounds and need the card for contrast.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <!-- 4 vertical ink strokes -->
+  <g stroke="#1A1410" stroke-width="36" stroke-linecap="round">
+    <line x1="128" y1="128" x2="128" y2="384"/>
+    <line x1="200" y1="128" x2="200" y2="384"/>
+    <line x1="272" y1="128" x2="272" y2="384"/>
+    <line x1="344" y1="128" x2="344" y2="384"/>
+  </g>
+  <!-- 5th diagonal slash in ox-blood -->
+  <line x1="96" y1="384" x2="376" y2="128"
+        stroke="#A4271E" stroke-width="44" stroke-linecap="round"/>
+</svg>

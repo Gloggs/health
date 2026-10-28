@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Etch square mark, DARK-MODE variant. Cream ink strokes + brightened
+  ox-blood slash on transparent background, suitable for dark-mode
+  Kinde avatar slot or any dark surface that doesn't supply its own
+  contrast.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <g stroke="#F0EAD8" stroke-width="36" stroke-linecap="round">
+    <line x1="128" y1="128" x2="128" y2="384"/>
+    <line x1="200" y1="128" x2="200" y2="384"/>
+    <line x1="272" y1="128" x2="272" y2="384"/>
+    <line x1="344" y1="128" x2="344" y2="384"/>
+  </g>
+  <line x1="96" y1="384" x2="376" y2="128"
+        stroke="#D8483A" stroke-width="44" stroke-linecap="round"/>
+</svg>

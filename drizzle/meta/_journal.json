@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1779453354597,
+      "tag": "0000_0000_baseline",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779455453210,
+      "tag": "0001_add-workspace-abstraction",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779457032204,
+      "tag": "0002_backfill-and-tighten-family-id",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779472354745,
+      "tag": "0003_add-invites",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779473762729,
+      "tag": "0004_add-personality",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779474059152,
+      "tag": "0005_add-close-today",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793220993477,
+      "tag": "0006_exercises-per-family",
+      "breakpoints": true
+    }
+  ]
+}

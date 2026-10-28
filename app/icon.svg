@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Etch favicon + PWA icon. Per BRAND.md §2: the 5-stroke tally mark
+     (4 vertical + 1 diagonal slash) in deep ink on warm cream paper.
+     Placeholder until a designer produces the final logo artwork. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- paper background per BRAND.md (paper #F8F5EF) -->
+  <rect width="512" height="512" fill="#F8F5EF" rx="96" ry="96"/>
+  <!-- 4 vertical ink strokes (BRAND.md ink #1A1410) -->
+  <g stroke="#1A1410" stroke-width="32" stroke-linecap="round">
+    <line x1="128" y1="128" x2="128" y2="384"/>
+    <line x1="200" y1="128" x2="200" y2="384"/>
+    <line x1="272" y1="128" x2="272" y2="384"/>
+    <line x1="344" y1="128" x2="344" y2="384"/>
+  </g>
+  <!-- 5th diagonal slash, in ox-blood accent (BRAND.md accent #A4271E) -->
+  <line x1="96" y1="384" x2="376" y2="128"
+        stroke="#A4271E" stroke-width="40" stroke-linecap="round"/>
+</svg>
