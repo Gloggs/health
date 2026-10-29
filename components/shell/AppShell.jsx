@@ -47,6 +47,8 @@ export default function AppShell({ base, user, signOut, banner, top, children })
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
+      {/* Fills the notch area when opened from the home screen. Zero height in a normal browser tab. */}
+      <div aria-hidden className="h-[env(safe-area-inset-top)] shrink-0 bg-ink" />
       {banner}
 
       <div className="flex min-h-0 flex-1">

@@ -40,7 +40,7 @@ const UNIT_KEY = 'settings.weightUnit';
 // Tab IDs kept short. The `coach` slug stays for backwards compat with old
 // `?tab=coach` bookmarks (notably the Me-page nudge card that used to link
 // here pre-rename); we just label it "Goals" in the UI now.
-const VALID_TABS = ['profile', 'coach', 'personality', 'privacy', 'appearance', 'account'];
+const VALID_TABS = ['profile', 'coach', 'privacy', 'appearance'];
 
 export default function SettingsPage() {
   return (
@@ -255,13 +255,11 @@ function SettingsPageInner() {
       <PageHero title="Settings" />
 
       <Tabs defaultValue={initialTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
+        <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-flex">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="coach">Goals</TabsTrigger>
-          <TabsTrigger value="personality">Feel</TabsTrigger>
           <TabsTrigger value="privacy">Privacy</TabsTrigger>
           <TabsTrigger value="appearance">Display</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="mt-6 space-y-4">
@@ -521,81 +519,6 @@ function SettingsPageInner() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="personality" className="mt-6 space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" /> How Health feels
-              </CardTitle>
-              <CardDescription>
-                Same product, different volume. Pick the tempo that matches
-                you, change any time. Tap to apply; you'll feel the new
-                preset on the very next log.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {ctx === null ? (
-                <p className="text-sm text-muted-foreground">Loading…</p>
-              ) : (
-                <>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    {Object.values(PRESETS).map((p) => {
-                      const current = normalisePersonality(ctx.personality);
-                      const selected = current === p.id;
-                      return (
-                        <button
-                          key={p.id}
-                          type="button"
-                          onClick={() => savePersonality(p.id)}
-                          aria-pressed={selected}
-                          className={cn(
-                            'flex h-full flex-col items-start gap-2 rounded-xl border p-4 text-left transition-colors',
-                            selected
-                              ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                              : 'border-border bg-card hover:border-primary/40'
-                          )}
-                        >
-                          <span className="text-2xl leading-none" aria-hidden>
-                            {p.emoji}
-                          </span>
-                          <div>
-                            <p className="font-display uppercase text-lg font-semibold">
-                              {p.label}
-                            </p>
-                            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                              {p.description}
-                            </p>
-                          </div>
-                          <span
-                            className={cn(
-                              'mt-auto inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider',
-                              selected
-                                ? 'border-primary text-primary'
-                                : 'border-border text-muted-foreground'
-                            )}
-                          >
-                            {selected ? 'On' : 'Pick'}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="rounded-lg border border-dashed border-border/60 p-3 text-[11px] leading-relaxed text-muted-foreground">
-                    <p>
-                      Health automatically falls back to Calm when your device
-                      has Reduce Motion enabled, no setting needed.
-                    </p>
-                    <p className="mt-1">
-                      Advanced controls (animation speed slider, sound choice,
-                      per-category push toggles) coming next.
-                    </p>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="privacy" className="mt-6 space-y-4">
           <Card>
             <CardHeader>
@@ -684,7 +607,7 @@ function SettingsPageInner() {
           <Card>
             <CardHeader>
               <CardTitle>Theme</CardTitle>
-              <CardDescription>Dark is the default. Switch any time.</CardDescription>
+              <CardDescription>System follows your phone or computer. Light is used until it says otherwise.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-3">
@@ -731,38 +654,8 @@ function SettingsPageInner() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="account" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Sign out</CardTitle>
-              <CardDescription>End your current session on this device.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="destructive" onClick={() => setShowLogoutDialog(true)}>
-                <LogOut className="mr-2 h-4 w-4" /> Sign out
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
-      <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Confirm sign out</DialogTitle>
-            <DialogDescription>You'll be returned to the sign-in page.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mt-4 gap-2">
-            <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>Cancel</Button>
-            <LogoutLink
-              className="inline-flex h-10 items-center justify-center rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors hover:bg-destructive/90"
-              postLogoutRedirectURL="/signed-out"
-            >
-              Sign out
-            </LogoutLink>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

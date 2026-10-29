@@ -943,9 +943,6 @@ function TodayPageInner() {
             <div className="mb-3 flex items-start justify-between gap-2">
               <div>
                 <h2 className="font-display text-xl font-bold uppercase">This month</h2>
-                <p className="text-lg font-semibold tabular-nums">
-                  {sessionDates.size} session{sessionDates.size === 1 ? "" : "s"} logged
-                </p>
               </div>
               <Link
                 href="/dashboard/trends"
