@@ -2,6 +2,10 @@
 
 Short records of the main choices, newest first.
 
+## October 2026: one log sheet for everything
+
+Each kind of log used to have its own controls: fixed +250 and +500 buttons for water, time boxes for sleep, a typed number for weight, and so on. They now share one sheet (`components/log/`): a title, a date that can be changed, the value in big numbers, your usuals, one control, and Save. Usuals come from your own history (`lib/usuals.js`, covered by tests) rather than fixed amounts: your water containers, your normal bedtime, your usual run. Numbers use a swipe ruler that is a real slider to screen readers; feelings and quality use a five-step scale. Every save and delete shows Undo instead of asking "are you sure". The pattern follows the apps that do each part best: WaterMinder and Waterllama for containers, Hevy and Strong for last time's numbers, Daylio for two-tap moods.
+
 ## October 2026: Harbour colours, Barlow, and a new mark
 
 Health needed its own look, distinct from the sister app Here., while keeping the same black and white skeleton. Harbour (navy ink, chalk, harbour blue, sky, flame) came from a sports palette, so it reads as fitness without shouting. Barlow Condensed gives numbers a scoreboard feel, and Barlow keeps body text plain. The mark is a pulse line on a flame square. Every colour is a CSS variable, so light and dark use the same names, and corners and shadows are switched off in the Tailwind theme itself rather than screen by screen.

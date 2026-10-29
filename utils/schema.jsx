@@ -300,6 +300,7 @@ export const MOOD_LOGS = pgTable('mood_logs', {
   date: date('date').notNull(),
   mood: integer('mood'), // 1..5
   energy: integer('energy'), // 1..5
+  tags: jsonb('tags'), // short labels such as "Training" (lib/usuals.js normaliseTags)
   note: text('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
@@ -446,6 +447,7 @@ export const USER_CONTEXT = pgTable('user_context', {
   preferences: text('preferences'),
   chatRetentionDays: integer('chat_retention_days'),
   waterTargetMl: integer('water_target_ml'),
+  waterContainers: jsonb('water_containers'), // [{ name, ml }] (lib/usuals.js normaliseContainers)
   miniExercises: jsonb('mini_exercises'),
   personality: varchar('personality', { length: 10 }),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),

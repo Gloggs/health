@@ -3,6 +3,7 @@ import { and, eq, gte, lte, desc } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { MOOD_LOGS } from "@/utils/schema";
 import { withFamily, withFamilyWrite, familyFilter } from "@/lib/auth";
+import { normaliseTags } from "@/lib/usuals";
 import { clampString } from "@/lib/validate";
 
 export const GET = withFamily(async (req, _ctx, { userId, familyId }) => {
@@ -47,6 +48,8 @@ export const POST = withFamilyWrite(async (req, _ctx, { userId, familyId }) => {
     energy: body.energy ?? null,
     note: clampString(body.note, "note"),
   };
+  // Only touch tags when they are sent, so older clients keep existing ones.
+  if ("tags" in body) values.tags = normaliseTags(body.tags);
   if (existing[0]) {
     const [row] = await db
       .update(MOOD_LOGS)
