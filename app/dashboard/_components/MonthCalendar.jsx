@@ -123,17 +123,17 @@ export default function MonthCalendar({ sessions, getDaySummary, earliest }) {
           onClick={prev}
           disabled={atEarliest}
           aria-label="Previous month"
-          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-40"
+          className="flex h-11 w-11 items-center justify-center disabled:opacity-30"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <p className="text-sm font-semibold tabular-nums">{monthName}</p>
+        <p className="text-base font-semibold tabular-nums">{monthName}</p>
         <button
           type="button"
           onClick={next}
           disabled={atCurrentMonth}
           aria-label="Next month"
-          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-40"
+          className="flex h-11 w-11 items-center justify-center disabled:opacity-30"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -141,7 +141,7 @@ export default function MonthCalendar({ sessions, getDaySummary, earliest }) {
 
       <div className="mb-1.5 grid grid-cols-7 gap-1 text-center">
         {DAY_LETTERS.map((d, i) => (
-          <span key={i} className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
+          <span key={i} className="text-xs font-medium text-muted-foreground">
             {d}
           </span>
         ))}
@@ -149,7 +149,7 @@ export default function MonthCalendar({ sessions, getDaySummary, earliest }) {
 
       <div className="grid grid-cols-7 gap-1">
         {cells.map((c, i) => {
-          if (!c) return <div key={`pad-${i}`} className="aspect-square" />;
+          if (!c) return <div key={`pad-${i}`} className="h-10" />;
           return (
             <DayCell
               key={c.date}
@@ -160,8 +160,8 @@ export default function MonthCalendar({ sessions, getDaySummary, earliest }) {
         })}
       </div>
 
-      <p className="mt-3 text-[10px] text-muted-foreground">
-        {activeInMonth} active day{activeInMonth === 1 ? "" : "s"} this month.
+      <p className="mt-3 text-sm text-muted-foreground">
+        {activeInMonth} {activeInMonth === 1 ? "day" : "days"} with something logged. Tap a day to see it.
       </p>
     </div>
   );
@@ -169,13 +169,13 @@ export default function MonthCalendar({ sessions, getDaySummary, earliest }) {
 
 function cellClass(cell) {
   return cn(
-    "flex aspect-square w-full items-center justify-center rounded-md text-[11px] font-medium transition-colors tabular-nums",
+    "flex h-10 w-full items-center justify-center text-sm tabular-nums",
     cell.future
-      ? "bg-transparent text-muted-foreground/40"
+      ? "text-muted-foreground/50"
       : cell.active
-      ? "bg-primary text-primary-foreground"
-      : "bg-muted text-muted-foreground hover:bg-muted/80",
-    cell.isToday && "ring-2 ring-primary"
+      ? "bg-brand-sky font-bold text-ink"
+      : "border border-border text-muted-foreground",
+    cell.isToday && "border-2 border-flame font-bold"
   );
 }
 

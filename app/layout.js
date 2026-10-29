@@ -24,6 +24,10 @@ export const metadata = {
   description:
     "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two, see whether the week is on track, and share only what you choose.",
   applicationName: "Health",
+  // Added to a phone's home screen, Health opens full screen with the navy
+  // top bar running up behind the status bar (AppShell pads for the notch).
+  appleWebApp: { capable: true, title: "Health", statusBarStyle: "black-translucent" },
+  formatDetection: { telephone: false },
 };
 
 // Explicit viewport so iOS Safari uses device width + extends content under

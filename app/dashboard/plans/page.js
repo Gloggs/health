@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import GlobalApi from "@/app/_services/GlobalApi";
+import PageHero from "../_components/PageHero";
 
 export default function PlansPage() {
   const [plans, setPlans] = useState([]);
@@ -101,17 +102,15 @@ export default function PlansPage() {
 
   return (
     <div className="space-y-6 p-4 md:p-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Plans</h2>
-          <p className="text-sm text-muted-foreground">
-            Build a weekly routine. Mark one as active and it shows on your Today screen.
-          </p>
-        </div>
-        <Button onClick={() => setCreateOpen(true)}>
-          <Plus className="mr-1.5 h-4 w-4" /> New plan
-        </Button>
-      </div>
+      <PageHero
+        title="Plans"
+        subtitle="A weekly routine. The active plan shows on Today."
+        right={
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus className="mr-1.5 h-4 w-4" /> New plan
+          </Button>
+        }
+      />
 
       {loading ? (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

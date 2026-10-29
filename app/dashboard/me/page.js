@@ -110,7 +110,7 @@ export default function YouPage() {
       <section aria-labelledby="you-settings" className="flex flex-col gap-2">
         <h2 id="you-settings" className="font-display text-xl font-bold uppercase">Settings</h2>
         <div className="border border-foreground bg-card">
-          <Row href={`${base}/settings?tab=coach`} label="Targets" detail="Water, sleep, goals" />
+          <Row href={`${base}/settings?tab=coach`} label="Goals and targets" detail="Water target, notes" />
           <Row href={`${base}/settings?tab=profile`} label="Profile" detail="Name, birthday, height" />
           <Row href={`${base}/settings?tab=appearance`} label="Display" detail="Light, dark, units" />
         </div>

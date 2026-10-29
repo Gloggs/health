@@ -656,49 +656,31 @@ function FamilyTile({ member, myRole, onChanged }) {
           whether this member has been active recently without revealing
           per-category details (visibility-respected on the server). */}
       <div className="mt-3 border-t pt-3">
-        <div className="flex items-end justify-between gap-1">
+        <ol aria-label="Last 7 days" className="grid grid-cols-7 gap-1">
           {(member.last7DaysTally ?? Array(7).fill(0)).map((c, i) => {
             const isToday = i === 6;
             return (
-              <div
+              <li
                 key={i}
-                className="flex flex-col items-center gap-1"
-                title={
-                  c === 0
-                    ? isToday
-                      ? "Nothing today yet"
-                      : "Nothing"
-                    : `${c} logged`
-                }
+                className={cn(
+                  "flex h-8 items-center justify-center text-xs",
+                  c >= 1
+                    ? "bg-brand-sky font-bold text-ink"
+                    : isToday
+                    ? "border-2 border-flame font-bold"
+                    : "border border-border text-muted-foreground"
+                )}
               >
-                <span
-                  className={cn(
-                    "h-5 w-3.5 rounded-sm transition-colors",
-                    c >= 5
-                      ? "bg-primary"
-                      : c >= 3
-                      ? "bg-primary/70"
-                      : c >= 1
-                      ? "bg-primary/35"
-                      : "border border-dashed border-border/60",
-                    isToday && c === 0 && "ring-1 ring-primary/40"
-                  )}
-                  aria-hidden
-                />
-                <span
-                  className={cn(
-                    "text-[8px] font-medium uppercase tracking-wider",
-                    isToday ? "text-primary" : "text-muted-foreground/70"
-                  )}
-                >
-                  {dayLetter(i)}
+                <span aria-hidden>{dayLetter(i)}</span>
+                <span className="sr-only">
+                  {isToday ? "Today" : `${6 - i} days ago`}: {c === 0 ? "nothing logged" : `${c} logged`}
                 </span>
-              </div>
+              </li>
             );
           })}
-        </div>
-        <p className="mt-2 text-[11px] text-muted-foreground">
-          <span className="font-mono font-bold tabular-nums text-foreground">
+        </ol>
+        <p className="mt-2 text-sm text-muted-foreground">
+          <span className="font-bold tabular-nums text-foreground">
             {member.etchedTodayCount ?? 0}
           </span>{" "}
           of 7 logged today

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import GlobalApi from "@/app/_services/GlobalApi";
 import ExerciseDialog from "./_components/ExerciseDialog";
+import PageHero from "../_components/PageHero";
 
 const MUSCLE_TONES = {
   Chest: "bg-chart-1/15 text-chart-1",
@@ -92,15 +93,10 @@ export default function ExercisesPage() {
 
   return (
     <div className="space-y-6 p-4 md:p-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Library</h2>
-          <p className="text-sm text-muted-foreground">
-            {loading
-              ? "Loading…"
-              : `${exercises.length} exercises in your library`}
-          </p>
-        </div>
+      <PageHero
+        title="Exercises"
+        subtitle={loading ? "Loading" : `${exercises.length} in your library`}
+        right={
         <Button
           onClick={() => {
             setEditing(null);
@@ -109,7 +105,8 @@ export default function ExercisesPage() {
         >
           <Plus className="mr-1.5 h-4 w-4" /> New exercise
         </Button>
-      </div>
+        }
+      />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:max-w-2xl">
         <div className="relative">
