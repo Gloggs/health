@@ -51,7 +51,7 @@ export default function EmptyState({
         </div>
       ) : null}
       {title ? (
-        <p className="font-handwritten text-2xl leading-none text-muted-foreground">
+        <p className="text-lg font-semibold leading-tight text-foreground first-letter:uppercase">
           {title}
         </p>
       ) : null}

@@ -384,9 +384,7 @@ export default function TrendsPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
       <PageHero
-        eyebrow="trends"
         title="Trends"
-        subtitle="Everything you've logged, visualised."
         right={
           <div className="flex flex-wrap items-center gap-2">
             {/* Daily / Weekly toggle. Lives next to the range selector
@@ -746,7 +744,7 @@ function WeightTrendCard({ loading, weightSeries, weightGoal }) {
     : `${pointCount} weigh-ins. Solid line = raw, dotted = 14-day average.`;
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6">
+    <div className="border border-foreground bg-card p-5  sm:p-6">
       <div className="mb-5 flex items-start gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Scale className="h-4 w-4" />
@@ -875,7 +873,7 @@ function MiniSparklineCard({ exercise, series, stats }) {
     return (
       <div className="rounded-xl border border-dashed bg-card p-3">
         <p className="truncate text-xs font-medium text-muted-foreground">{label}</p>
-        <p className="mt-2 text-[11px] italic text-muted-foreground">
+        <p className="mt-2 text-[11px] text-muted-foreground">
           No reps logged yet.
         </p>
         <div className="mt-3 h-12 rounded-md border border-dashed border-border/40" aria-hidden />
@@ -941,7 +939,7 @@ function MiniSparklineCard({ exercise, series, stats }) {
 
 function KpiCard({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2">
+    <div className="border border-foreground bg-card p-4  transition-shadow hover:shadow-paper-2">
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {label}
@@ -964,7 +962,7 @@ function ChartCard({ icon: Icon, title, subtitle, srSummary, children }) {
   // numeric summary ("Average sleep this week: 7.2 hours, down from 7.5").
   return (
     <div
-      className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6"
+      className="border border-foreground bg-card p-5  sm:p-6"
       role="img"
       aria-label={srSummary ? `${title}. ${srSummary}` : `${title}. ${subtitle}`}
     >
@@ -1062,7 +1060,7 @@ function WeekCompare({ today }) {
   }, [d, thisMonday, lastMonday, lastSunday, today]);
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-5">
       <div className="mb-4 flex items-start gap-3">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <TrendingUp className="h-4 w-4" />

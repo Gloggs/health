@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { formatRelative } from "@/lib/relativeTime";
 import GlobalApi from "@/app/_services/GlobalApi";
 
-// Bell + popover panel in the TopBar.
+// Bell + popover panel in the app frame (components/shell/AppShell.jsx).
 //
 // Carries two notification streams behind one badge:
 //   1. Profile views (server-tracked unread via PROFILE_VIEWS.readAt).
@@ -57,7 +57,7 @@ function writeChatCursor(id) {
   window.localStorage.setItem(CHAT_CURSOR_KEY, String(id));
 }
 
-export default function NotificationsBell() {
+export default function NotificationsBell({ className } = {}) {
   const { user } = useKindeBrowserClient();
   const viewerId = user?.id ?? null;
 
@@ -181,9 +181,9 @@ export default function NotificationsBell() {
           aria-label={
             showBadge ? `Notifications (${unreadTotal} unread)` : "Notifications"
           }
-          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className={cn("relative flex h-11 w-11 items-center justify-center", className ?? "text-foreground")}
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-5 w-5" aria-hidden />
           {showBadge ? (
             <span
               className={cn(
@@ -197,8 +197,8 @@ export default function NotificationsBell() {
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0" sideOffset={8}>
         <div className="px-4 pt-4 pb-2">
-          <p className="font-handwritten text-lg leading-none text-primary/80">
-            notifications
+          <p className="font-display text-lg font-bold uppercase leading-none">
+            Notifications
           </p>
           <p className="mt-1 text-[11px] text-muted-foreground">
             {unreadTotal === 0
@@ -211,7 +211,7 @@ export default function NotificationsBell() {
           <div className="flex items-center justify-between px-3 py-2">
             <div className="flex items-center gap-1.5">
               <MessageCircle className="h-3.5 w-3.5 text-primary" />
-              <p className="font-serif text-sm font-semibold">Family room</p>
+              <p className="text-sm font-semibold">Family room</p>
               {unreadChatCount > 0 ? (
                 <span className="rounded-full bg-primary/15 px-1.5 py-0 font-mono text-[10px] font-medium tabular-nums text-primary">
                   {unreadChatCount} new
@@ -228,7 +228,7 @@ export default function NotificationsBell() {
           </div>
           <ul className="border-b">
             {chatMessages.length === 0 ? (
-              <li className="px-3 py-3 text-center font-handwritten text-base text-muted-foreground">
+              <li className="px-3 py-3 text-center text-sm text-muted-foreground">
                 nothing here yet
               </li>
             ) : (
@@ -247,7 +247,7 @@ export default function NotificationsBell() {
           <div className="flex items-center justify-between px-3 py-2">
             <div className="flex items-center gap-1.5">
               <Eye className="h-3.5 w-3.5 text-primary" />
-              <p className="font-serif text-sm font-semibold">Profile views</p>
+              <p className="text-sm font-semibold">Profile views</p>
             </div>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
               Last 30 days
@@ -255,8 +255,8 @@ export default function NotificationsBell() {
           </div>
           <ul>
             {viewItems.length === 0 ? (
-              <li className="px-3 py-6 text-center font-handwritten text-base text-muted-foreground">
-                no one's peeked yet
+              <li className="px-3 py-6 text-center text-sm text-muted-foreground">
+                No profile views yet
               </li>
             ) : (
               viewItems.map((item) => (

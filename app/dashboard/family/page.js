@@ -55,6 +55,7 @@ import { cn } from "@/lib/utils";
 import { formatRelative } from "@/lib/relativeTime";
 import GlobalApi from "@/app/_services/GlobalApi";
 import PageHero from "../_components/PageHero";
+import FamilyTabs from "../_components/FamilyTabs";
 
 // Pull display initials for the avatar circle. We don't store profile
 // pictures yet (Kinde only surfaces them for the signed-in user), so a
@@ -100,16 +101,13 @@ export default function FamilyPage() {
   );
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-6">
       <PageHero
-        eyebrow="family"
-        title={family?.name ?? "Family"}
+        title="Family"
         subtitle={
           isLoading
-            ? "Loading the roster…"
-            : members.length === 0
-            ? "No one yet."
-            : `${members.length} member${members.length === 1 ? "" : "s"} keeping each other honest.`
+            ? "Loading"
+            : `${family?.name ? `${family.name}, ` : ""}${members.length} member${members.length === 1 ? "" : "s"}`
         }
         right={
           !isLoading && members.length > 0 ? (
@@ -117,13 +115,15 @@ export default function FamilyPage() {
               <span className="font-mono text-2xl font-bold tabular-nums text-foreground">
                 {etchedTodayCount}
               </span>
-              <span className="font-handwritten text-base text-muted-foreground">
-                of {members.length} today
+              <span className="text-base text-muted-foreground">
+                of {members.length} logged today
               </span>
             </div>
           ) : null
         }
       />
+
+<FamilyTabs active="members" />
 
       {error ? (
         <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
@@ -231,7 +231,7 @@ function InviteManager({ onMembersChanged }) {
   };
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -433,7 +433,7 @@ function ActivityFeed() {
   const items = data?.items ?? [];
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-5">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -601,7 +601,7 @@ function FamilyTile({ member, myRole, onChanged }) {
       <Link
         href={href}
         className={cn(
-          "hover-lift group block rounded-2xl bg-card p-4 shadow-paper-1 paper-texture",
+          "hover-lift group block border border-foreground bg-card p-4",
           member.isMe && "border-primary/40"
         )}
       >
@@ -913,7 +913,7 @@ function ConfirmMenuItem({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif">{title}</AlertDialogTitle>
+          <AlertDialogTitle className="font-display uppercase">{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -14,6 +14,10 @@ Health needed its own look, distinct from the sister app Here., while keeping th
 
 The first version worked, but in daily use it was not polished. Logging took too many taps, useful screens were buried, and there was decoration that got in the way: mini-games on the landing page, a handwriting font, personality and typeface presets, and animations on every tap. The redesign keeps the features and cuts the noise. Today becomes a short list of what is left to log. Every screen is reachable from five tabs, a search box and one "You" menu. The plan is in [DESIGN.md](./DESIGN.md).
 
+## October 2026: five tabs, search and one You menu
+
+The old sidebar had seven items plus Settings, while the phone tabs had five different ones, so some screens could only be reached on one device. Now both show the same five places: Today, Log, Train, Trends and Family. Chat moved under Family, the journal under Log, and settings, goals, export and sign out under You. A search box finds any page, setting, log action, exercise, plan or family member.
+
 ## October 2026: reminders removed until they can send
 
 The reminders screen saved schedules, but nothing ever delivered them. A setting that does nothing is worse than no setting, so it goes until there is a real way to send reminders.

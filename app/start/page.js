@@ -42,7 +42,7 @@ export default function StartPage() {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Health</span>
+            <span className="block font-display uppercase text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -57,7 +57,7 @@ export default function StartPage() {
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             Private beta
           </span>
-          <h1 className="mt-4 font-serif text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="mt-4 font-display uppercase text-4xl font-bold sm:text-5xl">
             Take Health for a spin
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -73,7 +73,7 @@ export default function StartPage() {
           {/* SOLO */}
           <section className="hover-paper order-2 rounded-2xl border bg-card p-6 shadow-paper-1 lg:order-none">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-2xl font-bold">Solo</h2>
+              <h2 className="font-display uppercase text-2xl font-bold">Solo</h2>
               <span className="rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                 Live demo
               </span>
@@ -96,7 +96,7 @@ export default function StartPage() {
               Start here
             </span>
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-2xl font-bold">Family</h2>
+              <h2 className="font-display uppercase text-2xl font-bold">Family</h2>
               <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
                 Live demo
               </span>
@@ -122,7 +122,7 @@ export default function StartPage() {
           {/* FULL ACCESS (beta) */}
           <section className="hover-paper order-3 rounded-2xl border bg-muted/30 p-6 shadow-paper-1 lg:order-none">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif text-2xl font-bold">Full access</h2>
+              <h2 className="font-display uppercase text-2xl font-bold">Full access</h2>
               <span className="rounded-full border border-primary/30 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
                 Beta
               </span>

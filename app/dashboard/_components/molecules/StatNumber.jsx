@@ -60,7 +60,7 @@ export default function StatNumber({
       {unit ? (
         <span
           className={cn(
-            "font-handwritten leading-none",
+            "leading-none",
             unitCls,
             unitColor
           )}

@@ -149,7 +149,7 @@ function BodyPageInner() {
       </button>
       <h2 className="font-display text-xl font-bold uppercase">Measurements</h2>
 
-      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+      <div className="border border-foreground bg-card p-5">
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Log for</p>
           <Input
@@ -234,7 +234,7 @@ function BodyPageInner() {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+      <div className="border border-foreground bg-card p-5">
         <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Last 90 days</p>
         {history === null ? (
           <Skeleton className="h-32 w-full rounded-xl" />

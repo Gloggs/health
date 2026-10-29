@@ -102,7 +102,7 @@ export default function InteractiveEtch() {
 
   return (
     <div
-      className="relative inline-flex w-full max-w-xs select-none flex-col items-center gap-3 rounded-2xl bg-card p-6 shadow-paper-1 paper-texture transition-shadow hover:shadow-paper-2"
+      className="relative inline-flex w-full max-w-xs select-none flex-col items-center gap-3 border border-foreground bg-card p-6  transition-shadow hover:shadow-paper-2"
       role="region"
       aria-label="Interactive tally-mark demo"
     >

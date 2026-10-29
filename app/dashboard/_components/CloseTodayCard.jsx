@@ -11,7 +11,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { etched } from "@/lib/etchFeedback";
+import { saved } from "@/lib/feedback";
 import { getEffectivePersonality } from "@/lib/personality";
 import GlobalApi from "@/app/_services/GlobalApi";
 
@@ -94,7 +94,7 @@ export default function CloseTodayCard({
       // Slower, more deliberate etch — the close-day stroke is meant to
       // feel weightier than a quick water tap. We bump the message to
       // match. The animation duration is still preset-driven.
-      etched({ message: "Today, done." });
+      saved({ message: "Day closed" });
       setExpanding(false);
       onChanged?.();
     } catch (err) {
@@ -136,8 +136,8 @@ export default function CloseTodayCard({
               <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
                 Closed
               </p>
-              <p className="mt-0.5 font-serif text-xl font-bold leading-tight">
-                Today, done.
+              <p className="mt-0.5 font-display uppercase text-xl font-bold leading-tight">
+                Day closed
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
                 Closed at {hhmm}
@@ -170,30 +170,15 @@ export default function CloseTodayCard({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-card p-5 shadow-paper-1 paper-texture transition-colors",
+        "border border-foreground bg-card p-4 md:p-5",
         showNudge && "border-primary/40 bg-primary/[0.04]"
       )}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <Moon className="h-5 w-5" />
-        </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            {showNudge ? "The day's nearly closed" : "Close today"}
-          </p>
-          <div className="mt-0.5 flex items-baseline gap-2">
-            <p className="font-mono text-2xl font-bold leading-none tabular-nums">
-              {count}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              of {total} logged today
-            </p>
-          </div>
-          <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
-            {showNudge
-              ? "A quiet moment to seal what you did. Tap below when you're ready, no rush."
-              : "When you're done for the day, seal it. No fanfare. Just a quieter line under today."}
+          <h2 className="font-display text-xl font-bold uppercase">Close the day</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Mark today finished and add a note if you like.
           </p>
         </div>
       </div>
@@ -209,7 +194,6 @@ export default function CloseTodayCard({
               : "border-border bg-card hover:border-primary/40 hover:bg-primary/[0.04]"
           )}
         >
-          <Sparkles className="h-4 w-4" />
           Close today
           <ChevronDown className="h-3.5 w-3.5 opacity-60" />
         </button>

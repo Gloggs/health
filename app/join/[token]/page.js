@@ -136,7 +136,7 @@ export default function JoinPage() {
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <HealthMark size={28} />
-          <p className="font-serif text-sm font-semibold">Health</p>
+          <p className="font-display uppercase text-sm font-semibold">Health</p>
         </div>
       </header>
 
@@ -175,7 +175,7 @@ export default function JoinPage() {
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 An invite to
               </p>
-              <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+              <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
                 {invite.familyName}
               </h1>
               <p className="mt-3 text-sm text-muted-foreground">
@@ -299,7 +299,7 @@ function ErrorView({ errorBody, token }) {
         {icon}
       </div>
       <div>
-        <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="font-display uppercase text-2xl font-bold sm:text-3xl">
           {title}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">{body}</p>

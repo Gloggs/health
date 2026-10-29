@@ -43,7 +43,7 @@ export default function LogHubPage() {
           </li>
         ))}
         <li className="flex items-center">
-          <Link href="/dashboard/chat?tab=journal" className="flex min-h-[64px] min-w-0 flex-1 items-center gap-2 px-4 py-2">
+          <Link href="/dashboard/journal" className="flex min-h-[64px] min-w-0 flex-1 items-center gap-2 px-4 py-2">
             <span className="flex min-w-0 flex-1 flex-col">
               <span className="text-[17px] font-semibold">Journal</span>
               <span className="truncate text-sm text-muted-foreground">Private. Only you can read it.</span>

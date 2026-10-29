@@ -27,13 +27,13 @@ export default function ErrorPage({ error, reset }) {
         <div className="mx-auto flex h-12 w-12 items-center justify-center">
           <HealthMark size={48} />
         </div>
-        <p className="mt-3 font-serif text-sm font-semibold tracking-tight text-muted-foreground">
+        <p className="mt-3 font-display uppercase text-sm font-semibold text-muted-foreground">
           Health
         </p>
         <div className="mt-5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/15 text-destructive">
           <AlertTriangle className="h-5 w-5" />
         </div>
-        <h1 className="mt-4 font-serif text-2xl font-bold tracking-tight">
+        <h1 className="mt-4 font-display uppercase text-2xl font-bold ">
           Something cracked.
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">

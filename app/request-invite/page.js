@@ -60,7 +60,7 @@ export default function RequestInvitePage() {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Health</span>
+            <span className="block font-display uppercase text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -81,7 +81,7 @@ export default function RequestInvitePage() {
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             Private beta
           </span>
-          <h1 className="mt-4 font-serif text-4xl font-bold tracking-tight">Request an invite</h1>
+          <h1 className="mt-4 font-display uppercase text-4xl font-bold ">Request an invite</h1>
           <p className="mt-3 text-base text-muted-foreground">
             Health is invite-only for now. Tell us a little about you and we'll be in
             touch when a spot opens. In the meantime, the{" "}
@@ -97,7 +97,7 @@ export default function RequestInvitePage() {
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
               <Check className="h-6 w-6 text-primary" aria-hidden />
             </div>
-            <h2 className="mt-4 font-serif text-2xl font-bold">Request sent</h2>
+            <h2 className="mt-4 font-display uppercase text-2xl font-bold">Request sent</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Thanks. We review requests by hand, so it may take a few days. We'll
               email you when a spot opens.

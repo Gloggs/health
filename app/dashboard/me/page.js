@@ -1,27 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { toast } from "sonner";
+import { usePathname } from "next/navigation";
 import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import Image from "next/image";
-import {
-  Bell,
-  Settings as SettingsIcon,
-  Download,
-  TrendingUp,
-  ArrowRight,
-  MessageCircle,
-  LogOut,
-  User as UserIcon,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { daysAgoStr, todayDateStr, weekStartStr } from "@/lib/dates";
-import { computeWeeklyDiscipline } from "@/lib/discipline";
+import { ChevronRight } from "lucide-react";
+import { toast } from "sonner";
+import { todayDateStr } from "@/lib/dates";
+import { VISIBILITY_SECTIONS, effectiveVisibility } from "@/lib/visibility";
+import { initialsOf } from "@/lib/initials";
 import GlobalApi from "@/app/_services/GlobalApi";
-import GoalsCard from "../_components/GoalsCard";
 import PageHero from "../_components/PageHero";
+import GoalsCard from "../_components/GoalsCard";
 
 function downloadJson(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -35,213 +25,117 @@ function downloadJson(filename, data) {
   URL.revokeObjectURL(url);
 }
 
-export default function MeHubPage() {
-  const today = todayDateStr();
-  const weekStart = weekStartStr();
+const rowClass = "flex min-h-[56px] w-full items-center gap-3 border-b border-border px-4 text-left text-base last:border-b-0";
+
+function Row({ href, label, detail }) {
+  return (
+    <Link href={href} className={rowClass}>
+      <span className="flex-1 font-semibold">{label}</span>
+      {detail ? <span className="truncate text-sm text-muted-foreground">{detail}</span> : null}
+      <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
+    </Link>
+  );
+}
+
+/**
+ * You: who you are, what your family can see, and your account. A plain list,
+ * the same on phones and desktop. Shared by the real app and the demo.
+ */
+export default function YouPage() {
+  const pathname = usePathname();
+  const isDemo = pathname?.startsWith("/demo");
+  const base = isDemo ? "/demo" : "/dashboard";
   const { user } = useKindeBrowserClient();
-  const [loading, setLoading] = useState(true);
-  const [discipline, setDiscipline] = useState(null);
-  const [userCtx, setUserCtx] = useState(null);
-  // Pulls the editable in-app profile (displayName, age, height) so we can
-  // show the user's Health name rather than the Kinde-derived first/last
-  // pair. Without this the Family page would say "Mike" while Me said
-  // "Michael Ijisonu" — same person, different names.
   const [me, setMe] = useState(null);
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      GlobalApi.GetCheckIn({ from: weekStart, to: today }),
-      GlobalApi.GetSessions({ from: weekStart, to: today }),
-      GlobalApi.GetUserContext().catch(() => ({ data: null })),
-      GlobalApi.GetMe().catch(() => ({ data: null })),
-    ])
-      .then(([c, s, ctx, meRes]) => {
-        const sessionDates = new Set((s.data ?? []).filter((x) => x.completed).map((x) => x.date));
-        setDiscipline(computeWeeklyDiscipline(c.data ?? [], sessionDates));
-        setUserCtx(ctx?.data ?? null);
-        setMe(meRes?.data ?? null);
-      })
-      .finally(() => setLoading(false));
-  }, [today, weekStart]);
+    GlobalApi.GetMe()
+      .then((r) => setMe(r.data ?? null))
+      .catch(() => setMe(null));
+  }, []);
 
-  const isCoachEmpty =
-    !loading &&
-    !(userCtx?.goals || userCtx?.restrictions || userCtx?.preferences);
+  const name =
+    me?.displayName ||
+    [user?.given_name, user?.family_name].filter(Boolean).join(" ") ||
+    "You";
+  const initials = initialsOf(name);
+  const email = me?.email ?? user?.email ?? "";
+
+  const vis = effectiveVisibility(me?.visibility);
+  const shared = VISIBILITY_SECTIONS.filter((s) => vis[s.key]).length;
+  const sharedText =
+    shared === VISIBILITY_SECTIONS.length ? "Everything" : shared === 0 ? "Nothing" : `${shared} of ${VISIBILITY_SECTIONS.length}`;
 
   const exportAll = async () => {
     setExporting(true);
     try {
       const r = await GlobalApi.ExportAll();
-      downloadJson(`health-export-${today}.json`, r.data);
-      toast.success("Exported");
+      downloadJson(`health-export-${todayDateStr()}.json`, r.data);
+      toast("Your data is downloading");
     } catch {
-      toast.error("Export failed");
+      toast.error("Export did not work. Try again.");
     } finally {
       setExporting(false);
     }
   };
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <PageHero
-        eyebrow="me"
-        title="You"
-        subtitle="Discipline, insights, reminders, and your data, all on your row only."
-      />
+    <div className="mx-auto flex max-w-2xl flex-col gap-6 p-4 md:p-6">
+      <PageHero title="You" />
 
-      {/* Profile + sign out. The sidebar carries this on desktop, but the mobile
-          bottom-nav doesn't - so the only sign-out path on mobile lives here. */}
-      <div className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
-        {user?.picture ? (
-          <Image src={user.picture} width={44} height={44} alt="Profile" className="rounded-full border" />
-        ) : (
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <UserIcon className="h-5 w-5" />
-          </div>
-        )}
+      <section aria-label="Profile" className="flex items-center gap-4 border border-foreground bg-card p-4">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center bg-brand-sky font-display text-2xl font-extrabold text-ink">
+          {initials}
+        </span>
         <div className="min-w-0 flex-1">
-          {/* Prefer the in-app display name (Settings → Profile) so this
-              page matches what the Family roster shows. Falls back to the
-              Kinde-derived first/last while the GetMe call is in flight,
-              and to "Signed in" if neither has loaded. */}
-          <p className="truncate text-sm font-semibold">
-            {me?.displayName
-              || (user?.given_name || user?.family_name
-                ? `${user?.given_name ?? ""} ${user?.family_name ?? ""}`.trim()
-                : "Signed in")}
-          </p>
-          <p className="truncate text-xs text-muted-foreground">{user?.email ?? ""}</p>
+          <p className="truncate font-display text-2xl font-bold uppercase leading-tight">{name}</p>
+          {email ? <p className="truncate text-sm text-muted-foreground">{email}</p> : null}
         </div>
-        <div className="flex shrink-0 items-center gap-1.5">
-          <Link
-            href="/dashboard/settings?tab=profile"
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            <SettingsIcon className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Edit</span>
-          </Link>
-          <LogoutLink
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
-            postLogoutRedirectURL="/signed-out"
-          >
-            <LogOut className="h-3.5 w-3.5" />
-            <span>Sign out</span>
-          </LogoutLink>
-        </div>
-      </div>
-
-      {/* Goals nudge - surfaces until the user fills any field. The
-          tab slug stays `coach` for URL back-compat (old bookmarks);
-          the UI calls it Goals. */}
-      {isCoachEmpty ? (
-        <Link
-          href="/dashboard/settings?tab=coach"
-          className="hover-paper block rounded-2xl bg-primary/5 p-5 shadow-paper-1 paper-texture"
-        >
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-              <MessageCircle className="h-5 w-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-serif text-base font-semibold">Set your goals</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                What you're working on, what to avoid, what you prefer. Private
-                to you, useful shorthand for when you come back after a few
-                weeks. 30 seconds.
-              </p>
-            </div>
-            <ArrowRight className="mt-2 h-4 w-4 shrink-0 text-primary" />
-          </div>
+        <Link href={`${base}/settings?tab=profile`} className="h-11 shrink-0 border border-foreground px-4 text-sm font-semibold leading-[42px]">
+          Edit
         </Link>
-      ) : null}
+      </section>
 
-      {/* This week's discipline */}
-      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">This week</p>
-            <p className="mt-1 text-sm font-medium">Follow-through score</p>
-          </div>
-          <TrendingUp className="h-5 w-5 text-primary" />
+      <section aria-labelledby="you-family" className="flex flex-col gap-2">
+        <h2 id="you-family" className="font-display text-xl font-bold uppercase">What your family sees</h2>
+        <div className="border border-foreground bg-card">
+          <Row href={`${base}/settings?tab=privacy`} label="Shared with family" detail={sharedText} />
+          <Row href={`${base}/family`} label="Invite someone" />
         </div>
-
-        {loading ? (
-          <Skeleton className="mt-3 h-12 w-32" />
-        ) : discipline?.score10 == null ? (
-          <div className="mt-3">
-            <p className="text-3xl font-bold tabular-nums">-</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Tap the daily check-in on Today to start scoring this metric.
-            </p>
-          </div>
-        ) : (
-          <div className="mt-3">
-            <p className="text-4xl font-bold tabular-nums">
-              {discipline.score10.toFixed(1)}
-              <span className="text-base font-medium text-muted-foreground">/10</span>
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Across {discipline.scoredDays} day{discipline.scoredDays === 1 ? "" : "s"} of resistance check-ins this week.
-            </p>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full bg-primary transition-all"
-                style={{ width: `${Math.round((discipline.score01 ?? 0) * 100)}%` }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
+      </section>
 
       <GoalsCard />
 
-      {/* Hub tiles - things not reachable from the 5-slot mobile bottom nav.
-          Family used to live here but got promoted into the bottom nav in
-          P3 polish; Chat takes its slot so the journal + family room
-          are one tap away from this hub. */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        {/* Trends is also reachable from the desktop sidebar, but on
-            mobile the only path is via this hub. Promoted to first slot
-            here so it doesn't get buried, discovered in the J.1 a11y
-            audit (no path on mobile bottom nav). */}
-        <HubTile href="/dashboard/me/trends" icon={TrendingUp} label="Trends" desc="Weekly + monthly charts, no AI" />
-        <HubTile href="/dashboard/chat" icon={MessageCircle} label="Chat" desc="Family room + private journal" />
-        <HubTile href="/dashboard/me/reminders" icon={Bell} label="Reminders" desc="Water, meals, weigh-ins, supplements" />
-        <HubTile href="/dashboard/settings" icon={SettingsIcon} label="Settings" desc="Profile, appearance, account" />
-        <button
-          onClick={exportAll}
-          disabled={exporting}
-          className="hover-lift group flex items-center gap-4 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture text-left disabled:opacity-50"
-        >
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Download className="h-5 w-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold">{exporting ? "Exporting…" : "Export everything"}</p>
-            <p className="truncate text-xs text-muted-foreground">JSON of all your data</p>
-          </div>
-        </button>
-      </div>
-    </div>
-  );
-}
+      <section aria-labelledby="you-settings" className="flex flex-col gap-2">
+        <h2 id="you-settings" className="font-display text-xl font-bold uppercase">Settings</h2>
+        <div className="border border-foreground bg-card">
+          <Row href={`${base}/settings?tab=coach`} label="Targets" detail="Water, sleep, goals" />
+          <Row href={`${base}/settings?tab=profile`} label="Profile" detail="Name, birthday, height" />
+          <Row href={`${base}/settings?tab=appearance`} label="Display" detail="Light, dark, units" />
+        </div>
+      </section>
 
-function HubTile({ href, icon: Icon, label, desc }) {
-  return (
-    <Link
-      href={href}
-      className="hover-lift group flex items-center gap-4 rounded-2xl bg-card p-4 shadow-paper-1 paper-texture"
-    >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        <Icon className="h-5 w-5" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold">{label}</p>
-        <p className="truncate text-xs text-muted-foreground">{desc}</p>
-      </div>
-      <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-    </Link>
+      <section aria-labelledby="you-account" className="flex flex-col gap-2">
+        <h2 id="you-account" className="font-display text-xl font-bold uppercase">Account</h2>
+        <div className="border border-foreground bg-card">
+          <button type="button" onClick={exportAll} disabled={exporting} className={`${rowClass} disabled:opacity-50`}>
+            <span className="flex-1 font-semibold">{exporting ? "Exporting" : "Export my data"}</span>
+            <span className="text-sm text-muted-foreground">JSON file</span>
+          </button>
+          <Row href="/privacy" label="Privacy" />
+          <Row href="/terms" label="Terms" />
+          {isDemo ? (
+            <Link href="/" className={rowClass}>
+              <span className="flex-1 font-semibold">Leave the demo</span>
+            </Link>
+          ) : (
+            <LogoutLink postLogoutRedirectURL="/signed-out" className={rowClass}>
+              <span className="flex-1 font-semibold">Sign out</span>
+            </LogoutLink>
+          )}
+        </div>
+      </section>
+    </div>
   );
 }
