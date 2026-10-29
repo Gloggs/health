@@ -103,6 +103,9 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        // Fixed brand colours for the app frame, the same in light and dark.
+        ink: "#142B38",
+        chalk: "#F1F1EF",
         flame: "hsl(var(--flame))",
         harbour: "hsl(var(--harbour))",
         "brand-sky": "hsl(var(--sky))",

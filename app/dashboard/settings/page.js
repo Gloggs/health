@@ -15,7 +15,7 @@ import {
   normalisePersonality,
   setPersonalityClient,
 } from '@/lib/personality';
-import { etched } from '@/lib/etchFeedback';
+import { saved } from '@/lib/feedback';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -178,7 +178,7 @@ function SettingsPageInner() {
     // Sample the new feel right after the swap. Subtle, just so the
     // user knows "Calm" and "Warm" actually differ.
     setTimeout(() => {
-      etched({ message: `${PRESETS[id].emoji} ${PRESETS[id].label} on` });
+      saved({ message: `${PRESETS[id].emoji} ${PRESETS[id].label} on` });
     }, 50);
     try {
       await GlobalApi.SaveUserContext({ personality: id });
@@ -252,11 +252,7 @@ function SettingsPageInner() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-5">
-      <PageHero
-        eyebrow="settings"
-        title="Settings"
-        subtitle="Profile, goals, personality, privacy, theme, and account."
-      />
+      <PageHero title="Settings" />
 
       <Tabs defaultValue={initialTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
@@ -563,7 +559,7 @@ function SettingsPageInner() {
                             {p.emoji}
                           </span>
                           <div>
-                            <p className="font-serif text-lg font-semibold">
+                            <p className="font-display uppercase text-lg font-semibold">
                               {p.label}
                             </p>
                             <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">

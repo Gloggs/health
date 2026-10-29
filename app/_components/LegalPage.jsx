@@ -14,7 +14,7 @@ export default function LegalPage({ title, updated, intro, sections }) {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Health</span>
+            <span className="block font-display uppercase text-lg font-bold">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -30,14 +30,14 @@ export default function LegalPage({ title, updated, intro, sections }) {
           <ArrowLeft className="h-4 w-4" /> Back to home
         </Link>
 
-        <h1 className="mt-6 font-serif text-4xl font-bold tracking-tight">{title}</h1>
+        <h1 className="mt-6 font-display uppercase text-4xl font-bold ">{title}</h1>
         <p className="mt-2 text-sm text-muted-foreground">Last updated: {updated}</p>
         <p className="mt-4 text-base text-muted-foreground">{intro}</p>
 
         <div className="mt-8 space-y-6">
           {sections.map((s) => (
             <section key={s.heading}>
-              <h2 className="font-serif text-xl font-bold">{s.heading}</h2>
+              <h2 className="font-display uppercase text-xl font-bold">{s.heading}</h2>
               {s.body.map((p, i) => (
                 <p key={i} className="mt-2 text-sm leading-relaxed text-foreground/90">
                   {p}

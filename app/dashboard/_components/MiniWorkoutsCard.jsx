@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import GlobalApi from "@/app/_services/GlobalApi";
 import { DEFAULT_MINI_EXERCISES, normaliseMiniExercises } from "@/lib/mini";
-import { etched } from "@/lib/etchFeedback";
+import { saved } from "@/lib/feedback";
 import {
   Dialog,
   DialogContent,
@@ -69,7 +69,7 @@ export default function MiniWorkoutsCard({ todayRows, configured, today, onChang
   const [configOpen, setConfigOpen] = useState(false);
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -170,7 +170,7 @@ function MiniTile({ slot, exercise, count, today, onChanged }) {
     // toast with Undo. Closure captures the previous count so undo
     // reverts to exactly what was there before the tap.
     const previousCount = count;
-    etched({
+    saved({
       message: `+${n} ${exercise.label.toLowerCase()} logged`,
       onUndo: () => save(previousCount),
     });

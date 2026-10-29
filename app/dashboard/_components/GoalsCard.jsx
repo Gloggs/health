@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Target, Plus, Trash2, Pencil, Trophy, Scale, Sparkles, UtensilsCrossed } from "lucide-react";
+import { Plus, Trash2, Pencil, Trophy, Scale, Sparkles, UtensilsCrossed } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -55,12 +55,9 @@ export default function GoalsCard() {
   };
 
   return (
-    <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Target className="h-4 w-4 text-primary" />
-          <p className="text-sm font-medium">Goals</p>
-        </div>
+        <h2 className="font-display text-xl font-bold uppercase">Goals</h2>
         <Button
           variant="outline"
           size="sm"

@@ -16,7 +16,6 @@ const LABELS = {
   "/dashboard": "Today",
   "/dashboard/log": "Log",
   "/dashboard/me": "Me",
-  "/dashboard/me/reminders": "Reminders",
   "/dashboard/me/trends": "Trends",
   "/dashboard/trends": "Trends",
   "/dashboard/train": "Train",
@@ -51,12 +50,12 @@ export default function PageHeader({
   };
 
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex items-center gap-3">
       <button
         type="button"
         onClick={goBack}
         aria-label={`Back to ${label}`}
-        className="mt-1 inline-flex h-9 items-center gap-1.5 rounded-lg border bg-card px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        className="inline-flex h-11 shrink-0 items-center gap-1.5 border border-foreground bg-card px-3 text-sm font-semibold"
       >
         <ArrowLeft className="h-4 w-4" />
         <span>{label}</span>
@@ -67,7 +66,7 @@ export default function PageHeader({
         </div>
       ) : null}
       <div className="flex-1">
-        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+        <h1 className="font-display text-3xl font-extrabold uppercase leading-none">{title}</h1>
         {subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}
       </div>
     </div>

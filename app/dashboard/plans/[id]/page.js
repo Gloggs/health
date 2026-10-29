@@ -258,7 +258,7 @@ export default function PlanEditPage() {
 
         {days.map((day, idx) => (
           <TabsContent key={day.id} value={String(idx)} className="mt-4 space-y-4">
-            <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
+            <div className="border border-foreground bg-card p-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div

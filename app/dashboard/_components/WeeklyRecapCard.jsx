@@ -50,16 +50,16 @@ export default function WeeklyRecapCard({ daysActive = 0, streak = 0 }) {
       : "Quiet week, logged once.";
 
   return (
-    <div className="rounded-2xl bg-primary/5 p-5 shadow-paper-1 paper-texture">
+    <div className="rounded-2xl bg-primary/5 p-5 border border-foreground">
       <div className="flex items-start gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
           <Moon className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-handwritten text-base leading-none text-primary/80">
-            sunday
+          <p className="text-sm font-semibold text-muted-foreground">
+            Sunday
           </p>
-          <p className="mt-1 font-serif text-xl italic font-bold leading-tight">
+          <p className="mt-1 font-display uppercase text-xl font-bold leading-tight">
             {headline}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">

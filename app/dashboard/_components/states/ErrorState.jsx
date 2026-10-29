@@ -41,7 +41,7 @@ export default function ErrorState({
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-destructive/15 text-destructive">
         <AlertTriangle className="h-4 w-4" />
       </div>
-      <p className="font-serif text-base font-semibold text-destructive">
+      <p className="font-display uppercase text-base font-semibold text-destructive">
         {title}
       </p>
       {message ? (

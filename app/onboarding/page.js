@@ -150,7 +150,7 @@ export default function OnboardingPage() {
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <HealthMark size={28} />
-          <p className="font-serif text-sm font-semibold">Health</p>
+          <p className="font-display uppercase text-sm font-semibold">Health</p>
         </div>
         <div className="flex items-center gap-1.5">
           {steps.map((_s, i) => (
@@ -252,7 +252,7 @@ function StepFamily({ value, onChange, stepLabel }) {
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
           Start your family.
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -297,7 +297,7 @@ function StepName({ value, onChange, stepLabel }) {
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
           What should we call you?
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -334,7 +334,7 @@ function StepDetails({ dateOfBirth, onDateOfBirth, heightCm, onHeightCm, stepLab
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
           A few quick details
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -396,7 +396,7 @@ function StepPrivacy({ visibility, onChange, stepLabel }) {
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
           What can family see?
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">

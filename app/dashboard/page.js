@@ -23,7 +23,6 @@ import {
   Scale,
   Check,
   ArrowRight,
-  ListChecks,
   ChevronDown,
   ChevronUp,
   RotateCcw,
@@ -51,7 +50,7 @@ import {
 import { cn } from "@/lib/utils";
 import { dateStr } from "@/lib/dates";
 import { computeStreak } from "@/lib/streak";
-import { etched, maybeFireStreakMilestone } from "@/lib/etchFeedback";
+import { saved } from "@/lib/feedback";
 import { useCountUp, useTodayDate, useViewing } from "@/lib/hooks";
 import {
   formatDuration,
@@ -76,7 +75,7 @@ import TodayLogList from "./_components/TodayLogList";
 import AdHocTraining from "./_components/AdHocTraining";
 import MiniWorkoutsCard from "./_components/MiniWorkoutsCard";
 import CloseTodayCard from "./_components/CloseTodayCard";
-import TallyRow from "./_components/TallyRow";
+import TodayHeader from "./_components/TodayHeader";
 import WeeklyRecapCard from "./_components/WeeklyRecapCard";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -317,16 +316,6 @@ function TodayPageInner() {
   const streakAnim = useCountUp(streak);
   const dots = useMemo(() => weekDots(activeDates), [activeDates]);
 
-  // Fire a stronger etch animation + on-voice toast when the streak
-  // lands on 7 / 14 / 30 / 60 / 100 / 200 / 365 / 500 / 1000. Guarded
-  // server-side by a localStorage marker keyed to (streak, date) so it
-  // doesn't refire on every render, just once per milestone-day.
-  // Skipped in viewing-other mode — we don't celebrate someone else's
-  // milestone on their behalf.
-  useEffect(() => {
-    if (isViewingOther) return;
-    maybeFireStreakMilestone(streak);
-  }, [streak, isViewingOther]);
 
   const isRest = todaySession?.planDay?.label === "Rest";
   const isComplete = !!todaySession?.session?.completed;
@@ -729,174 +718,14 @@ function TodayPageInner() {
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
       {showOnboarding ? <OnboardingCard steps={onboardingSteps} /> : null}
 
-      {/* Header — Today's hero. Stripped of the outer card chrome so the
-          streak reads as the page itself (paper bg) rather than a tile
-          floating on paper. Date in Caveat handwritten + Source Serif
-          mix. Streak goes display-scale; "X of 7 logged today" is the
-          quiet honest line under it. Family ribbon trails along, family
-          column on the right doubles as the log progress.
+      <TodayHeader
+        streak={streak}
+        week={dots}
+        familyLogged={familyEtchedTodayCount}
+        familyTotal={familyMembers.length}
+      />
 
-          Hand-drawn rule beneath the whole block is the only divider;
-          the rest of the layout breathes. Anti-Tailwind-dashboard.
-
-          .enter-paper adds a subtle fade-up on first paint so the page
-          reads as "ink drying on paper" rather than instant-grid. */}
-      <div className="pt-2 pb-6 rule-handdrawn enter-paper">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-          <div className="min-w-0 flex-1">
-            {/* Caveat handwritten weekday — the margin-note glyph. Plus
-                Source Serif "21 May 2026" running underneath like a
-                journal date stamp. .scribbled gives it a tiny pen-on-
-                paper rotation. */}
-            <p className="scribbled font-handwritten text-2xl leading-none text-primary/80">
-              {new Date().toLocaleDateString("en-GB", { weekday: "long" })}
-            </p>
-            <p className="mt-1 font-serif text-sm tracking-tight text-muted-foreground">
-              {new Date().toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-
-            {/* The streak. Display-scale, mono, tight. No card around it.
-                Fluid clamp(72→112px) via the `text-streak` Tailwind token
-                added in J.4, no more discrete sm: breakpoint jump. */}
-            <div className="mt-5 flex items-baseline gap-3">
-              <span className="font-mono text-streak font-bold tracking-[-0.04em] tabular-nums">
-                {Math.round(streakAnim)}
-              </span>
-              <span className="font-handwritten text-2xl leading-none text-foreground/70">
-                day{streak === 1 ? "" : "s"}
-              </span>
-            </div>
-            <p className="mt-2 font-serif text-lg italic text-foreground/80">
-              {streak === 0
-                ? "Start with one entry."
-                : streak === 1
-                ? "Day one."
-                : "Logged today."}
-            </p>
-            <p className="mt-4 text-xs">
-              <span className="font-mono text-base font-bold tabular-nums text-foreground">
-                {etchedTodayCount}
-              </span>
-              <span className="ml-1.5 text-muted-foreground">
-                of 7 logged today
-              </span>
-            </p>
-          </div>
-
-          {/* Week rail moves to a quieter slot at the side, smaller dots
-              that read as a margin annotation. */}
-          <div className="flex flex-col items-end gap-2">
-            <p className="font-handwritten text-base leading-none text-muted-foreground">
-              this week
-            </p>
-            <div className="flex gap-1">
-              {dots.map((d, i) => (
-                <div key={i} className="flex flex-col items-center gap-1">
-                  <span
-                    className={cn(
-                      "text-[8px] font-medium uppercase tracking-wider",
-                      d.isToday ? "text-primary" : "text-muted-foreground/60"
-                    )}
-                  >
-                    {d.label[0]}
-                  </span>
-                  <div
-                    className={cn(
-                      "h-6 w-2.5 rounded-full transition-colors",
-                      d.done
-                        ? "bg-primary"
-                        : d.future
-                        ? "border border-dashed border-border/60 bg-transparent"
-                        : "bg-muted",
-                      d.isToday && !d.done && "ring-2 ring-primary/40"
-                    )}
-                    aria-label={`${d.label}: ${d.done ? "logged" : d.future ? "upcoming" : d.isToday ? "today" : "nothing"}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Family ribbon — sits below the streak block as a strip of
-            ticked names with a soft separator. Only when family > 1. */}
-        {familyMembers.length > 1 ? (
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
-            <span className="font-handwritten text-base text-muted-foreground">
-              family
-            </span>
-            {familyMembers.map((m) => (
-              <Link
-                key={m.id}
-                href={m.isMe ? "/dashboard" : `/dashboard?viewing=${m.id}`}
-                className={cn(
-                  "inline-flex items-center gap-1.5 transition-colors hover:text-primary",
-                  m.isMe ? "text-primary" : "text-foreground/85"
-                )}
-                title={
-                  m.etchedToday
-                    ? `${m.displayName ?? "Unnamed"} logged today`
-                    : `${m.displayName ?? "Unnamed"}, nothing yet`
-                }
-              >
-                <span
-                  className={cn(
-                    "inline-flex h-2 w-2 rounded-full transition-colors",
-                    m.etchedToday ? "bg-primary" : "border border-muted-foreground/40"
-                  )}
-                  aria-hidden
-                />
-                <span className="font-medium">
-                  {m.isMe ? "You" : m.displayName ?? "Unnamed"}
-                </span>
-              </Link>
-            ))}
-            <span className="ml-auto font-mono text-[11px] tabular-nums text-muted-foreground">
-              {familyEtchedTodayCount} / {familyMembers.length}
-            </span>
-          </div>
-        ) : null}
-      </div>
-
-      {/* Weekly weigh-in nudge - surfaces a soft prompt when the last
-          recorded body weight is more than a week old. The WeightTile has
-          its own subtle "stale" styling but the tile is small; a banner
-          above the fold makes it easier to act on. Threshold tightened
-          from 14d -> 7d in P2.S5 so the nudge actually shows up weekly
-          rather than once a fortnight. Hidden when the user has never
-          logged a weight (no nudge until they've opted into tracking). */}
-      {!loading && latestBody?.weightKg && latestBody?.date ? (() => {
-        const daysSince = Math.floor(
-          (new Date(today + "T00:00:00") - new Date(latestBody.date + "T00:00:00")) / 86400000
-        );
-        if (daysSince <= 7) return null;
-        return (
-          <Link
-            href="/dashboard/log/body"
-            className="hover-lift block rounded-2xl border border-warning/40 bg-warning/5 p-4 shadow-paper-1"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-warning/15 text-warning">
-                <Scale className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold">Time for a weigh-in</p>
-                <p className="text-xs text-muted-foreground">
-                  Last logged {daysSince} days ago ({formatWeight(latestBody.weightKg)}). Weekly is usually enough.
-                </p>
-              </div>
-              <ArrowRight className="h-4 w-4 shrink-0 text-warning" />
-            </div>
-          </Link>
-        );
-      })() : null}
-
-      {/* Quick-log tiles - four trackable areas, inline. Mood was replaced
-          by the Daily 4 below; full mood logging still lives at Log → Mood. */}
+      {/* Today's logs. Every row opens the same log sheet (components/log). */}
       {loading ? (
         <Skeleton className="h-[420px] w-full" />
       ) : (
@@ -913,170 +742,22 @@ function TodayPageInner() {
         />
       )}
 
-      {/* Weekly recap (J.6 / UX-PATTERNS "closing the week"). Self-mutes
-          unless today is Sunday AND after 18:00 AND user has any activity
-          this week. When it shows, it's a one-line Source-Serif-italic
-          take on the week + link to Trends. Quiet by default. */}
-      {!isViewingOther && !loading ? (
-        <WeeklyRecapCard
-          daysActive={dots.filter((d) => d.done).length}
-          streak={streak}
-        />
-      ) : null}
-
-      {/* Daily 4 mini-workouts - replaces the old Mood tile. Counts toward
-          the activity streak so a 30-second routine keeps it alive. */}
-      {loading ? (
-        <Skeleton className="h-44 w-full rounded-2xl" />
-      ) : (
-        <MiniWorkoutsCard
-          todayRows={todayMini}
-          configured={userCtx?.miniExercises}
-          today={today}
-          onChanged={load}
-        />
-      )}
-
-
-      {/* Daily check-in (resistance) - HTML <details> for native progressive
-          disclosure (J.6). Expands by default when resistance is already
-          set (so the user sees their answer + can change it). Collapsed
-          by default when blank, Today is busy enough without a 3-button
-          row taking up vertical space the user hasn't engaged with.
-          Colour on the buttons encodes effort, left→right friction. */}
-      <details
-        className="group rounded-2xl bg-card p-5 shadow-paper-1 paper-texture [&_summary::-webkit-details-marker]:hidden"
-        open={checkIn?.resistance != null || !!checkIn?.intentionalRest}
-      >
-        <summary className="flex cursor-pointer flex-wrap items-baseline justify-between gap-2 [&::-webkit-details-marker]:hidden">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              Today's check-in
-            </p>
-            <p className="mt-1 text-lg font-semibold">
-              {checkIn?.resistance != null
-                ? "How much did today fight you?"
-                : "Did today fight you?"}
-            </p>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {checkIn?.resistance != null
-              ? "Tap again to clear."
-              : "Tap to open · answer honestly."}
-          </p>
-        </summary>
-
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          {[
-            {
-              v: 1,
-              label: "Easy",
-              hint: "Flowed naturally",
-              ring: "border-[hsl(var(--chart-3))] bg-[hsl(var(--chart-3)/0.10)]",
-              dot: "bg-[hsl(var(--chart-3))]",
-            },
-            {
-              v: 2,
-              label: "Medium",
-              hint: "Some friction",
-              ring: "border-warning bg-warning/10",
-              dot: "bg-warning",
-            },
-            {
-              v: 3,
-              label: "Hard",
-              hint: "Showed up despite resistance",
-              ring: "border-primary bg-primary/10",
-              dot: "bg-primary",
-            },
-          ].map((r) => {
-            const selected = checkIn?.resistance === r.v;
-            return (
-              <button
-                key={r.v}
-                onClick={() => saveResistance(selected ? null : r.v)}
-                aria-pressed={selected}
-                className={cn(
-                  "group rounded-xl border p-3 text-left transition-all",
-                  selected ? r.ring : "border-border hover:border-primary/40"
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "h-2 w-2 shrink-0 rounded-full transition-colors",
-                      selected ? r.dot : "bg-muted group-hover:bg-primary/40"
-                    )}
-                  />
-                  <p className="text-sm font-semibold">{r.label}</p>
-                </div>
-                <p className="mt-1 text-[11px] text-muted-foreground">{r.hint}</p>
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          onClick={toggleIntentionalRest}
-          aria-pressed={!!checkIn?.intentionalRest}
-          className={cn(
-            "mt-3 flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-xs transition-colors",
-            checkIn?.intentionalRest
-              ? "border-primary/40 bg-primary/5"
-              : "border-border/60 hover:border-primary/30"
-          )}
-        >
-          <span className="text-muted-foreground">
-            <span className="font-medium text-foreground">Intentional rest</span>
-            <span className="ml-1.5">- won't dent your discipline score.</span>
-          </span>
-          <span
-            className={cn(
-              "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wider",
-              checkIn?.intentionalRest
-                ? "border-primary/60 text-primary"
-                : "border-border text-muted-foreground"
-            )}
-          >
-            {checkIn?.intentionalRest ? "On" : "Off"}
-          </span>
-        </button>
-      </details>
-
-      {/* Close-the-day ritual (UX-PATTERNS §5). Always rendered when not
-          viewing-other; visually escalates after the Personality preset's
-          nightly prompt time. Counts "X of 7 logged today" from the same
-          data the streak uses. */}
-      {!isViewingOther && !loading ? (
-        <CloseTodayCard
-          count={etchedTodayCount}
-          total={7}
-          closedAt={checkIn?.closedAt ?? null}
-          note={checkIn?.note ?? null}
-          date={today}
-          onChanged={load}
-        />
-      ) : null}
-
       {/* Today's workout */}
       {loading ? (
-        <Skeleton className="h-48 w-full rounded-2xl" />
+        <Skeleton className="h-48 w-full" />
       ) : !todaySession?.plan ? (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed py-12 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <ListChecks className="h-6 w-6" />
-          </div>
+        <div className="flex flex-col items-start gap-3 border border-foreground bg-card p-4 md:p-5">
           <div>
-            <p className="text-sm font-medium">No active plan</p>
-            <p className="mt-1 text-xs text-muted-foreground">Create one to see today's session here.</p>
+            <p className="font-display text-xl font-bold uppercase">No training plan</p>
+            <p className="mt-1 text-sm text-muted-foreground">Make a plan and today's session shows here.</p>
           </div>
           <Button asChild>
-            <Link href="/dashboard/plans">Go to Plans <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <Link href="/dashboard/plans">Make a plan</Link>
           </Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+          <div className="border border-foreground bg-card p-4 md:p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div
@@ -1088,7 +769,7 @@ function TodayPageInner() {
                   {isRest ? <Bed className="h-6 w-6" /> : <Dumbbell className="h-6 w-6" />}
                 </div>
                 <div>
-                  <p className="text-2xl font-bold tracking-tight">
+                  <p className="font-display text-2xl font-bold uppercase leading-tight">
                     {todaySession.plan.name}
                   </p>
                   <p className="text-sm text-muted-foreground">
@@ -1098,23 +779,23 @@ function TodayPageInner() {
               </div>
               {isComplete && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-success/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-success">
-                    <Check className="h-3.5 w-3.5" /> Logged
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+                    <Check className="h-4 w-4" aria-hidden /> Done
                   </span>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <button
                         type="button"
-                        className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
+                        className="inline-flex h-11 items-center gap-1 border border-border px-3 text-sm font-medium"
                       >
                         <RotateCcw className="h-3 w-3" /> Undo
                       </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Un-log today's session?</AlertDialogTitle>
+                        <AlertDialogTitle>Undo today's session?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This deletes the session row and any sets you've logged. The plan stays put.
+                          This removes the session and the sets you logged today. Your plan stays the same.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -1123,7 +804,7 @@ function TodayPageInner() {
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           onClick={undoSession}
                         >
-                          Un-log
+                          Undo session
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -1157,7 +838,7 @@ function TodayPageInner() {
                         value={notesDraft}
                         onChange={(e) => setNotesDraft(e.target.value)}
                         onBlur={saveSessionNotes}
-                        placeholder="How it felt, form cues, RPE - anything worth remembering."
+                        placeholder="How it felt, anything worth remembering"
                         className="w-full rounded-md border bg-background px-3 py-2 text-xs outline-none focus:border-primary"
                       />
                     </div>
@@ -1214,7 +895,7 @@ function TodayPageInner() {
                       onChange={(e) => setNotesDraft(e.target.value)}
                       onBlur={saveSessionNotes}
                       disabled={isComplete}
-                      placeholder="How it felt, form cues, RPE - anything worth remembering."
+                      placeholder="How it felt, anything worth remembering"
                       className="w-full rounded-md border bg-background px-3 py-2 text-xs outline-none focus:border-primary disabled:opacity-60"
                     />
                   </div>
@@ -1258,19 +939,19 @@ function TodayPageInner() {
             )}
           </div>
 
-          <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture">
+          <div className="border border-foreground bg-card p-4 md:p-5">
             <div className="mb-3 flex items-start justify-between gap-2">
               <div>
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">Calendar</p>
+                <h2 className="font-display text-xl font-bold uppercase">This month</h2>
                 <p className="text-lg font-semibold tabular-nums">
                   {sessionDates.size} session{sessionDates.size === 1 ? "" : "s"} logged
                 </p>
               </div>
               <Link
                 href="/dashboard/trends"
-                className="inline-flex items-center gap-1 rounded-full border border-primary/30 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary transition-colors hover:bg-primary/10"
+                className="text-sm font-semibold underline underline-offset-4"
               >
-                Trends <ArrowRight className="h-3 w-3" />
+                See trends
               </Link>
             </div>
             <MonthCalendar
@@ -1281,11 +962,149 @@ function TodayPageInner() {
         </div>
       )}
 
-      {/* Bottom tally row — visualises today's logged count as hand-drawn
-          tally marks (SURFACES.md §1 footer). Renders nothing when count
-          is zero so the empty state stays calm. */}
+      {/* Weekly recap (J.6 / UX-PATTERNS "closing the week"). Self-mutes
+          unless today is Sunday AND after 18:00 AND user has any activity
+          this week. When it shows, it's a one-line Source-Serif-italic
+          take on the week + link to Trends. Quiet by default. */}
       {!isViewingOther && !loading ? (
-        <TallyRow count={etchedTodayCount} total={7} label="logged today" />
+        <WeeklyRecapCard
+          daysActive={dots.filter((d) => d.done).length}
+          streak={streak}
+        />
+      ) : null}
+
+      {/* Daily 4 mini-workouts - replaces the old Mood tile. Counts toward
+          the activity streak so a 30-second routine keeps it alive. */}
+      {loading ? (
+        <Skeleton className="h-44 w-full" />
+      ) : (
+        <MiniWorkoutsCard
+          todayRows={todayMini}
+          configured={userCtx?.miniExercises}
+          today={today}
+          onChanged={load}
+        />
+      )}
+
+
+      {/* Daily check-in (resistance) - HTML <details> for native progressive
+          disclosure (J.6). Expands by default when resistance is already
+          set (so the user sees their answer + can change it). Collapsed
+          by default when blank, Today is busy enough without a 3-button
+          row taking up vertical space the user hasn't engaged with.
+          Colour on the buttons encodes effort, left→right friction. */}
+      <details
+        className="group border border-foreground bg-card p-4 md:p-5 [&_summary::-webkit-details-marker]:hidden"
+        open={checkIn?.resistance != null || !!checkIn?.intentionalRest}
+      >
+        <summary className="flex cursor-pointer flex-wrap items-baseline justify-between gap-2 [&::-webkit-details-marker]:hidden">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              Check-in
+            </p>
+            <p className="mt-1 text-lg font-semibold">
+              {checkIn?.resistance != null
+                ? "How hard was today?"
+                : "How hard was today?"}
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {checkIn?.resistance != null
+              ? "Tap again to clear"
+              : "Optional"}
+          </p>
+        </summary>
+
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          {[
+            {
+              v: 1,
+              label: "Easy",
+              hint: "Flowed naturally",
+              ring: "border-[hsl(var(--chart-3))] bg-[hsl(var(--chart-3)/0.10)]",
+              dot: "bg-[hsl(var(--chart-3))]",
+            },
+            {
+              v: 2,
+              label: "Medium",
+              hint: "Some friction",
+              ring: "border-warning bg-warning/10",
+              dot: "bg-warning",
+            },
+            {
+              v: 3,
+              label: "Hard",
+              hint: "Did it anyway",
+              ring: "border-primary bg-primary/10",
+              dot: "bg-primary",
+            },
+          ].map((r) => {
+            const selected = checkIn?.resistance === r.v;
+            return (
+              <button
+                key={r.v}
+                onClick={() => saveResistance(selected ? null : r.v)}
+                aria-pressed={selected}
+                className={cn(
+                  "group rounded-xl border p-3 text-left transition-all",
+                  selected ? r.ring : "border-border hover:border-primary/40"
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "h-2 w-2 shrink-0 rounded-full transition-colors",
+                      selected ? r.dot : "bg-muted group-hover:bg-primary/40"
+                    )}
+                  />
+                  <p className="text-sm font-semibold">{r.label}</p>
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">{r.hint}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={toggleIntentionalRest}
+          aria-pressed={!!checkIn?.intentionalRest}
+          className={cn(
+            "mt-3 flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-xs transition-colors",
+            checkIn?.intentionalRest
+              ? "border-primary/40 bg-primary/5"
+              : "border-border/60 hover:border-primary/30"
+          )}
+        >
+          <span className="text-muted-foreground">
+            <span className="font-medium text-foreground">Intentional rest</span>
+            <span className="ml-1.5">Planned rest does not count against you.</span>
+          </span>
+          <span
+            className={cn(
+              "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wider",
+              checkIn?.intentionalRest
+                ? "border-primary/60 text-primary"
+                : "border-border text-muted-foreground"
+            )}
+          >
+            {checkIn?.intentionalRest ? "On" : "Off"}
+          </span>
+        </button>
+      </details>
+
+      {/* Close-the-day ritual (UX-PATTERNS §5). Always rendered when not
+          viewing-other; visually escalates after the Personality preset's
+          nightly prompt time. Counts "X of 7 logged today" from the same
+          data the streak uses. */}
+      {!isViewingOther && !loading ? (
+        <CloseTodayCard
+          count={etchedTodayCount}
+          total={7}
+          closedAt={checkIn?.closedAt ?? null}
+          note={checkIn?.note ?? null}
+          date={today}
+          onChanged={load}
+        />
       ) : null}
 
       <RestTimer
@@ -1889,7 +1708,7 @@ function TrendCard({ icon: Icon, title, metric, sub, isPrivate, children }) {
     );
   }
   return (
-    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-4">
       <div className="flex items-start gap-2.5">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Icon className="h-4 w-4" />
@@ -2055,7 +1874,7 @@ function ViewingStat({ icon: Icon, label, value, sub, isPrivate }) {
     );
   }
   return (
-    <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
+    <div className="border border-foreground bg-card p-4">
       <div className="flex items-start gap-2.5">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Icon className="h-4 w-4" />

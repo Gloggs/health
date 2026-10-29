@@ -624,7 +624,7 @@ function Preview() {
           </div>
 
           {/* Meals card */}
-          <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
+          <div className="border border-foreground bg-card p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <UtensilsCrossed className="h-4 w-4 text-primary" />
@@ -661,7 +661,7 @@ function Preview() {
           </div>
 
           {/* Family room preview */}
-          <div className="rounded-2xl bg-card p-4 shadow-paper-1 paper-texture">
+          <div className="border border-foreground bg-card p-4">
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
               <p className="text-sm font-medium">Family room</p>

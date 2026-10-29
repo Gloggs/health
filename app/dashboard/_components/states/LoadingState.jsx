@@ -74,7 +74,7 @@ export default function LoadingState({ shape = "card", count = 1, className = ""
     return (
       <div
         className={cn(
-          "rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6",
+          "border border-foreground bg-card p-5  sm:p-6",
           className
         )}
         aria-hidden="true"

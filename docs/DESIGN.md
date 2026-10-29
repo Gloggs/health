@@ -51,6 +51,16 @@ The same five places on phones (bottom tabs) and desktop (sidebar):
 
 On every screen: search (logs, exercises, plans, family, settings), notifications, and **You** (profile, goals, targets, what the family sees, invites, export, delete, sign out).
 
+Search opens from the top bar, or with `/` or Ctrl/Cmd + K. The tabs live in one list (`components/shell/nav.js`) shared by the real app and the demo, so the two cannot drift apart.
+
+## Components
+
+- Cards: a 1 px ink border on the card colour, `p-4` on phones and `p-5` from tablet up. No fills, rounding or shadows.
+- Headings: Barlow Condensed, bold, uppercase. Page titles are `h1` (PageHero or PageHeader), card titles are `h2`.
+- Body text: Barlow. Numbers that matter use Barlow Condensed.
+- People are shown as a square of initials (`lib/initials.js`).
+- Rows in lists are at least 48 px tall; buttons and links at least 44 px.
+
 ## Behaviour
 
 - Logging takes one or two taps and starts from the last entry.

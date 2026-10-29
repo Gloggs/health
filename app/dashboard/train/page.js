@@ -57,11 +57,7 @@ export default function TrainHubPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-6">
-      <PageHero
-        eyebrow="train"
-        title="Your training side"
-        subtitle="Plan, library, last sessions."
-      />
+      <PageHero title="Train" />
 
       {plans === null ? (
         <Skeleton className="h-44 w-full rounded-2xl" />
@@ -151,7 +147,7 @@ export default function TrainHubPage() {
         />
       </div>
 
-      <div className="rounded-2xl bg-card p-5 shadow-paper-1 paper-texture sm:p-6">
+      <div className="border border-foreground bg-card p-5  sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-muted-foreground" />
@@ -226,7 +222,7 @@ function HubLink({ href, icon: Icon, label, sub }) {
   return (
     <Link
       href={href}
-      className="hover-lift group flex items-center gap-4 rounded-2xl bg-card p-5 shadow-paper-1 paper-texture transition-all hover:border-primary/40"
+      className="hover-lift group flex items-center gap-4 border border-foreground bg-card p-5  transition-all hover:border-primary/40"
     >
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
         <Icon className="h-5 w-5" />
