@@ -18,9 +18,9 @@ export default function DemoCatchAll() {
         <Button asChild>
           <Link href="/demo">Back to Today</Link>
         </Button>
-        <Link href="/request-invite" className="text-xs text-primary hover:underline">
-          Request full access
-        </Link>
+        <a href="/api/auth/register?post_login_redirect_url=%2Fonboarding" className="text-xs text-primary hover:underline">
+          Create a free account
+        </a>
       </div>
     </div>
   );

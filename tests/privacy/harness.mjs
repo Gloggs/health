@@ -26,16 +26,18 @@ export const PEOPLE = {
   A2: { id: `kp_a2_${tag}`, email: `a2_${tag}@example.org`, name: "Ade" },
   B: { id: `kp_b_${tag}`, email: `b_${tag}@example.org`, name: "Bola" },
   U: { id: `kp_u_${tag}`, email: `u_${tag}@example.org`, name: "Uche", verified: false },
+  N: { id: `kp_n_${tag}`, email: `n_${tag}@example.org`, name: "Nia" },
 };
 export const FAMILY_A = `fam_a_${tag}`;
 export const FAMILY_B = `fam_b_${tag}`;
+export const FAMILY_N = `fam_n_${tag}`;
 
 export async function seedWorld({ visibilityA = null } = {}) {
   const { A, A2, B } = PEOPLE;
   await db.insert(USERS).values([
-    { id: A.id, email: A.email, displayName: "Ada", visibility: visibilityA },
-    { id: A2.id, email: A2.email, displayName: "Ade" },
-    { id: B.id, email: B.email, displayName: "Bola" },
+    { id: A.id, email: A.email, displayName: "Ada", visibility: visibilityA, healthConsentAt: new Date() },
+    { id: A2.id, email: A2.email, displayName: "Ade", healthConsentAt: new Date() },
+    { id: B.id, email: B.email, displayName: "Bola", healthConsentAt: new Date() },
   ]).onConflictDoNothing();
   await db.insert(FAMILIES).values([
     { id: FAMILY_A, name: "Family A", ownerUserId: A.id },

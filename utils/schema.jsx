@@ -121,6 +121,9 @@ export const USERS = pgTable('users', {
   // surfaces every user whose typing_until is still in the future as
   // an active typer. Null when not currently typing.
   typingUntil: timestamp('typing_until', { withTimezone: true }),
+  // When the person agreed to health storing their health information (UK GDPR special category data,
+  // explicit consent). Nothing can be logged until this is set. Added 6 November 2026.
+  healthConsentAt: timestamp('health_consent_at', { withTimezone: true }),
 });
 
 // One row per (viewer, viewee, day) - unique constraint prevents the same

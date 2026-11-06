@@ -18,7 +18,8 @@
  */
 import { NextResponse } from "next/server";
 import { db } from "@/utils/dbConfig";
-import { FAMILIES, MEMBERSHIPS } from "@/utils/schema";
+import { FAMILIES, MEMBERSHIPS, USERS } from "@/utils/schema";
+import { eq } from "drizzle-orm";
 import { requireKindeOnly, safeMessage } from "@/lib/auth";
 import { generateFamilyId } from "@/lib/tokens";
 import { clampString } from "@/lib/validate";
@@ -29,6 +30,11 @@ export async function POST(req) {
     auth = await requireKindeOnly({ requireVerified: true });
   } catch (e) {
     return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
+  }
+
+  const [me] = await db.select({ healthConsentAt: USERS.healthConsentAt }).from(USERS).where(eq(USERS.id, auth.userId)).limit(1);
+  if (!me?.healthConsentAt) {
+    return NextResponse.json({ error: "Please agree to how health stores your health information first." }, { status: 403 });
   }
 
   if (auth.hasFamily) {

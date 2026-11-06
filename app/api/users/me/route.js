@@ -154,6 +154,10 @@ export async function PUT(req) {
     }
   }
 
+  if (body.healthConsent === true) {
+    update.healthConsentAt = new Date();
+  }
+
   if ("visibility" in body) {
     update.visibility = body.visibility == null ? null : normaliseVisibility(body.visibility);
   }

@@ -21,7 +21,7 @@ const SECTIONS = [
   {
     heading: "Your account",
     body: [
-      "Full accounts are invite-only during the beta. Keep your sign-in secure; you are responsible for activity under your account.",
+      "Anyone can create a free account. Keep your sign-in secure; you are responsible for activity under your account.",
     ],
   },
   {
