@@ -24,8 +24,12 @@ export default function MockProvider({ children }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Solo vs family seed — URL ?mode= wins, else the tab's stored choice.
+  useEffect(() => { setMode(resolveMode(searchParams)); }, [searchParams]);
+
+  // The sample-data layer is installed once for the whole demo visit. It used to be taken down and put back on
+  // every page change, and a page that loads data on arrival (For my GP) could reach the real server in the gap.
   useEffect(() => {
-    // Solo vs family seed — URL ?mode= wins, else the tab's stored choice.
     setMode(resolveMode(searchParams));
 
     // Identity hint for reused pages that normally ask Kinde who's signed
@@ -86,7 +90,7 @@ export default function MockProvider({ children }) {
       axios.defaults.adapter = origAdapter;
       delete window.__ETCH_DEMO_USER_ID__;
     };
-  }, [searchParams]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     function onClick(e) {

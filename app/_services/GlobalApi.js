@@ -61,6 +61,9 @@ const GetWater = (params = {}) => axios.get('/api/water' + qs(params));
 const AddWater = (data) => axios.post('/api/water', data);
 const DeleteWater = (id) => axios.delete('/api/water?id=' + id);
 
+const GetSummary = (params = {}) => axios.get('/api/summary' + qs(params));
+const GetAppointment = () => axios.get('/api/appointment');
+const SaveAppointment = (data) => axios.put('/api/appointment', data);
 const GetFeelings = (params = {}) => axios.get('/api/feelings' + qs(params));
 const AddFeeling = (data) => axios.post('/api/feelings', data);
 const UpdateFeeling = (data) => axios.put('/api/feelings', data);
@@ -188,6 +191,7 @@ export default {
   // health modules
   GetSleep, SaveSleep, DeleteSleep,
   GetWater, AddWater, DeleteWater,
+  GetSummary, GetAppointment, SaveAppointment,
   GetFeelings, AddFeeling, UpdateFeeling, DeleteFeeling,
   GetMood, SaveMood, DeleteMood,
   GetBody, SaveBody, DeleteBody,

@@ -22,6 +22,8 @@ import * as me from "@/app/api/users/me/route.js";
 import * as familyCreate from "@/app/api/family/create/route.js";
 import * as invites from "@/app/api/invites/route.js";
 import * as feelings from "@/app/api/feelings/route.js";
+import * as appointment from "@/app/api/appointment/route.js";
+import * as summary from "@/app/api/summary/route.js";
 
 const { A, A2, B, U } = PEOPLE;
 const d = today();
@@ -39,6 +41,7 @@ beforeAll(async () => {
     [cardio.POST, { date: d, type: "walk", durationMinutes: 20, note: "SECRET-CARDIO-A" }],
     [chat.POST, { date: d, content: "SECRET-JOURNAL-A" }],
     [water.POST, { date: d, amountMl: 500 }],
+    [appointment.PUT, { date: d, questions: "SECRET-FEELING-A question", medicines: "SECRET-FEELING-A medicine" }],
     [feelings.POST, { date: d, what: "SECRET-FEELING-A", howBad: "moderate", better: "SECRET-FEELING-A", note: "SECRET-FEELING-A" }],
   ];
   for (const [handler, payload] of writes) {
@@ -50,7 +53,7 @@ beforeAll(async () => {
 const READS = [
   ["sleep", sleep], ["mood", mood], ["meals", meals], ["body-metrics", body], ["cardio", cardio], ["chat", chat],
   ["water", water], ["dashboard", dashboard], ["family", family], ["family/activity", activity], ["family/chat", familyChat],
-  ["feelings", feelings], ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
+  ["feelings", feelings], ["appointment", appointment], ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
 ];
 
 function leaks(text, { weight = true } = {}) {
@@ -179,6 +182,27 @@ describe("how I feel", () => {
     expect(edit.status).toBe(404);
     const del = await call(feelings.DELETE, { method: "DELETE", path: `/api/feelings?id=${id}` });
     expect(del.status).toBe(404);
+  });
+});
+
+describe("the GP summary", () => {
+  test("A gets their own summary, with their words, appointment questions and medicines", async () => {
+    asUser(A);
+    const r = await call(summary.GET, { path: "/api/summary" });
+    expect(r.status).toBe(200);
+    expect(r.json.happening.some((h) => h.what === "SECRET-FEELING-A")).toBe(true);
+    expect(r.json.questions).toContain("SECRET-FEELING-A question");
+    expect(r.json.footer).toMatch(/Your GP decides what this means/);
+  });
+
+  test("nobody else can get A's summary: not a stranger, not family, not by asking for A", async () => {
+    for (const who of [B, A2]) {
+      asUser(who);
+      const own = await call(summary.GET, { path: "/api/summary" });
+      expect(own.text.includes("SECRET-FEELING-A")).toBe(false);
+      const asked = await call(summary.GET, { path: `/api/summary?viewing=${A.id}` });
+      expect(asked.text.includes("SECRET-FEELING-A")).toBe(false);
+    }
   });
 });
 

@@ -1,3 +1,4 @@
+import { buildSummary } from "@/lib/summary";
 // In-memory mock "backend" for the demo. Mirrors the real API response
 // shapes so the actual dashboard pages render unchanged. No network, no
 // persistence — module state resets on full page reload. Writes mutate the
@@ -1049,6 +1050,20 @@ function routeApi(method, rawUrl, body) {
       return { status: 200, data: store.me };
     }
     return { status: 200, data: store.me };
+  }
+
+  // My appointment and the GP summary (health v2), built by the same lib/summary.js as the real app.
+  if (path === "/api/appointment") {
+    if (m === "PUT") { store.appointment = { id: 1, userId: DEMO_USER_ID, ...(store.appointment ?? {}), ...body }; return { status: 200, data: store.appointment }; }
+    return { status: 200, data: store.appointment ?? null };
+  }
+  if (path === "/api/summary") {
+    if (!store.feelings) routeApi("GET", "/api/feelings", null);
+    const weeks = Math.min(26, Math.max(1, Number(q.weeks) || 4));
+    const fromD = new Date(t + "T12:00:00"); fromD.setDate(fromD.getDate() - (weeks * 7 - 1));
+    const h = liveHistory();
+    return { status: 200, data: buildSummary({ name: store.me?.displayName ?? "You", today: t, from: fromD.toISOString().slice(0, 10), to: t,
+      feelings: store.feelings, sleep: h.sleep, mood: h.mood, appointment: store.appointment ?? null }) };
   }
 
   // How I feel (health v2): sample entries, made up for the demo. Kept in the browser only.

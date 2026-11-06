@@ -331,6 +331,20 @@ export const FEELINGS = pgTable('feelings', {
   byFamilyUserDate: index('feelings_by_family_user_date').on(table.familyId, table.userId, table.date),
 }));
 
+// My appointment (health v2): the next GP appointment, with the person's own questions and medicines,
+// as the NHS advises. One row per person; always private, never shared with family.
+export const APPOINTMENTS = pgTable('appointments', {
+  id: serial('id').primaryKey(),
+  familyId: varchar('family_id', { length: 64 }).notNull(),
+  userId: varchar('user_id', { length: 64 }).notNull(),
+  date: date('date'),                 // optional: when it is
+  questions: text('questions'),       // one per line, the person's 2 or 3 most important
+  medicines: text('medicines'),       // one per line, including vitamins and supplements
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  oneEach: uniqueIndex('appointments_one_per_user').on(table.familyId, table.userId),
+}));
+
 // Body metrics: weight + optional measurements. Weekly preferred.
 export const BODY_METRICS = pgTable('body_metrics', {
   id: serial('id').primaryKey(),

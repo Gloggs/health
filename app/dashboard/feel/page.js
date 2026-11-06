@@ -4,6 +4,7 @@
 // what is happening, since when, what makes it better or worse. The person's own words only: health never scores,
 // interprets or advises, and these entries are never shared with family.
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import GlobalApi from "@/app/_services/GlobalApi";
 import { todayDateStr } from "@/lib/dates";
@@ -122,7 +123,10 @@ export default function FeelPage() {
               ))}
             </ol>
           )}
-        <p className="text-sm text-muted-foreground">Your GP decides what this means. health only keeps your words.</p>
+        <p className="text-sm text-muted-foreground">
+          Your GP decides what this means. health only keeps your words.{" "}
+          <Link href="/dashboard/summary" className="underline underline-offset-4">See it for my GP</Link>
+        </p>
       </section>
     </div>
   );

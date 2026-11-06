@@ -19,9 +19,16 @@ export default function FeelPanel() {
         {count ? `You have written down ${count} ${count === 1 ? "thing" : "things"} in the last two weeks, ready to show your GP.`
           : "Write down how you feel, in your own words, ready to show your GP."}
       </p>
-      <Link href="/dashboard/feel" className="inline-flex h-12 w-full items-center justify-center bg-primary px-6 text-base font-medium text-primary-foreground sm:w-auto">
-        Add how you feel
-      </Link>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Link href="/dashboard/feel" className="inline-flex h-12 w-full items-center justify-center bg-primary px-6 text-base font-medium text-primary-foreground sm:w-auto">
+          Add how you feel
+        </Link>
+        {count ? (
+          <Link href="/dashboard/summary" className="inline-flex h-12 w-full items-center justify-center bg-background px-6 text-base font-medium sm:w-auto">
+            See it for my GP
+          </Link>
+        ) : null}
+      </div>
     </section>
   );
 }

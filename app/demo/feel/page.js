@@ -5,6 +5,6 @@
 // always matches the real app.
 import Page from "@/app/dashboard/feel/page";
 
-export default function DemoLogMoodPage() {
+export default function DemoFeelPage() {
   return <Page />;
 }

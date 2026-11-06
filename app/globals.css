@@ -238,3 +238,11 @@ a:focus-visible,
     scroll-behavior: auto !important;
   }
 }
+
+/* Printing the GP summary: only the summary sheet goes on paper, in black on white. */
+@media print {
+  body * { visibility: hidden; }
+  .print-sheet, .print-sheet * { visibility: visible; color: #000 !important; background: #fff !important; }
+  .print-sheet { position: absolute; inset: 0 auto auto 0; width: 100%; padding: 0 !important; }
+  .no-print { display: none !important; }
+}
