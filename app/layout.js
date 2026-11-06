@@ -8,13 +8,13 @@ const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"
 
 export const metadata = {
   metadataBase: new URL("https://health.guilduk.com"),
-  title: { default: "Health", template: "%s | Health" },
+  title: { default: "health", template: "%s | health" },
   description:
     "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two, see whether the week is on track, and share only what you choose.",
-  applicationName: "Health",
+  applicationName: "health",
   // Added to a phone's home screen, Health opens full screen with the navy
   // top bar running up behind the status bar (AppShell pads for the notch).
-  appleWebApp: { capable: true, title: "Health", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "health", statusBarStyle: "black-translucent" },
   formatDetection: { telephone: false },
 };
 

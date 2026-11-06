@@ -14,7 +14,7 @@ export default function LegalPage({ title, updated, intro, sections }) {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-display font-medium tracking-tight text-lg">Health</span>
+            <span className="block font-display font-medium tracking-tight text-lg">health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">

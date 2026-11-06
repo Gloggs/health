@@ -56,7 +56,7 @@ export default function AppShell({ base, user, signOut, banner, top, children })
         <aside className="hidden w-[232px] shrink-0 flex-col bg-ink text-chalk md:flex">
           <Link href={base} className="flex items-center gap-2.5 px-6 pb-6 pt-5 font-display font-medium tracking-tight text-[28px] leading-none">
             <HealthMark size={26} title="" aria-hidden />
-            Health
+            health
           </Link>
           <nav aria-label="Main" className="flex flex-col">
             {items.map(({ key, label, href, icon: Icon }) => (
@@ -97,7 +97,7 @@ export default function AppShell({ base, user, signOut, banner, top, children })
           <header className="flex h-14 shrink-0 items-center justify-between bg-ink pl-4 pr-1 text-chalk md:hidden">
             <Link href={base} className="flex items-center gap-2 font-display font-medium tracking-tight text-[26px] leading-none">
               <HealthMark size={22} title="" aria-hidden />
-              Health
+              health
             </Link>
             <div className="flex items-center">
               <button

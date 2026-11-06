@@ -68,7 +68,7 @@ export default function HowItsBuiltPage() {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Health</span>
+            <span className="block font-serif text-lg font-bold">health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">

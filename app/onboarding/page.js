@@ -161,7 +161,7 @@ export default function OnboardingPage() {
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <HealthMark size={28} />
-          <p className="font-display font-medium tracking-tight text-sm">Health</p>
+          <p className="font-display font-medium tracking-tight text-sm">health</p>
         </div>
         <div className="flex items-center gap-1.5">
           {steps.map((_s, i) => (

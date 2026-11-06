@@ -4,8 +4,8 @@
 
 export default function manifest() {
   return {
-    name: "Health",
-    short_name: "Health",
+    name: "health",
+    short_name: "health",
     description:
       "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two.",
     start_url: "/dashboard",
