@@ -9,16 +9,14 @@ import HealthMark from "@/components/HealthMark";
 // Three doors, all honest:
 //   - Solo / Family  -> the client-side demo sandbox (no account, nothing
 //     saved). This is what the public + recruiters use.
-//   - Full access    -> the real Kinde + Neon app, invite-only during the
-//     private beta (the founder + family). Everyone else can request an
-//     invite at /request-invite.
+//   - Full access    -> the real Kinde + Neon app; anyone can create a free account.
 //
 // Not behind the auth middleware (matcher only covers /dashboard +
 // /onboarding), so it's reachable without a session.
 export const metadata = {
   title: "Get started",
   description:
-    "Health is a health app for families, in private beta. Try the live demo with no sign-up, or request an invite.",
+    "Health is a private health log for you and your family. Try the live demo with no sign-up, or create a free account.",
 };
 
 function Bullet({ children, muted = false }) {
@@ -61,9 +59,9 @@ export default function StartPage() {
             Take Health for a spin
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Health is a health app for families. It's in private beta while we get it
-            right, so full accounts are invite-only for now. The demo below is
-            complete and hands-on, with no sign-up needed.
+            Health is a private health log for you and your family. Nothing is shared
+            until you switch it on, and your notes and journal are never shared. Try the
+            demo below with no sign-up, or create a free account.
           </p>
         </div>
 
@@ -132,16 +130,15 @@ export default function StartPage() {
               <LoginLink postLoginRedirectURL="/dashboard">Log in</LoginLink>
             </Button>
             <p className="mt-2 text-center text-xs text-muted-foreground">
-              Not in the beta yet?{" "}
-              <Link href="/request-invite" className="font-semibold text-primary hover:underline">
-                Request an invite
-              </Link>
+              New here?{" "}
+              <a href="/api/auth/register?post_login_redirect_url=%2Fonboarding" className="font-semibold text-primary hover:underline">
+                Create a free account
+              </a>
             </p>
             <ul className="mt-6 space-y-2.5">
               <Bullet>A real account, your data saved and synced</Bullet>
-              <Bullet>Invite-only while we onboard our first families</Bullet>
+              <Bullet>Private by default: you choose what your family sees</Bullet>
               <Bullet>Everything in the demo, made permanent</Bullet>
-              <Bullet muted>Opening to everyone later</Bullet>
             </ul>
           </section>
         </div>

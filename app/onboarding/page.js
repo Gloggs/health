@@ -42,7 +42,7 @@ import { computeAge, maxAllowedDob, minAllowedDob } from "@/lib/age";
 // INITIAL STEP DERIVATION: on mount we fetch /api/users/me (which now
 // returns `hasFamily`) and jump to whichever step still has missing data.
 
-const STEP_KEYS = ["family", "name", "details", "privacy"];
+const STEP_KEYS = ["consent", "family", "name", "details", "privacy"];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -57,13 +57,16 @@ export default function OnboardingPage() {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [heightCm, setHeightCm] = useState("");
   const [visibility, setVisibility] = useState(DEFAULT_VISIBILITY);
+  // Health data agreement (UK GDPR special category data): ticked by the person, saved before anything else
+  const [consented, setConsented] = useState(false);
+  const [agree, setAgree] = useState(false);
 
   // The wizard skips the family step when the user already belongs to one
   // (e.g. they arrived via /join/<token>). steps[] is the live list of
   // step keys for the current user.
   const steps = useMemo(
-    () => STEP_KEYS.filter((k) => k !== "family" || !hasFamily),
-    [hasFamily]
+    () => STEP_KEYS.filter((k) => (k !== "family" || !hasFamily) && (k !== "consent" || !consented)),
+    [hasFamily, consented]
   );
   const currentKey = steps[step];
 
@@ -78,6 +81,8 @@ export default function OnboardingPage() {
           ? { ...DEFAULT_VISIBILITY, ...me.visibility }
           : DEFAULT_VISIBILITY;
         const hf = !!me?.hasFamily;
+        const hc = !!me?.healthConsentAt;
+        setConsented(hc);
         setDisplayName(dn);
         setDateOfBirth(dob);
         setHeightCm(h);
@@ -86,10 +91,11 @@ export default function OnboardingPage() {
         // Resume at the latest incomplete step. Order: family (if needed)
         // → name → details → privacy.
         const liveSteps = STEP_KEYS.filter(
-          (k) => k !== "family" || !hf
+          (k) => (k !== "family" || !hf) && (k !== "consent" || !hc)
         );
         let i = 0;
-        if (!hf) i = liveSteps.indexOf("family"); // 0
+        if (!hc) i = liveSteps.indexOf("consent"); // 0
+        else if (!hf) i = liveSteps.indexOf("family");
         else if (!dn) i = liveSteps.indexOf("name");
         else if (!dob && !h) i = liveSteps.indexOf("details");
         else i = liveSteps.indexOf("privacy");
@@ -102,6 +108,7 @@ export default function OnboardingPage() {
   }, []);
 
   const canContinue = () => {
+    if (currentKey === "consent") return agree;
     if (currentKey === "family") return familyName.trim().length >= 2;
     if (currentKey === "name") return displayName.trim().length > 0;
     return true;
@@ -111,7 +118,11 @@ export default function OnboardingPage() {
     if (!canContinue() || saving) return;
     setSaving(true);
     try {
-      if (currentKey === "family") {
+      if (currentKey === "consent") {
+        await GlobalApi.UpdateMe({ healthConsent: true });
+        setConsented(true);
+        setStep(0); // the consent step drops out of the list; the next step is now first
+      } else if (currentKey === "family") {
         await GlobalApi.CreateFamily({ name: familyName.trim() });
         setHasFamily(true);
         // After creating a family, recompute the step list (the family step
@@ -173,6 +184,9 @@ export default function OnboardingPage() {
           </div>
         ) : (
           <>
+            {currentKey === "consent" ? (
+              <StepConsent agree={agree} onChange={setAgree} />
+            ) : null}
             {currentKey === "family" ? (
               <StepFamily
                 value={familyName}
@@ -456,6 +470,28 @@ function StepPrivacy({ visibility, onChange, stepLabel }) {
         workouts, and Daily 4 totals are always visible - they're the
         motivation surface for the whole family.
       </p>
+    </div>
+  );
+}
+
+// Wording approved by Michael on 6 November 2026. Separate from everything else, and names the kind of data,
+// as the ICO expects for explicit consent to special category data.
+function StepConsent({ agree, onChange }) {
+  return (
+    <div className="space-y-5">
+      <div>
+        <h1 className="mt-1 font-display text-3xl font-bold sm:text-4xl">Before you start</h1>
+        <p className="mt-3 text-base leading-relaxed">
+          Health stores health information about you: sleep, mood, weight, meals, workouts and anything you
+          write. It is private to your account. Your family only sees what you switch on, and never your notes
+          or journal. You can download or delete everything at any time in Settings.
+        </p>
+      </div>
+      <label htmlFor="ob-consent" className="flex min-h-11 cursor-pointer items-start gap-3 text-base">
+        <input id="ob-consent" type="checkbox" checked={agree} onChange={(e) => onChange(e.target.checked)}
+          className="mt-1 h-5 w-5 shrink-0" />
+        <span>I agree to health storing my health information for these purposes.</span>
+      </label>
     </div>
   );
 }

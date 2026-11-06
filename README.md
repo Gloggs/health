@@ -2,7 +2,7 @@
 
 A health log for families. Log sleep, water, weight, workouts, meals and mood in a tap or two, see whether the week is on track, and share with your family only what you choose to.
 
-Live at [health.guilduk.com](https://health.guilduk.com). The [demo](https://health.guilduk.com/demo) runs the real app on sample data, with no sign-up and nothing saved. Real accounts are invite only, because the data is health data.
+Live at [health.guilduk.com](https://health.guilduk.com). The [demo](https://health.guilduk.com/demo) runs the real app on sample data, with no sign-up and nothing saved. Anyone can create a free account. Health data is private by default: nothing is shared until you switch it on, and notes and the journal are never shared.
 
 A personal project by Michael Ijisonuwe. Not a registered company.
 
@@ -39,7 +39,6 @@ Open http://localhost:3000. In Kinde, allow `http://localhost:3000/api/auth/kind
 | `KINDE_CLIENT_ID`, `KINDE_CLIENT_SECRET`, `KINDE_ISSUER_URL` | From your Kinde application |
 | `KINDE_SITE_URL`, `KINDE_POST_LOGIN_REDIRECT_URL`, `KINDE_POST_LOGOUT_REDIRECT_URL` | Your site address, `/dashboard` and `/signed-out` on it |
 | `DATABASE_URL` | Your Neon connection string |
-| `FAMILY_EMAILS` | Optional allow-list, comma separated |
 | `APP_URL` | Public address used in invite links |
 | `RESEND_API_KEY`, `EMAIL_FROM` | Optional, for sending invites by email |
 

@@ -4,30 +4,12 @@ import { eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { USERS, MEMBERSHIPS } from "@/utils/schema";
 
-// Family-tenant gate for every /dashboard route + /onboarding.
+// Gate for every /dashboard route + /onboarding.
 //
-// Two layers of access control after the Kinde auth check:
-//   1. Email allow-list (LEGACY): FAMILY_EMAILS / ALLOWED_EMAILS env vars.
-//      Pre-Phase-D the only way to get in. Kept during the transition so
-//      the founder's existing family doesn't get locked out mid-rollout.
-//      Will be removed entirely in Phase D.7 once invites are live and
-//      everyone in the original family has a MEMBERSHIPS row.
-//   2. MEMBERSHIPS row (NEW): any user who has an active membership is
-//      allowed in regardless of allow-list. This is the path invited
-//      users take — they accept an invite token at /join/<token>, that
-//      creates a MEMBERSHIPS row, and from there on they pass the gate
-//      without ever being on the email allow-list.
-//
-// Either layer is sufficient. Both empty in production = fail closed.
-const FAMILY_EMAILS = (process.env.FAMILY_EMAILS ?? "")
-  .split(",")
-  .map((e) => e.trim().toLowerCase())
-  .filter(Boolean);
-const ALLOWED_EMAILS = (process.env.ALLOWED_EMAILS ?? "")
-  .split(",")
-  .map((e) => e.trim().toLowerCase())
-  .filter(Boolean);
-const ALLOW_SET = new Set([...FAMILY_EMAILS, ...ALLOWED_EMAILS]);
+// Sign-up is open to everyone (6 November 2026). After the Kinde sign-in check, a person either has a
+// MEMBERSHIPS row (their own space, or a family they joined by invite) or is sent to /onboarding to make one.
+// There is no email allow-list any more. The API routes check membership and family on every request
+// themselves (lib/auth.js), and tests/privacy proves nobody sees anyone else's details.
 
 // Public wrapper: catches ANY exception thrown by the gate logic and
 // redirects to a safe recovery surface instead of letting Vercel show its
@@ -92,7 +74,6 @@ async function runMiddleware(request) {
   }
 
   const user = await session.getUser();
-  const email = user?.email?.toLowerCase();
   const path = request.nextUrl.pathname;
 
   // Pull both USERS + MEMBERSHIPS in one round-trip. LEFT JOIN means a
@@ -104,6 +85,7 @@ async function runMiddleware(request) {
         id: USERS.id,
         displayName: USERS.displayName,
         visibility: USERS.visibility,
+        healthConsentAt: USERS.healthConsentAt,
         familyId: MEMBERSHIPS.familyId,
       })
       .from(USERS)
@@ -118,31 +100,13 @@ async function runMiddleware(request) {
   }
 
   const hasMembership = !!row?.familyId;
-  const onAllowList = !!email && ALLOW_SET.has(email);
 
-  // Access gate: pass when either (a) on the email allow-list OR
-  // (b) has an active MEMBERSHIPS row.
-  // Fail closed if production has neither configured AND the user has no
-  // membership — guards against accidentally dropping env vars.
-  if (!hasMembership && !onAllowList) {
-    if (process.env.NODE_ENV === "production" && ALLOW_SET.size === 0) {
-      // No allow-list configured AT ALL in prod and no membership — this
-      // is the "self-serve signup" world. Let the user reach /onboarding
-      // to create a family. (In Phase D.7 this becomes the only path.)
-      if (path !== "/onboarding") {
-        return NextResponse.redirect(new URL("/onboarding", request.url));
-      }
-      // Falls through to the onboarding wizard below.
-    } else if (ALLOW_SET.size > 0) {
-      // Allow-list is configured AND the user is on neither it nor any
-      // membership: hard lockout. Same as before Phase D.
-      return NextResponse.redirect(new URL("/not-authorized", request.url));
-    }
-    // Local dev with empty allow-list and no membership: let through
-    // (matches the pre-Phase-D dev-friendly behaviour).
+  // No space yet: onboarding is the only page until they make one (or accept an invite at /join).
+  if (!hasMembership && path !== "/onboarding") {
+    return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 
-  const finishedProfile = !!(row?.displayName && row?.visibility != null);
+  const finishedProfile = !!(row?.healthConsentAt && row?.displayName && row?.visibility != null);
   const finishedAll = finishedProfile && hasMembership;
 
   if (path === "/onboarding") {
@@ -165,7 +129,7 @@ async function runMiddleware(request) {
 
 // Matcher covers both /dashboard (the app itself) and /onboarding so the
 // auth + allow-list gates run on the wizard too - unauthenticated users
-// can't reach it and non-family emails get bounced to /not-authorized.
+// can't reach it.
 export const config = {
   matcher: ["/dashboard/:path*", "/onboarding"],
 };

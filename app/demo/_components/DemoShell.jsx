@@ -59,9 +59,9 @@ function DemoBanner() {
         <button type="button" onClick={reset} className="h-8 px-2 text-xs font-semibold underline underline-offset-2">
           Reset
         </button>
-        <Link href="/request-invite" className="flex h-8 items-center bg-ink px-2.5 text-xs font-bold text-chalk">
-          Request an invite
-        </Link>
+        <a href="/api/auth/register?post_login_redirect_url=%2Fonboarding" className="flex h-8 items-center bg-ink px-2.5 text-xs font-bold text-chalk">
+          Create a free account
+        </a>
       </div>
     </div>
   );

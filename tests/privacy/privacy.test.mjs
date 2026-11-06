@@ -154,3 +154,27 @@ describe("small checks", () => {
     expect(safeMessage(Object.assign(new Error("email is required"), { status: 400 }))).toBe("email is required");
   });
 });
+
+describe("health data needs the person's agreement first", () => {
+  test("nothing can be saved, and no family started, until the person agrees; then it works", async () => {
+    const { db } = await import("@/utils/dbConfig");
+    const { USERS, FAMILIES, MEMBERSHIPS } = await import("@/utils/schema");
+    const { PEOPLE: P, FAMILY_N } = await import("./harness.mjs");
+    const N = P.N;
+    await db.insert(USERS).values({ id: N.id, email: N.email, displayName: "Nia" }).onConflictDoNothing();
+    asUser(N);
+    const create = await call(familyCreate.POST, { method: "POST", body: { name: "Nia's family" } });
+    expect(create.status).toBe(403);
+
+    await db.insert(FAMILIES).values({ id: FAMILY_N, name: "N", ownerUserId: N.id }).onConflictDoNothing();
+    await db.insert(MEMBERSHIPS).values({ userId: N.id, familyId: FAMILY_N, role: "owner" }).onConflictDoNothing();
+    const before = await call(sleep.POST, { method: "POST", body: { date: d, hours: 7, quality: 3 } });
+    expect(before.status).toBe(403);
+
+    const agreed = await call(me.PUT, { method: "PUT", body: { healthConsent: true } });
+    expect(agreed.status).toBe(200);
+    expect(agreed.json.healthConsentAt).toBeTruthy();
+    const after = await call(sleep.POST, { method: "POST", body: { date: d, hours: 7, quality: 3 } });
+    expect(after.status).toBeLessThan(300);
+  });
+});

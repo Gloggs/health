@@ -16,6 +16,7 @@ They call the app's real API route handlers (Vitest), against a real Postgres, a
 | A2 | In A's family |
 | B | A stranger in another family |
 | U | Signed in, but has not confirmed their email |
+| N | New, and has not yet agreed to how health stores health information |
 
 | Test | What it proves |
 | --- | --- |
@@ -28,6 +29,7 @@ They call the app's real API route handlers (Vitest), against a real Postgres, a
 | Invite limit | A family cannot send more than 10 invites a day |
 | Your own family only | Recording a profile view for someone outside your family fails |
 | Safe errors | Database errors never reach the browser as raw text |
+| Agreement first | Until the person agrees to how health stores their health information, nothing can be saved and no family started; once they agree, it works |
 
 ### How the database works in tests
 
