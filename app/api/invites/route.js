@@ -11,15 +11,17 @@
  * the audit trail clean.
  */
 import { NextResponse } from "next/server";
-import { and, eq, desc, isNull } from "drizzle-orm";
+import { and, eq, desc, gte, isNull, sql } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { INVITES, MEMBERSHIPS, USERS, FAMILIES } from "@/utils/schema";
-import { requireFamilyUser } from "@/lib/auth";
+import { requireFamilyUser, safeMessage } from "@/lib/auth";
 import { generateInviteToken } from "@/lib/tokens";
 import { clampString } from "@/lib/validate";
 import { sendInviteEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
+
+const INVITES_PER_DAY = 10;
 
 // Permission check: only owner / admin members of a family can manage
 // invites. Returns the caller's role string or throws 403.
@@ -44,12 +46,12 @@ export async function GET(req) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
   try {
     await requireOwnerOrAdmin(auth.userId, auth.familyId);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   const url = new URL(req.url);
@@ -88,12 +90,12 @@ export async function POST(req) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
   try {
     await requireOwnerOrAdmin(auth.userId, auth.familyId);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   let body;
@@ -113,6 +115,18 @@ export async function POST(req) {
     return NextResponse.json({ error: "email is required" }, { status: 400 });
   }
   email = email.toLowerCase();
+
+  // A family can send at most INVITES_PER_DAY invites in 24 hours, so open sign-up cannot be used to send
+  // emails from our domain to anyone, as often as they like (privacy review, 6 November 2026).
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const [{ sent }] = await db
+    .select({ sent: sql`count(*)::int` })
+    .from(INVITES)
+    .where(and(eq(INVITES.familyId, auth.familyId), gte(INVITES.createdAt, since)));
+  if (sent >= INVITES_PER_DAY) {
+    return NextResponse.json({ error: `You can send up to ${INVITES_PER_DAY} invites a day. Please try again tomorrow.` }, { status: 429 });
+  }
+
   // Loose email validation - we just want to catch typos, not RFC-compliance.
   if (!/^\S+@\S+\.\S+$/.test(email)) {
     return NextResponse.json({ error: "invalid email" }, { status: 400 });
@@ -259,12 +273,12 @@ export async function DELETE(req) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
   try {
     await requireOwnerOrAdmin(auth.userId, auth.familyId);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   const url = new URL(req.url);

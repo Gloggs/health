@@ -36,12 +36,8 @@ export async function POST(req) {
   }
   const mode = body?.mode === "solo" ? "solo" : "family";
 
-  // Backup trail in the server logs, so a request is never silently lost even
-  // if email delivery isn't configured in this environment.
-  console.log(
-    `[invite-request] ${name ?? "(no name)"} <${email}> mode=${mode}` +
-      (note ? ` note="${note.slice(0, 200)}"` : "")
-  );
+  // A trail in the server logs without anyone's details (no names, emails or notes in logs).
+  console.log(`[invite-request] received mode=${mode}`);
 
   const { delivered } = await sendInviteRequestEmail({ name, email, mode, note });
 

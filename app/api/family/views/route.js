@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { and, desc, eq, gte, isNull, sql } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
-import { PROFILE_VIEWS, USERS } from "@/utils/schema";
+import { PROFILE_VIEWS, USERS, MEMBERSHIPS } from "@/utils/schema";
 import { withFamily, familyFilter } from "@/lib/auth";
 import { daysAgoStr, todayDateStr } from "@/lib/dates";
 
@@ -89,10 +89,11 @@ export const POST = withFamily(async (req, _ctx, { viewerId, familyId }) => {
     return NextResponse.json({ ok: true, self: true });
   }
 
+  // Only someone in your own family, so this cannot be used to check whether a person exists elsewhere.
   const [exists] = await db
-    .select({ id: USERS.id })
-    .from(USERS)
-    .where(eq(USERS.id, vieweeId))
+    .select({ id: MEMBERSHIPS.userId })
+    .from(MEMBERSHIPS)
+    .where(and(eq(MEMBERSHIPS.userId, vieweeId), eq(MEMBERSHIPS.familyId, familyId)))
     .limit(1);
   if (!exists) {
     return NextResponse.json({ error: "viewee not found" }, { status: 404 });

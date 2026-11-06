@@ -32,7 +32,7 @@ import { computeAge, maxAllowedDob, minAllowedDob } from "@/lib/age";
 //
 // Step 1: name (required - this is what the rest of the family will see)
 // Step 2: date of birth + height (both optional)
-// Step 3: visibility toggles (8 sections, all default ON)
+// Step 3: what the family can see. Everything starts off (private by default).
 //
 // PER-STEP SAVE: each Continue PUTs the relevant fields to /api/users/me
 // before advancing. That solves the cross-device sync issue where editing

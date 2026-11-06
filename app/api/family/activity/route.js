@@ -142,7 +142,7 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
         planDayLabel: PLAN_DAYS.label,
       })
       .from(SESSIONS)
-      .leftJoin(PLAN_DAYS, eq(PLAN_DAYS.id, SESSIONS.planDayId))
+      .leftJoin(PLAN_DAYS, and(eq(PLAN_DAYS.id, SESSIONS.planDayId), eq(PLAN_DAYS.userId, SESSIONS.userId), eq(PLAN_DAYS.familyId, SESSIONS.familyId)))
       .where(
         and(
           familyFilter(SESSIONS, familyId),
@@ -241,8 +241,9 @@ export const GET = withFamily(async (req, _ctx, { viewerId, familyId }) => {
     });
   }
   for (const r of miniRows) {
-    // Daily 4 is always-visible (it's header data, no toggle). Skip slots
+    // Daily 4 is shared only when switched on (privacy review, 6 November 2026). Skip slots
     // that ended up at 0 - same rule the streak uses.
+    if (!visibleFor(r.userId, "daily4")) continue;
     if (!(Number(r.count) > 0)) continue;
     push({
       kind: "mini",

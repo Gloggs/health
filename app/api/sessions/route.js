@@ -29,7 +29,7 @@ export const GET = withFamily(async (req, _ctx, { userId, familyId }) => {
       planDayLabel: PLAN_DAYS.label,
     })
     .from(SESSIONS)
-    .leftJoin(PLAN_DAYS, eq(PLAN_DAYS.id, SESSIONS.planDayId))
+    .leftJoin(PLAN_DAYS, and(eq(PLAN_DAYS.id, SESSIONS.planDayId), eq(PLAN_DAYS.userId, SESSIONS.userId), eq(PLAN_DAYS.familyId, SESSIONS.familyId)))
     .where(and(...filters))
     .orderBy(desc(SESSIONS.date));
   return NextResponse.json(rows);
@@ -41,6 +41,17 @@ export const POST = withFamilyWrite(async (req, _ctx, { userId, familyId }) => {
   const body = await req.json();
   if (!body.date) {
     return NextResponse.json({ error: "date is required" }, { status: 400 });
+  }
+
+  // A training day must be one of this person's own (privacy review, 6 November 2026): otherwise a session could
+  // point at another family's day and read its name back.
+  if (body.planDayId != null) {
+    const [own] = await db
+      .select({ id: PLAN_DAYS.id })
+      .from(PLAN_DAYS)
+      .where(and(familyFilter(PLAN_DAYS, familyId), eq(PLAN_DAYS.userId, userId), eq(PLAN_DAYS.id, Number(body.planDayId))))
+      .limit(1);
+    if (!own) return NextResponse.json({ error: "That training day was not found." }, { status: 400 });
   }
 
   const existing = await db

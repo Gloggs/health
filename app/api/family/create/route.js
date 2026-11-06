@@ -19,16 +19,16 @@
 import { NextResponse } from "next/server";
 import { db } from "@/utils/dbConfig";
 import { FAMILIES, MEMBERSHIPS } from "@/utils/schema";
-import { requireKindeOnly } from "@/lib/auth";
+import { requireKindeOnly, safeMessage } from "@/lib/auth";
 import { generateFamilyId } from "@/lib/tokens";
 import { clampString } from "@/lib/validate";
 
 export async function POST(req) {
   let auth;
   try {
-    auth = await requireKindeOnly();
+    auth = await requireKindeOnly({ requireVerified: true });
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   if (auth.hasFamily) {
