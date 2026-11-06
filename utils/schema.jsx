@@ -124,6 +124,8 @@ export const USERS = pgTable('users', {
   // When the person agreed to health storing their health information (UK GDPR special category data,
   // explicit consent). Nothing can be logged until this is set. Added 6 November 2026.
   healthConsentAt: timestamp('health_consent_at', { withTimezone: true }),
+  // When the person finished (or skipped) the one-time guide, so it shows once ever, on any device.
+  guideSeenAt: timestamp('guide_seen_at', { withTimezone: true }),
 });
 
 // One row per (viewer, viewee, day) - unique constraint prevents the same

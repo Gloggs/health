@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 import HealthMark from "@/components/HealthMark";
 import NotificationsBell from "@/app/dashboard/_components/NotificationsBell";
 import SearchPalette from "./SearchPalette";
+import Guide from "./Guide";
 import { activeKey, navItems } from "./nav";
 import { cn } from "@/lib/utils";
 
@@ -162,6 +163,7 @@ export default function AppShell({ base, user, signOut, banner, top, children })
       </div>
 
       <SearchPalette open={searchOpen} onOpenChange={setSearchOpen} base={base} />
+      <Guide />
     </div>
   );
 }

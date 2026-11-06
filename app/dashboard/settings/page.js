@@ -19,6 +19,7 @@ import { saved } from '@/lib/feedback';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { GUIDE_STEPS, openGuide } from '@/components/shell/Guide';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -253,6 +254,15 @@ function SettingsPageInner() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-5">
       <PageHero title="Settings" />
+
+      {/* Help first: the same four steps as the one-time guide, and a way to see it again. */}
+      <section id="help" aria-labelledby="help-title" className="mb-6 space-y-3 bg-card p-5">
+        <h2 id="help-title" className="font-display text-2xl font-medium tracking-tight">Help: how to use health</h2>
+        <ol className="list-decimal space-y-2 pl-5 leading-relaxed">
+          {GUIDE_STEPS.map((g) => <li key={g.title}><span className="font-medium">{g.title}.</span> {g.text}</li>)}
+        </ol>
+        <button type="button" onClick={openGuide} className="h-11 bg-primary px-4 text-sm font-medium text-primary-foreground">Show the guide again</button>
+      </section>
 
       <Tabs defaultValue={initialTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-flex">
