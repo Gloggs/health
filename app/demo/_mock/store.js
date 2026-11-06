@@ -1,4 +1,5 @@
 import { buildSummary } from "@/lib/summary";
+import { buildFhirBundle } from "@/lib/fhir";
 // In-memory mock "backend" for the demo. Mirrors the real API response
 // shapes so the actual dashboard pages render unchanged. No network, no
 // persistence — module state resets on full page reload. Writes mutate the
@@ -1056,6 +1057,12 @@ function routeApi(method, rawUrl, body) {
   if (path === "/api/appointment") {
     if (m === "PUT") { store.appointment = { id: 1, userId: DEMO_USER_ID, ...(store.appointment ?? {}), ...body }; return { status: 200, data: store.appointment }; }
     return { status: 200, data: store.appointment ?? null };
+  }
+  if (path === "/api/export/fhir") {
+    if (!store.feelings) routeApi("GET", "/api/feelings", null);
+    const h = liveHistory();
+    return { status: 200, data: buildFhirBundle({ name: store.me?.displayName ?? "You", generatedAt: new Date().toISOString(),
+      feelings: store.feelings, sleep: h.sleep, body: h.body, mood: h.mood, appointment: store.appointment ?? null }) };
   }
   if (path === "/api/summary") {
     if (!store.feelings) routeApi("GET", "/api/feelings", null);

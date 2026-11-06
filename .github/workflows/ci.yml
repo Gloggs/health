@@ -57,3 +57,33 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/health_test
       - run: npm run test:privacy
+
+  e2e:
+    # The front page and the demo in a real browser (docs/TESTING.md): the guide once, writing down how you feel,
+    # the GP summary with its PDF and FHIR downloads, and accessibility checks (axe) in light and dark.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost/ci
+          KINDE_CLIENT_ID: ci
+          KINDE_CLIENT_SECRET: ci
+          KINDE_ISSUER_URL: https://ci.kinde.com
+          KINDE_SITE_URL: http://localhost:3300
+          NEXT_TELEMETRY_DISABLED: "1"
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          CI: "true"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

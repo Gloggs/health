@@ -24,6 +24,7 @@ import * as invites from "@/app/api/invites/route.js";
 import * as feelings from "@/app/api/feelings/route.js";
 import * as appointment from "@/app/api/appointment/route.js";
 import * as summary from "@/app/api/summary/route.js";
+import * as fhirExport from "@/app/api/export/fhir/route.js";
 
 const { A, A2, B, U } = PEOPLE;
 const d = today();
@@ -53,7 +54,7 @@ beforeAll(async () => {
 const READS = [
   ["sleep", sleep], ["mood", mood], ["meals", meals], ["body-metrics", body], ["cardio", cardio], ["chat", chat],
   ["water", water], ["dashboard", dashboard], ["family", family], ["family/activity", activity], ["family/chat", familyChat],
-  ["feelings", feelings], ["appointment", appointment], ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
+  ["feelings", feelings], ["appointment", appointment], ["export/fhir", fhirExport], ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
 ];
 
 function leaks(text, { weight = true } = {}) {
@@ -203,6 +204,17 @@ describe("the GP summary", () => {
       const asked = await call(summary.GET, { path: `/api/summary?viewing=${A.id}` });
       expect(asked.text.includes("SECRET-FEELING-A")).toBe(false);
     }
+  });
+});
+
+describe("the FHIR export", () => {
+  test("A's export holds A's own entries as FHIR, and no email", async () => {
+    asUser(A);
+    const r = await call(fhirExport.GET, { path: "/api/export/fhir" });
+    expect(r.status).toBe(200);
+    expect(r.json.resourceType).toBe("Bundle");
+    expect(r.text.includes("SECRET-FEELING-A")).toBe(true);
+    expect(r.text.includes(A.email)).toBe(false);
   });
 });
 

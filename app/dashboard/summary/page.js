@@ -37,6 +37,16 @@ export default function SummaryPage() {
     finally { setBusyPdf(false); }
   }
 
+  async function downloadFhir() {
+    try {
+      const res = await fetch("/api/export/fhir", { cache: "no-store" });
+      if (!res.ok) throw new Error();
+      const url = URL.createObjectURL(new Blob([await res.text()], { type: "application/fhir+json" }));
+      const a = document.createElement("a"); a.href = url; a.download = "health-fhir-export.json";
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch { toast.error("Could not make the file. Please try again."); }
+  }
+
   const field = "w-full border border-input bg-background px-3 text-base";
   return (
     <div className="mx-auto w-full max-w-3xl space-y-8 px-4 py-6 sm:px-6">
@@ -79,6 +89,9 @@ export default function SummaryPage() {
           <button type="button" onClick={() => window.print()} disabled={!summary} className="h-11 bg-secondary px-4 text-sm font-medium">Print</button>
           <button type="button" onClick={downloadPdf} disabled={!summary || busyPdf} className="h-11 bg-secondary px-4 text-sm font-medium">{busyPdf ? "Making the PDF…" : "Download PDF"}</button>
         </div>
+        <p className="no-print text-sm text-muted-foreground">
+          Need it for a health record system? <button type="button" onClick={downloadFhir} className="underline underline-offset-4">Download your entries in FHIR</button>, the data format the NHS uses. health sends it nowhere.
+        </p>
         {summary === null ? <p className="text-muted-foreground">Loading…</p>
           : summary === false ? <p className="text-muted-foreground">Could not load the summary. Please try again.</p>
           : <SummarySheet s={summary} />}
