@@ -23,7 +23,7 @@ import { NextResponse } from "next/server";
 import { and, eq, ne, sql } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { MEMBERSHIPS } from "@/utils/schema";
-import { requireFamilyUser } from "@/lib/auth";
+import { requireFamilyUser, safeMessage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ export async function POST(req) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   // Re-load my membership row so we know if I'm the owner.

@@ -25,7 +25,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { INVITES, MEMBERSHIPS } from "@/utils/schema";
-import { requireKindeOnly } from "@/lib/auth";
+import { requireKindeOnly, safeMessage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -37,9 +37,9 @@ export async function POST(_req, { params }) {
 
   let auth;
   try {
-    auth = await requireKindeOnly();
+    auth = await requireKindeOnly({ requireVerified: true });
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   const [invite] = await db

@@ -239,18 +239,20 @@ export const GET = withFamily(async (_req, _ctx, { userId: viewerId, familyId })
       lastActiveAt: m.lastActiveAt,
       isMe,
       role: m.role,
-      streak: computeStreak(byUser.get(m.id) ?? new Set()),
-      completedWorkoutsThisWeek: weekCompletedByUser.get(m.id) ?? 0,
-      dailyMiniTodayTotal: miniTodayByUser.get(m.id) ?? 0,
+      // Activity is shared only when the member switched it on (privacy review, 6 November 2026).
+      // Hidden values come back as null, so the page shows nothing rather than a misleading zero.
+      streak: isMe || vis.streak ? computeStreak(byUser.get(m.id) ?? new Set()) : null,
+      completedWorkoutsThisWeek: isMe || vis.workouts ? weekCompletedByUser.get(m.id) ?? 0 : null,
+      dailyMiniTodayTotal: isMe || vis.daily4 ? miniTodayByUser.get(m.id) ?? 0 : null,
       // Whether this member has logged anything today across the 7
       // tracked categories. Used by Today's family ribbon to render
       // ● (etched today) vs ○ (not yet). Cheap to compute since the
       // byUser activity-date set has already been built for the
       // streak calc above.
-      etchedToday: (byUser.get(m.id) ?? new Set()).has(today),
+      etchedToday: isMe || vis.streak ? (byUser.get(m.id) ?? new Set()).has(today) : null,
       // Categories etched today (count). Used by Family page tile to
       // show "X of 7 etched today" per member.
-      etchedTodayCount: (() => {
+      etchedTodayCount: !(isMe || vis.streak) ? null : (() => {
         const sub = byUserDate.get(m.id);
         const set = sub?.get(today);
         return set ? set.size : 0;
@@ -258,7 +260,7 @@ export const GET = withFamily(async (_req, _ctx, { userId: viewerId, familyId })
       // 7-day rolling tally: each slot is the category-count for that
       // day. Used to render a glanceable strip per member. Indexed
       // oldest-first (6 days ago … today).
-      last7DaysTally: lastSevenDays.map((d) => {
+      last7DaysTally: !(isMe || vis.streak) ? null : lastSevenDays.map((d) => {
         const sub = byUserDate.get(m.id);
         const set = sub?.get(d);
         return set ? set.size : 0;

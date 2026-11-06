@@ -32,7 +32,7 @@ import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { MEMBERSHIPS, USERS } from "@/utils/schema";
-import { requireFamilyUser } from "@/lib/auth";
+import { requireFamilyUser, safeMessage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +52,7 @@ export async function PATCH(req, { params }) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   const targetUserId = params?.id;
@@ -124,7 +124,7 @@ export async function DELETE(req, { params }) {
   try {
     auth = await requireFamilyUser(req);
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
 
   const targetUserId = params?.id;

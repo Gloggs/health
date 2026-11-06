@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { USERS } from "@/utils/schema";
-import { withFamily, requireKindeOnly, ensureUserRow } from "@/lib/auth";
+import { withFamily, requireKindeOnly, ensureUserRow, safeMessage } from "@/lib/auth";
 import { effectiveVisibility, normaliseVisibility } from "@/lib/visibility";
 import { computeAge, maxAllowedDob, minAllowedDob } from "@/lib/age";
 
@@ -42,7 +42,7 @@ export async function GET(req) {
       auth = await requireKindeOnly();
     } catch (e) {
       return NextResponse.json(
-        { error: e.message },
+        { error: safeMessage(e) },
         { status: e.status ?? 500 }
       );
     }
@@ -101,7 +101,7 @@ export async function PUT(req) {
   try {
     auth = await requireKindeOnly();
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+    return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
   const { userId, email } = auth;
   await ensureUserRow(userId, email);

@@ -680,10 +680,12 @@ function FamilyTile({ member, myRole, onChanged }) {
           })}
         </ol>
         <p className="mt-2 text-sm text-muted-foreground">
-          <span className="font-bold tabular-nums text-foreground">
-            {member.etchedTodayCount ?? 0}
-          </span>{" "}
-          of 7 logged today
+          {member.etchedTodayCount == null ? "Activity not shared" : (
+            <>
+              <span className="font-bold tabular-nums text-foreground">{member.etchedTodayCount}</span>{" "}
+              of 7 logged today
+            </>
+          )}
         </p>
       </div>
 
@@ -931,7 +933,7 @@ function Stat({ icon: Icon, value, label }) {
     <div className="flex flex-col items-center gap-0.5">
       <div className="flex items-baseline gap-1">
         <Icon className="h-3.5 w-3.5 text-primary" />
-        <span className="font-mono text-lg font-bold tabular-nums leading-none">{value}</span>
+        <span className="font-mono text-lg font-bold tabular-nums leading-none">{value ?? <span className="text-xs font-normal">Not shared</span>}</span>
       </div>
       <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
         {label}

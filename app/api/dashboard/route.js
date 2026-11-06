@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { effectiveVisibility, numbersOnly } from "@/lib/visibility";
 import { and, asc, desc, eq, gte, isNotNull, lte, sql } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import {
@@ -167,7 +168,7 @@ export const GET = withFamily(async (req, _ctx, auth) => {
         planDayLabel: PLAN_DAYS.label,
       })
       .from(SESSIONS)
-      .leftJoin(PLAN_DAYS, eq(PLAN_DAYS.id, SESSIONS.planDayId))
+      .leftJoin(PLAN_DAYS, and(eq(PLAN_DAYS.id, SESSIONS.planDayId), eq(PLAN_DAYS.userId, SESSIONS.userId), eq(PLAN_DAYS.familyId, SESSIONS.familyId)))
       .where(and(familyFilter(SESSIONS, familyId), eq(SESSIONS.userId, viewingId)))
       .orderBy(desc(SESSIONS.date)),
     db
@@ -310,19 +311,22 @@ export const GET = withFamily(async (req, _ctx, auth) => {
   const streak = computeStreak(streakActiveDates);
 
   const PRIVATE = { private: true };
-  const vis = vieweeVisibility;
-  const hidden = (flag) => isViewingOther && vis && !vis[flag];
+  // Viewing someone else: only what they switched on (nothing by default), and never their own words.
+  const vis = isViewingOther ? effectiveVisibility(vieweeVisibility) : null;
+  const hidden = (flag) => isViewingOther && !vis[flag];
+  const shareRow = (row) => (isViewingOther && row ? numbersOnly(row) : row);
+  const shareRows = (rows) => (isViewingOther ? rows.map(numbersOnly) : rows);
 
   const todaySessionPayload = hidden("workouts")
     ? { ...PRIVATE, date, dayIndex, planDays: [], exercises: [], sets: [] }
     : {
         date,
         dayIndex,
-        plan,
+        plan: shareRow(plan),
         planDay,
         planDays,
         exercises,
-        session: todaySession,
+        session: shareRow(todaySession),
         sets: todaySets,
       };
 
@@ -333,26 +337,26 @@ export const GET = withFamily(async (req, _ctx, auth) => {
     viewingId,
     viewee,
     vieweeVisibility: isViewingOther ? vis : null,
-    streak,
+    streak: hidden("streak") ? null : streak,
     todaySession: todaySessionPayload,
     today: {
-      sleep: hidden("sleep") ? PRIVATE : todaySleep,
-      water: todayWater,
-      mood: hidden("mood") ? PRIVATE : todayMood,
+      sleep: hidden("sleep") ? PRIVATE : shareRow(todaySleep),
+      water: hidden("water") ? PRIVATE : todayWater,
+      mood: hidden("mood") ? PRIVATE : shareRow(todayMood),
       checkIn: isViewingOther ? null : todayCheckIn,
-      cardio: hidden("cardio") ? [] : todayCardio,
-      meals: hidden("meals") ? [] : todayMeals,
-      mini: todayMini,
+      cardio: hidden("cardio") ? [] : shareRows(todayCardio),
+      meals: hidden("meals") ? [] : shareRows(todayMeals),
+      mini: hidden("daily4") ? PRIVATE : todayMini,
     },
     history: {
-      sessions: hidden("workouts") ? [] : allSessions,
-      sleep: hidden("sleep") ? [] : allSleep,
-      mood: hidden("mood") ? [] : allMood,
-      water: allWaterAgg,
-      cardio: hidden("cardio") ? [] : allCardio,
-      body: hidden("body") ? [] : allBody,
-      meals: hidden("meals") ? [] : allMeals,
-      mini: allMini,
+      sessions: hidden("workouts") ? [] : shareRows(allSessions),
+      sleep: hidden("sleep") ? [] : shareRows(allSleep),
+      mood: hidden("mood") ? [] : shareRows(allMood),
+      water: hidden("water") ? [] : allWaterAgg,
+      cardio: hidden("cardio") ? [] : shareRows(allCardio),
+      body: hidden("body") ? [] : shareRows(allBody),
+      meals: hidden("meals") ? [] : shareRows(allMeals),
+      mini: hidden("daily4") ? [] : allMini,
     },
     userContext: isViewingOther ? null : userCtx,
     exerciseMaxes: hidden("workouts") ? {} : exerciseMaxes,
