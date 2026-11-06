@@ -119,10 +119,10 @@ async function runMiddleware(request) {
     return; // resume at the derived step
   }
 
-  // Any /dashboard/* route: send to onboarding if either profile is
-  // incomplete OR no membership exists. The onboarding page is aware of
-  // both states and shows the right step.
-  if (!hasMembership || !row?.displayName) {
+  // Any /dashboard/* route: send to onboarding if there is no membership, no name, or no health data
+  // agreement yet. Without the agreement nothing can be saved, so the app must not open on a screen
+  // whose buttons would all be refused (found on the live site, 6 November 2026).
+  if (!hasMembership || !row?.displayName || !row?.healthConsentAt) {
     return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 }
