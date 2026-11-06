@@ -231,7 +231,7 @@ export default function PlanEditPage() {
           </p>
         </div>
         {plan.isActive ? (
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary">
             <Star className="h-3 w-3" /> Active
           </span>
         ) : (

@@ -56,7 +56,7 @@ export default function LogHistory({ kind, title, logLabel, load, describe, remo
       {extra}
 
       <section aria-labelledby={`${kind}-history`} className="flex flex-col gap-2">
-        <h2 id={`${kind}-history`} className="font-display text-xl font-bold uppercase">
+        <h2 id={`${kind}-history`} className="font-display font-medium tracking-tight text-xl">
           History
         </h2>
         {rows === null ? (

@@ -754,7 +754,7 @@ function WeightTrendCard({ loading, weightSeries, weightGoal }) {
           <p className="text-xs text-muted-foreground">{subtitle}</p>
         </div>
         {weightGoal != null ? (
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
             Goal {weightGoal} kg
           </span>
         ) : null}
@@ -849,7 +849,7 @@ function WeightStat({ label, value, date, tone }) {
     tone === "success" ? "text-success" : tone === "warning" ? "text-warning" : "text-foreground";
   return (
     <div className="rounded-xl border bg-card p-3">
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="text-[10px] text-muted-foreground">{label}</p>
       <p className={cn("mt-1 text-base font-semibold tabular-nums", toneCls)}>{value}</p>
       {date ? <p className="text-[10px] text-muted-foreground">{prettyDate(date)}</p> : null}
     </div>
@@ -941,7 +941,7 @@ function KpiCard({ icon: Icon, label, value }) {
   return (
     <div className="border border-foreground bg-card p-4  transition-shadow hover:shadow-paper-2">
       <div className="flex items-center justify-between">
-        <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
           {label}
         </p>
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -1130,7 +1130,7 @@ function CompareCard({ icon: Icon, label, now, prev, format }) {
     <div className="rounded-xl border bg-card p-3">
       <div className="flex items-center gap-1.5 text-muted-foreground">
         <Icon className="h-3.5 w-3.5" />
-        <p className="text-[10px] uppercase tracking-wider">{label}</p>
+        <p className="text-[10px]">{label}</p>
       </div>
       <p className="mt-1 text-xl font-bold tabular-nums">
         {hasNow ? format(Number(now)) : "-"}

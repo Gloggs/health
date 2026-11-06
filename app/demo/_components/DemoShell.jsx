@@ -37,10 +37,10 @@ function DemoBanner() {
   };
 
   return (
-    <div className="flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 bg-flame px-3 py-1.5 text-ink sm:px-4">
+    <div className="flex shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 bg-secondary px-3 py-1.5 text-foreground sm:px-4">
       <p className="text-sm font-semibold">Demo on sample data. Nothing is saved.</p>
       <div className="flex items-center gap-1.5">
-        <div role="group" aria-label="Demo household" className="flex border border-ink">
+        <div role="group" aria-label="Demo household" className="flex border border-primary">
           {[
             ["family", "Family"],
             ["solo", "Just me"],
@@ -50,7 +50,7 @@ function DemoBanner() {
               type="button"
               onClick={() => switchMode(m)}
               aria-pressed={mode === m}
-              className={cn("h-8 px-2.5 text-xs font-semibold", mode === m ? "bg-ink text-chalk" : "text-ink")}
+              className={cn("h-8 px-2.5 text-xs font-semibold", mode === m ? "bg-primary text-primary-foreground" : "text-foreground")}
             >
               {label}
             </button>
@@ -59,7 +59,7 @@ function DemoBanner() {
         <button type="button" onClick={reset} className="h-8 px-2 text-xs font-semibold underline underline-offset-2">
           Reset
         </button>
-        <a href="/api/auth/register?post_login_redirect_url=%2Fonboarding" className="flex h-8 items-center bg-ink px-2.5 text-xs font-bold text-chalk">
+        <a href="/api/auth/register?post_login_redirect_url=%2Fonboarding" className="flex h-8 items-center bg-primary px-2.5 text-xs font-bold text-primary-foreground">
           Create a free account
         </a>
       </div>

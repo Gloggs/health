@@ -4,14 +4,14 @@
 
 export default function manifest() {
   return {
-    name: "Health",
-    short_name: "Health",
+    name: "health",
+    short_name: "health",
     description:
       "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two.",
     start_url: "/dashboard",
     display: "standalone",
-    background_color: "#F1F1EF",
-    theme_color: "#142B38",
+    background_color: "#FFFFFF",
+    theme_color: "#174131",
     orientation: "portrait",
     categories: ["health", "fitness", "lifestyle"],
     lang: "en-GB",

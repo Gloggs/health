@@ -20,7 +20,7 @@ export default function LogHubPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 p-4 md:p-6">
-      <h1 className="font-display text-4xl font-extrabold uppercase leading-none">Log</h1>
+      <h1 className="font-display font-medium tracking-tight text-4xl leading-none">Log</h1>
 
       <ul className="border border-border bg-card">
         {ROWS.map((r) => (

@@ -3,92 +3,90 @@
 @tailwind utilities;
 
 @layer base {
-  /* Harbour palette. See docs/DESIGN.md.
-   * Ink #142B38, chalk #F1F1EF, harbour #2F6B8A, sky #70B2CE, flame #EB6E3A,
-   * stone #586068, line #D6D8D8. Bright colours fill shapes; words sit in ink
-   * on light grounds, or chalk on ink. Light by default, dark follows the device.
+  /* Guild UK Skeleton v2 (Guild Design kit, css/shadcn.css; approved 4 November 2026).
+   * White ground, ink text, forest for actions and headers, soft green (sage) for panels and secondary
+   * buttons, coral only for focus on forest and the stamp. Dark mode uses the kit's agreed dark tokens.
    */
   :root {
-    --background: 60 7% 94%;             /* chalk */
-    --foreground: 202 47% 15%;           /* ink */
-    --card: 0 0% 100%;                   /* white panels */
-    --card-foreground: 202 47% 15%;
+    --background: 0 0% 100%;
+    --foreground: 145 23% 10%;
+    --card: 146 35% 91%;
+    --card-foreground: 145 23% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 202 47% 15%;
-
-    --primary: 202 47% 15%;              /* ink buttons */
-    --primary-foreground: 60 7% 94%;     /* chalk text on ink */
-    --primary-soft: 198 49% 62%;         /* sky */
-
-    --secondary: 180 4% 90%;
-    --secondary-foreground: 202 47% 15%;
-    --muted: 180 4% 90%;
-    --muted-foreground: 210 8% 38%;      /* stone */
-    --accent: 200 24% 93%;               /* light harbour tint for hover and selected */
-    --accent-foreground: 202 47% 15%;
-
+    --popover-foreground: 145 23% 10%;
+    --primary: 157 48% 17%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 146 35% 91%;
+    --secondary: 146 35% 91%;
+    --secondary-foreground: 157 48% 17%;
+    --muted: 146 35% 91%;
+    --muted-foreground: 140 5% 37%;
+    --accent: 146 35% 91%;
+    --accent-foreground: 145 23% 10%;
     --destructive: 4 76% 40%;
     --destructive-foreground: 0 0% 100%;
-    --success: 200 49% 36%;              /* harbour */
+    --success: 153 61% 23%;
     --success-foreground: 0 0% 100%;
-    --warning: 19 73% 37%;               /* deep flame, readable as text */
+    --warning: 36 100% 27%;
     --warning-foreground: 0 0% 100%;
-
-    --border: 180 2% 84%;                /* line */
-    --input: 202 47% 15%;                /* inputs get an ink outline */
-    --ring: 200 49% 36%;                 /* harbour focus ring */
-    --radius: 0rem;                      /* sharp corners everywhere */
-
-    --flame: 18 82% 57%;
-    --sky: 198 49% 62%;
-    --harbour: 200 49% 36%;
-
-    --chart-1: 200 49% 36%;              /* harbour */
-    --chart-2: 198 49% 62%;              /* sky */
-    --chart-3: 18 82% 57%;               /* flame */
-    --chart-4: 199 40% 51%;              /* mid blue */
-    --chart-5: 202 47% 15%;              /* ink */
+    --border: 146 13% 90%;
+    --input: 140 5% 37%;
+    --ring: 157 48% 17%;
+    --radius: 0rem;
+    --coral: 10 83% 73%;
+    --forest: 157 48% 17%;
+    --sage: 146 35% 91%;
+    --frame: 157 48% 17%;
+    --on-frame: 0 0% 100%;
+    /* Old names kept so existing screens follow the new palette until each is rebuilt */
+    --flame: 157 48% 17%;
+    --sky: 151 25% 49%;
+    --harbour: 157 48% 17%;
+    --chart-1: 157 48% 17%;
+    --chart-2: 10 83% 73%;
+    --chart-3: 151 25% 49%;
+    --chart-4: 210 49% 36%;
+    --chart-5: 46 68% 47%;
   }
 
   .dark {
-    --background: 202 47% 10%;
-    --foreground: 60 7% 94%;
-    --card: 202 47% 15%;
-    --card-foreground: 60 7% 94%;
-    --popover: 202 47% 15%;
-    --popover-foreground: 60 7% 94%;
-
-    --primary: 60 7% 94%;                /* chalk buttons, ink text */
-    --primary-foreground: 202 47% 15%;
-    --primary-soft: 198 49% 62%;
-
-    --secondary: 202 42% 18%;
-    --secondary-foreground: 60 7% 94%;
-    --muted: 202 42% 18%;
-    --muted-foreground: 202 16% 71%;
-    --accent: 202 42% 18%;
-    --accent-foreground: 60 7% 94%;
-
-    --destructive: 7 82% 68%;
-    --destructive-foreground: 202 47% 10%;
-    --success: 198 49% 62%;
-    --success-foreground: 202 47% 10%;
-    --warning: 18 82% 57%;
-    --warning-foreground: 202 47% 10%;
-
-    --border: 202 32% 24%;
-    --input: 202 16% 71%;
-    --ring: 198 49% 62%;
-
-    --flame: 18 82% 57%;
-    --sky: 198 49% 62%;
-    --harbour: 198 49% 62%;
-
-    --chart-1: 198 49% 62%;
-    --chart-2: 199 40% 51%;
-    --chart-3: 18 82% 57%;
-    --chart-4: 200 49% 46%;
-    --chart-5: 60 7% 94%;
+    --background: 147 24% 7%;
+    --foreground: 146 26% 95%;
+    --card: 145 23% 10%;
+    --card-foreground: 146 26% 95%;
+    --popover: 145 23% 10%;
+    --popover-foreground: 146 26% 95%;
+    --primary: 10 83% 73%;
+    --primary-foreground: 145 23% 10%;
+    --primary-soft: 148 21% 14%;
+    --secondary: 148 21% 14%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 148 21% 14%;
+    --muted-foreground: 146 9% 68%;
+    --accent: 148 21% 14%;
+    --accent-foreground: 146 26% 95%;
+    --destructive: 5 100% 75%;
+    --destructive-foreground: 145 23% 10%;
+    --success: 146 46% 70%;
+    --success-foreground: 145 23% 10%;
+    --warning: 39 87% 69%;
+    --warning-foreground: 145 23% 10%;
+    --border: 147 17% 20%;
+    --input: 146 9% 68%;
+    --ring: 10 83% 73%;
+    --coral: 10 83% 73%;
+    --forest: 157 48% 17%;
+    --sage: 148 21% 14%;
+    --frame: 150 26% 5%;
+    --on-frame: 146 26% 95%;
+    --flame: 10 83% 73%;
+    --sky: 146 46% 70%;
+    --harbour: 146 46% 70%;
+    --chart-1: 146 46% 70%;
+    --chart-2: 10 83% 73%;
+    --chart-3: 151 25% 49%;
+    --chart-4: 210 49% 56%;
+    --chart-5: 46 68% 57%;
   }
 }
 
@@ -239,4 +237,12 @@ a:focus-visible,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Printing the GP summary: only the summary sheet goes on paper, in black on white. */
+@media print {
+  body * { visibility: hidden; }
+  .print-sheet, .print-sheet * { visibility: visible; color: #000 !important; background: #fff !important; }
+  .print-sheet { position: absolute; inset: 0 auto auto 0; width: 100%; padding: 0 !important; }
+  .no-print { display: none !important; }
 }

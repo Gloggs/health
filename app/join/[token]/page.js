@@ -136,7 +136,7 @@ export default function JoinPage() {
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <HealthMark size={28} />
-          <p className="font-display uppercase text-sm font-semibold">Health</p>
+          <p className="font-display font-medium tracking-tight text-sm">health</p>
         </div>
       </header>
 
@@ -172,10 +172,10 @@ export default function JoinPage() {
               <Users className="h-7 w-7" />
             </div>
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
                 An invite to
               </p>
-              <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
+              <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">
                 {invite.familyName}
               </h1>
               <p className="mt-3 text-sm text-muted-foreground">
@@ -191,7 +191,7 @@ export default function JoinPage() {
               <div className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     Sent to
                   </p>
                   <p className="truncate text-sm font-medium">{invite.email}</p>
@@ -299,7 +299,7 @@ function ErrorView({ errorBody, token }) {
         {icon}
       </div>
       <div>
-        <h1 className="font-display uppercase text-2xl font-bold sm:text-3xl">
+        <h1 className="font-display font-medium tracking-tight text-2xl sm:text-3xl">
           {title}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">{body}</p>

@@ -25,10 +25,10 @@ export default function SignedOutPage() {
           <div className="flex h-12 w-12 items-center justify-center">
             <HealthMark size={48} />
           </div>
-          <p className="mt-3 font-display uppercase text-sm font-semibold ">
+          <p className="mt-3 font-display font-medium tracking-tight text-sm ">
             Health
           </p>
-          <h1 className="mt-4 font-display uppercase text-2xl font-bold ">
+          <h1 className="mt-4 font-display font-medium tracking-tight text-2xl ">
             Signed out.
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">

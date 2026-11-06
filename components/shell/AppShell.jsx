@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 import HealthMark from "@/components/HealthMark";
 import NotificationsBell from "@/app/dashboard/_components/NotificationsBell";
 import SearchPalette from "./SearchPalette";
+import Guide from "./Guide";
 import { activeKey, navItems } from "./nav";
 import { cn } from "@/lib/utils";
 
@@ -53,9 +54,9 @@ export default function AppShell({ base, user, signOut, banner, top, children })
 
       <div className="flex min-h-0 flex-1">
         <aside className="hidden w-[232px] shrink-0 flex-col bg-ink text-chalk md:flex">
-          <Link href={base} className="flex items-center gap-2.5 px-6 pb-6 pt-5 font-display text-[28px] font-extrabold uppercase leading-none">
+          <Link href={base} className="flex items-center gap-2.5 px-6 pb-6 pt-5 font-display font-medium tracking-tight text-[28px] leading-none">
             <HealthMark size={26} title="" aria-hidden />
-            Health
+            health
           </Link>
           <nav aria-label="Main" className="flex flex-col">
             {items.map(({ key, label, href, icon: Icon }) => (
@@ -94,9 +95,9 @@ export default function AppShell({ base, user, signOut, banner, top, children })
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Phone top bar */}
           <header className="flex h-14 shrink-0 items-center justify-between bg-ink pl-4 pr-1 text-chalk md:hidden">
-            <Link href={base} className="flex items-center gap-2 font-display text-[26px] font-extrabold uppercase leading-none">
+            <Link href={base} className="flex items-center gap-2 font-display font-medium tracking-tight text-[26px] leading-none">
               <HealthMark size={22} title="" aria-hidden />
-              Health
+              health
             </Link>
             <div className="flex items-center">
               <button
@@ -162,6 +163,7 @@ export default function AppShell({ base, user, signOut, banner, top, children })
       </div>
 
       <SearchPalette open={searchOpen} onOpenChange={setSearchOpen} base={base} />
+      <Guide />
     </div>
   );
 }

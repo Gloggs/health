@@ -7,7 +7,7 @@ import { FamilyChatView } from "../_components/ChatViews";
 export default function FamilyChatPage() {
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 p-4 md:p-6">
-      <h1 className="font-display text-4xl font-extrabold uppercase leading-none">Family</h1>
+      <h1 className="font-display font-medium tracking-tight text-4xl leading-none">Family</h1>
       <FamilyTabs active="chat" />
       <FamilyChatView />
     </div>

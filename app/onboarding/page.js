@@ -161,7 +161,7 @@ export default function OnboardingPage() {
       <header className="flex items-center justify-between border-b px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <HealthMark size={28} />
-          <p className="font-display uppercase text-sm font-semibold">Health</p>
+          <p className="font-display font-medium tracking-tight text-sm">health</p>
         </div>
         <div className="flex items-center gap-1.5">
           {steps.map((_s, i) => (
@@ -263,10 +263,10 @@ function StepFamily({ value, onChange, stepLabel }) {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
+        <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">
           Start your family.
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -308,10 +308,10 @@ function StepName({ value, onChange, stepLabel }) {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
+        <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">
           What should we call you?
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -345,10 +345,10 @@ function StepDetails({ dateOfBirth, onDateOfBirth, heightCm, onHeightCm, stepLab
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
+        <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">
           A few quick details
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -407,10 +407,10 @@ function StepPrivacy({ visibility, onChange, stepLabel }) {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
           {stepLabel}
         </p>
-        <h1 className="mt-1 font-display uppercase text-3xl font-bold sm:text-4xl">
+        <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">
           What can family see?
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -449,7 +449,7 @@ function StepPrivacy({ visibility, onChange, stepLabel }) {
                     <p className="text-sm font-semibold">{label}</p>
                     <span
                       className={cn(
-                        "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wider",
+                        "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold",
                         on
                           ? "border-primary/60 text-primary"
                           : "border-border text-muted-foreground"
@@ -480,7 +480,7 @@ function StepConsent({ agree, onChange }) {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="mt-1 font-display text-3xl font-bold sm:text-4xl">Before you start</h1>
+        <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">Before you start</h1>
         <p className="mt-3 text-base leading-relaxed">
           Health stores health information about you: sleep, mood, weight, meals, workouts and anything you
           write. It is private to your account. Your family only sees what you switch on, and never your notes

@@ -65,7 +65,7 @@ export default function TrainHubPage() {
         <div className="rounded-2xl border bg-card p-6 shadow-paper-1">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
                 <Activity className="h-2.5 w-2.5" /> Active
               </span>
               <p className="mt-2 text-2xl font-semibold tracking-tight">{activePlan.name}</p>
@@ -210,7 +210,7 @@ function Stat({ icon: Icon, label, value, hint }) {
     <div>
       <div className="flex items-center gap-1.5 text-muted-foreground">
         <Icon className="h-3.5 w-3.5" />
-        <p className="text-[10px] font-medium uppercase tracking-[0.14em]">{label}</p>
+        <p className="text-[10px] font-medium tracking-[0.14em]">{label}</p>
       </div>
       <p className="mt-1.5 text-2xl font-bold leading-none tabular-nums">{value}</p>
       <p className="mt-1 text-[10px] text-muted-foreground">{hint}</p>

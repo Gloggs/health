@@ -144,7 +144,7 @@ export default function PlansPage() {
                 </Link>
                 <div className="flex shrink-0 flex-col items-end gap-1">
                   {p.isActive ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
                       <Star className="h-3 w-3" /> Active
                     </span>
                   ) : null}
@@ -323,7 +323,7 @@ function PlanWeek({ days }) {
             className="flex flex-1 flex-col items-center gap-1"
             title={`${DAY_NAMES[i]}: ${label}`}
           >
-            <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
+            <span className="text-[9px] font-medium text-muted-foreground">
               {letter}
             </span>
             <div

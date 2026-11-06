@@ -154,6 +154,10 @@ export async function PUT(req) {
     }
   }
 
+  if (body.guideSeen === true) {
+    update.guideSeenAt = new Date();
+  }
+
   if (body.healthConsent === true) {
     update.healthConsentAt = new Date();
   }

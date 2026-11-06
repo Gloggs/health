@@ -68,7 +68,7 @@ export default function HowItsBuiltPage() {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-serif text-lg font-bold">Health</span>
+            <span className="block font-serif text-lg font-bold">health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -85,7 +85,7 @@ export default function HowItsBuiltPage() {
         </Link>
 
         <div className="mt-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          <p className="text-xs font-semibold tracking-[0.18em] text-primary">
             Under the hood
           </p>
           <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight">

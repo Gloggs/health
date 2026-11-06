@@ -197,7 +197,7 @@ export default function NotificationsBell({ className } = {}) {
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0" sideOffset={8}>
         <div className="px-4 pt-4 pb-2">
-          <p className="font-display text-lg font-bold uppercase leading-none">
+          <p className="font-display font-medium tracking-tight text-lg leading-none">
             Notifications
           </p>
           <p className="mt-1 text-[11px] text-muted-foreground">
@@ -221,7 +221,7 @@ export default function NotificationsBell({ className } = {}) {
             <Link
               href="/dashboard/chat"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-0.5 text-[10px] font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Open <ArrowRight className="h-2.5 w-2.5" />
             </Link>
@@ -249,7 +249,7 @@ export default function NotificationsBell({ className } = {}) {
               <Eye className="h-3.5 w-3.5 text-primary" />
               <p className="text-sm font-semibold">Profile views</p>
             </div>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            <p className="text-[10px] text-muted-foreground">
               Last 30 days
             </p>
           </div>
@@ -316,7 +316,7 @@ function ViewRow({ item }) {
             <span className="font-semibold">{name}</span>{" "}
             <span className="text-muted-foreground">checked your profile</span>
           </p>
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          <p className="text-[10px] text-muted-foreground">
             {day}
           </p>
         </div>
@@ -334,7 +334,7 @@ function ViewRow({ item }) {
           <span className="text-muted-foreground">You checked</span>{" "}
           <span className="font-semibold">{name}</span>
         </p>
-        <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+        <p className="text-[10px] text-muted-foreground">
           {day}
         </p>
       </div>

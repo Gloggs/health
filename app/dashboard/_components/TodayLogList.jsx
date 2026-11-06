@@ -93,7 +93,7 @@ export default function TodayLogList({ today, sleep, water, body, cardio, cardio
   return (
     <section aria-labelledby="today-log" className="border border-border bg-card">
       <div className="flex items-baseline justify-between border-b border-border px-4 py-3">
-        <h2 id="today-log" className="font-display text-xl font-bold uppercase">
+        <h2 id="today-log" className="font-display font-medium tracking-tight text-xl">
           Log
         </h2>
         <span className="text-sm text-muted-foreground">
@@ -113,7 +113,7 @@ export default function TodayLogList({ today, sleep, water, body, cardio, cardio
                 aria-hidden
                 className={cn(
                   "flex h-[22px] w-[22px] items-center justify-center",
-                  r.done ? "bg-brand-sky text-[#142B38]" : "border border-foreground"
+                  r.done ? "bg-primary text-primary-foreground" : "border border-foreground"
                 )}
               >
                 {r.done ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}

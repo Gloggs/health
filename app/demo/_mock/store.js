@@ -1,3 +1,4 @@
+import { buildSummary } from "@/lib/summary";
 // In-memory mock "backend" for the demo. Mirrors the real API response
 // shapes so the actual dashboard pages render unchanged. No network, no
 // persistence — module state resets on full page reload. Writes mutate the
@@ -1049,6 +1050,47 @@ function routeApi(method, rawUrl, body) {
       return { status: 200, data: store.me };
     }
     return { status: 200, data: store.me };
+  }
+
+  // My appointment and the GP summary (health v2), built by the same lib/summary.js as the real app.
+  if (path === "/api/appointment") {
+    if (m === "PUT") { store.appointment = { id: 1, userId: DEMO_USER_ID, ...(store.appointment ?? {}), ...body }; return { status: 200, data: store.appointment }; }
+    return { status: 200, data: store.appointment ?? null };
+  }
+  if (path === "/api/summary") {
+    if (!store.feelings) routeApi("GET", "/api/feelings", null);
+    const weeks = Math.min(26, Math.max(1, Number(q.weeks) || 4));
+    const fromD = new Date(t + "T12:00:00"); fromD.setDate(fromD.getDate() - (weeks * 7 - 1));
+    const h = liveHistory();
+    return { status: 200, data: buildSummary({ name: store.me?.displayName ?? "You", today: t, from: fromD.toISOString().slice(0, 10), to: t,
+      feelings: store.feelings, sleep: h.sleep, mood: h.mood, appointment: store.appointment ?? null }) };
+  }
+
+  // How I feel (health v2): sample entries, made up for the demo. Kept in the browser only.
+  if (path === "/api/feelings") {
+    if (!store.feelings) {
+      const day = (n) => { const x = new Date(t + "T12:00:00"); x.setDate(x.getDate() - n); return x.toISOString().slice(0, 10); };
+      store.feelings = [
+        { id: nextId(), userId: DEMO_USER_ID, date: day(1), what: "Headache", whereOnBody: "Forehead", howBad: "moderate", better: "Water and a rest", worse: "Screens", note: "Sample entry, made up for the demo." },
+        { id: nextId(), userId: DEMO_USER_ID, date: day(3), what: "Headache", whereOnBody: "Forehead", howBad: "mild", better: "Fresh air", worse: null, note: null },
+      ];
+    }
+    if (m === "POST") {
+      const row = { id: nextId(), userId: DEMO_USER_ID, howBad: null, whereOnBody: null, better: null, worse: null, note: null, ...body };
+      store.feelings.unshift(row);
+      return { status: 201, data: row };
+    }
+    if (m === "PUT") {
+      const i = store.feelings.findIndex((f) => f.id === Number(body?.id));
+      if (i < 0) return { status: 404, data: { error: "Not found." } };
+      store.feelings[i] = { ...store.feelings[i], ...body };
+      return { status: 200, data: store.feelings[i] };
+    }
+    if (m === "DELETE") {
+      store.feelings = store.feelings.filter((f) => f.id !== Number(q.id));
+      return { status: 200, data: { ok: true } };
+    }
+    return { status: 200, data: [...store.feelings].sort((a, b) => (a.date < b.date ? 1 : -1)) };
   }
 
   // ── Health modules: ?date= single-day reads, ?from&to ranges ──

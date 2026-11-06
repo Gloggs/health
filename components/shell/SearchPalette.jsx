@@ -161,7 +161,7 @@ export default function SearchPalette({ open, onOpenChange, base }) {
                 return (
                   <li key={`${item.group}-${item.label}-${i}`} role="presentation">
                     {header ? (
-                      <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{header}</p>
+                      <p className="px-4 pb-1 pt-3 text-xs font-semibold tracking-wide text-muted-foreground">{header}</p>
                     ) : null}
                     <div
                       id={`search-${i}`}

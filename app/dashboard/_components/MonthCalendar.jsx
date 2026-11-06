@@ -252,7 +252,7 @@ function DaySummary({ date, summary }) {
       {/* Past-day editor entry points: each log module accepts ?date= so the
           calendar popover can deep-link straight into the relevant editor. */}
       <div className="mt-3 border-t pt-2">
-        <p className="mb-1.5 flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <p className="mb-1.5 flex items-center gap-1 text-[10px] font-medium text-muted-foreground">
           <Pencil className="h-3 w-3" /> Edit this day
         </p>
         <div className="grid grid-cols-3 gap-1">

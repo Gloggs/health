@@ -85,11 +85,11 @@ export default function YouPage() {
       <PageHero title="You" />
 
       <section aria-label="Profile" className="flex items-center gap-4 border border-foreground bg-card p-4">
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center bg-brand-sky font-display text-2xl font-extrabold text-ink">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center bg-brand-sky font-display font-medium tracking-tight text-2xl text-ink">
           {initials}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-display text-2xl font-bold uppercase leading-tight">{name}</p>
+          <p className="truncate font-display font-medium tracking-tight text-2xl leading-tight">{name}</p>
           {email ? <p className="truncate text-sm text-muted-foreground">{email}</p> : null}
         </div>
         <Link href={`${base}/settings?tab=profile`} className="h-11 shrink-0 border border-foreground px-4 text-sm font-semibold leading-[42px]">
@@ -98,7 +98,7 @@ export default function YouPage() {
       </section>
 
       <section aria-labelledby="you-family" className="flex flex-col gap-2">
-        <h2 id="you-family" className="font-display text-xl font-bold uppercase">What your family sees</h2>
+        <h2 id="you-family" className="font-display font-medium tracking-tight text-xl">What your family sees</h2>
         <div className="border border-foreground bg-card">
           <Row href={`${base}/settings?tab=privacy`} label="Shared with family" detail={sharedText} />
           <Row href={`${base}/family`} label="Invite someone" />
@@ -108,7 +108,7 @@ export default function YouPage() {
       <GoalsCard />
 
       <section aria-labelledby="you-settings" className="flex flex-col gap-2">
-        <h2 id="you-settings" className="font-display text-xl font-bold uppercase">Settings</h2>
+        <h2 id="you-settings" className="font-display font-medium tracking-tight text-xl">Settings</h2>
         <div className="border border-foreground bg-card">
           <Row href={`${base}/settings?tab=coach`} label="Goals and targets" detail="Water target, notes" />
           <Row href={`${base}/settings?tab=profile`} label="Profile" detail="Name, birthday, height" />
@@ -117,7 +117,7 @@ export default function YouPage() {
       </section>
 
       <section aria-labelledby="you-account" className="flex flex-col gap-2">
-        <h2 id="you-account" className="font-display text-xl font-bold uppercase">Account</h2>
+        <h2 id="you-account" className="font-display font-medium tracking-tight text-xl">Account</h2>
         <div className="border border-foreground bg-card">
           <button type="button" onClick={exportAll} disabled={exporting} className={`${rowClass} disabled:opacity-50`}>
             <span className="flex-1 font-semibold">{exporting ? "Exporting" : "Export my data"}</span>

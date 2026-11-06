@@ -35,7 +35,7 @@ function TodayDrinks() {
 
   return (
     <section aria-labelledby="water-today" className="flex flex-col gap-2">
-      <h2 id="water-today" className="font-display text-xl font-bold uppercase">
+      <h2 id="water-today" className="font-display font-medium tracking-tight text-xl">
         Today, {litres(data.totalMl ?? 0)}
       </h2>
       <ul className="border border-border bg-card">

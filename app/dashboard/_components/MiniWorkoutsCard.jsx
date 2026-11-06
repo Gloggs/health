@@ -76,7 +76,7 @@ export default function MiniWorkoutsCard({ todayRows, configured, today, onChang
             <Activity className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
               Daily 4
             </p>
             <div className="mt-0.5 flex items-baseline gap-2">

@@ -124,6 +124,8 @@ export const USERS = pgTable('users', {
   // When the person agreed to health storing their health information (UK GDPR special category data,
   // explicit consent). Nothing can be logged until this is set. Added 6 November 2026.
   healthConsentAt: timestamp('health_consent_at', { withTimezone: true }),
+  // When the person finished (or skipped) the one-time guide, so it shows once ever, on any device.
+  guideSeenAt: timestamp('guide_seen_at', { withTimezone: true }),
 });
 
 // One row per (viewer, viewee, day) - unique constraint prevents the same
@@ -309,6 +311,40 @@ export const MOOD_LOGS = pgTable('mood_logs', {
 }, (table) => ({
   byUserDate: index('mood_logs_by_user_date').on(table.userId, table.date),
   byFamilyUserDate: index('mood_logs_by_family_user_date').on(table.familyId, table.userId, table.date),
+}));
+
+// How I feel (health v2, 6 November 2026): what is going on, in the person's own words, to show a GP.
+// Always private: never shared with family, whatever the sharing switches say. The person's own words
+// only; the app never scores, interprets or advises (MHRA line, docs/RESEARCH.md).
+export const FEELINGS = pgTable('feelings', {
+  id: serial('id').primaryKey(),
+  familyId: varchar('family_id', { length: 64 }).notNull(),
+  userId: varchar('user_id', { length: 64 }).notNull(),
+  date: date('date').notNull(),
+  what: varchar('what', { length: 80 }).notNull(),           // "Headache", "Pain in my knee"
+  whereOnBody: varchar('where_on_body', { length: 60 }),    // optional
+  howBad: varchar('how_bad', { length: 10 }),               // the person's word: mild | moderate | bad
+  better: text('better'),                                   // what made it better
+  worse: text('worse'),                                     // what made it worse
+  note: text('note'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  byFamilyUserDate: index('feelings_by_family_user_date').on(table.familyId, table.userId, table.date),
+}));
+
+// My appointment (health v2): the next GP appointment, with the person's own questions and medicines,
+// as the NHS advises. One row per person; always private, never shared with family.
+export const APPOINTMENTS = pgTable('appointments', {
+  id: serial('id').primaryKey(),
+  familyId: varchar('family_id', { length: 64 }).notNull(),
+  userId: varchar('user_id', { length: 64 }).notNull(),
+  date: date('date'),                 // optional: when it is
+  questions: text('questions'),       // one per line, the person's 2 or 3 most important
+  medicines: text('medicines'),       // one per line, including vitamins and supplements
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  oneEach: uniqueIndex('appointments_one_per_user').on(table.familyId, table.userId),
 }));
 
 // Body metrics: weight + optional measurements. Weekly preferred.

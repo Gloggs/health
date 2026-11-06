@@ -150,7 +150,7 @@ export default function ExercisesPage() {
         <div className="space-y-6">
           {grouped.map(([muscle, list]) => (
             <section key={muscle} className="space-y-2">
-              <h3 className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <h3 className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                 {muscle}
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-foreground">
                   {list.length}

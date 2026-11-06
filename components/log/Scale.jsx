@@ -56,7 +56,7 @@ export default function Scale({ label, options, value, onChange, tall = false, a
                 on ? "bg-foreground font-bold text-background" : "bg-card font-semibold text-foreground"
               )}
             >
-              {o.hint != null ? <span className="font-display text-xl font-bold leading-none">{o.hint}</span> : null}
+              {o.hint != null ? <span className="font-display font-medium tracking-tight text-xl leading-none">{o.hint}</span> : null}
               <span className={o.hint != null ? "text-xs" : undefined}>{o.label}</span>
             </button>
           );

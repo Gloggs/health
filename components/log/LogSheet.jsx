@@ -51,7 +51,7 @@ export default function LogSheet({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-[#142B38]/60 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/60 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
         <Dialog.Content
           aria-describedby={undefined}
           className={cn(
@@ -68,7 +68,7 @@ export default function LogSheet({
             className="flex min-h-0 flex-col"
           >
             <div className="flex items-center justify-between gap-3 px-4 pt-4">
-              <Dialog.Title className="font-display text-[26px] font-extrabold uppercase leading-none">{title}</Dialog.Title>
+              <Dialog.Title className="font-display font-medium tracking-tight text-[26px] leading-none">{title}</Dialog.Title>
               <div className="flex items-center gap-1">
                 {when}
                 <Dialog.Close
@@ -83,7 +83,7 @@ export default function LogSheet({
             <div className="flex min-h-0 flex-col gap-4 overflow-y-auto px-4 pb-4 pt-3">
               {value != null ? (
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                  <output aria-live="polite" className="font-display text-[56px] font-extrabold leading-[0.95] sm:text-[64px]">
+                  <output aria-live="polite" className="font-display font-medium tracking-tight text-[56px] leading-[0.95] sm:text-[64px]">
                     {value}
                   </output>
                   {aside ? <span className="text-sm text-muted-foreground">{aside}</span> : null}
