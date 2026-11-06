@@ -279,7 +279,7 @@ function InviteManager({ onMembersChanged }) {
       ) : null}
 
       <div className="mt-5">
-        <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
           Pending
         </p>
         {isLoading ? (
@@ -473,7 +473,7 @@ function ActivityFeed() {
                     <span className="font-semibold">{it.userName}</span>{" "}
                     <span className="text-muted-foreground">{it.summary}</span>
                   </p>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <p className="text-[10px] text-muted-foreground">
                     {when}
                   </p>
                 </div>
@@ -555,7 +555,7 @@ function LeaderCard({ icon: Icon, label, winner, unit, emptyHint }) {
           <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
             {label}
           </p>
           {winner ? (
@@ -572,7 +572,7 @@ function LeaderCard({ icon: Icon, label, winner, unit, emptyHint }) {
           )}
         </div>
         {winner?.isMe ? (
-          <span className="shrink-0 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-primary">
+          <span className="shrink-0 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
             you
           </span>
         ) : null}
@@ -626,7 +626,7 @@ function FamilyTile({ member, myRole, onChanged }) {
               <span className="text-xs text-muted-foreground">· {member.age}</span>
             ) : null}
             {member.isMe ? (
-              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-primary">
+              <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
                 you
               </span>
             ) : null}
@@ -897,7 +897,7 @@ function ConfirmMenuItem({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-display uppercase">{title}</AlertDialogTitle>
+          <AlertDialogTitle className="font-display">{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -935,7 +935,7 @@ function Stat({ icon: Icon, value, label }) {
         <Icon className="h-3.5 w-3.5 text-primary" />
         <span className="font-mono text-lg font-bold tabular-nums leading-none">{value ?? <span className="text-xs font-normal">Not shared</span>}</span>
       </div>
-      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+      <span className="text-[10px] text-muted-foreground">
         {label}
       </span>
     </div>

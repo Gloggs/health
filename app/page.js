@@ -168,7 +168,7 @@ function HeroMock() {
       <div className="animate-float-slow rounded-2xl border bg-card p-5 shadow-paper-2 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-[10px] font-medium text-muted-foreground">
               PPL · Week 6
             </p>
             <p className="mt-1 text-3xl font-bold tabular-nums">Push day</p>
@@ -224,7 +224,7 @@ function HeroMock() {
         style={{ animationDelay: "-3s" }}
       >
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          <p className="text-[10px] font-medium text-muted-foreground">
             Last 14 weeks
           </p>
           <span className="text-[10px] tabular-nums text-primary">{Math.round(sessions)}</span>
@@ -251,7 +251,7 @@ function HeroMock() {
         style={{ animationDelay: "-2s" }}
       >
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          <p className="text-[10px] font-medium text-muted-foreground">
             Today
           </p>
           <Sparkles className="h-3 w-3 text-primary" />
@@ -420,7 +420,7 @@ show up.
 function Trust({ label, value }) {
   return (
     <div>
-      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="text-[10px] font-medium text-muted-foreground">{label}</p>
       <p className="text-sm font-semibold">{value}</p>
     </div>
   );
@@ -465,7 +465,7 @@ function Features() {
     <section id="features" ref={ref} className="border-t bg-muted/30 py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className={`mx-auto max-w-2xl text-center ${inView ? "animate-fade-up" : "opacity-0"}`}>
-          <p className="text-xs font-medium uppercase tracking-wider text-primary">What's in it</p>
+          <p className="text-xs font-medium text-primary">What's in it</p>
           <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             Six modules. One app. No AI guessing for you.
           </h2>
@@ -524,7 +524,7 @@ function How() {
     <section id="how" ref={ref} className="py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className={`mx-auto max-w-2xl text-center ${inView ? "animate-fade-up" : "opacity-0"}`}>
-          <p className="text-xs font-medium uppercase tracking-wider text-primary">How it works</p>
+          <p className="text-xs font-medium text-primary">How it works</p>
           <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             Three steps.
           </h2>
@@ -540,7 +540,7 @@ function How() {
               <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-primary bg-background text-primary">
                 <Icon className="h-6 w-6" />
               </div>
-              <p className="mt-4 text-xs font-semibold tracking-wider text-primary">STEP {n}</p>
+              <p className="mt-4 text-xs font-semibold text-primary">STEP {n}</p>
               <h3 className="mt-1 text-lg font-semibold">{title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{body}</p>
             </div>
@@ -572,7 +572,7 @@ function Preview() {
       <Blobs />
       <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2 lg:items-center">
         <div className={`space-y-5 ${inView ? "animate-fade-up" : "opacity-0"}`}>
-          <p className="text-xs font-medium uppercase tracking-wider text-primary">A day in Health</p>
+          <p className="text-xs font-medium text-primary">A day in Health</p>
           <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             One screen. One tap per thing. No AI doing it for you.
           </h2>
@@ -614,7 +614,7 @@ function Preview() {
                   <div className={`flex h-7 w-7 items-center justify-center rounded-md ${t.toneClass}`}>
                     <Icon className="h-3.5 w-3.5" />
                   </div>
-                  <p className="mt-2 text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
+                  <p className="mt-2 text-[9px] font-medium text-muted-foreground">
                     {t.label}
                   </p>
                   <p className="text-base font-bold tabular-nums">{t.value}</p>
@@ -644,7 +644,7 @@ function Preview() {
                   <span className="flex items-center gap-2">
                     <span className="text-muted-foreground">{m.text}</span>
                     <span
-                      className={`rounded-full border px-1.5 py-0 text-[9px] font-semibold uppercase tracking-wider ${
+                      className={`rounded-full border px-1.5 py-0 text-[9px] font-semibold ${
                         m.quality === 1
                           ? "border-destructive/40 bg-destructive/15 text-destructive"
                           : m.quality === 2

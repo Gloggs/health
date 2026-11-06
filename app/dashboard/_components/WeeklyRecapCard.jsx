@@ -59,7 +59,7 @@ export default function WeeklyRecapCard({ daysActive = 0, streak = 0 }) {
           <p className="text-sm font-semibold text-muted-foreground">
             Sunday
           </p>
-          <p className="mt-1 font-display uppercase text-xl font-bold leading-tight">
+          <p className="mt-1 font-display font-medium tracking-tight text-xl leading-tight">
             {headline}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">

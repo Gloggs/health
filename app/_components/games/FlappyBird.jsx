@@ -302,7 +302,7 @@ export default function FlappyBird({ active }) {
         />
         {phase === "ready" ? (
           <Overlay>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Flappy</p>
+            <p className="text-xs text-muted-foreground">Flappy</p>
             <p className="mt-1 text-xl font-semibold">Tap to play</p>
             <p className="mt-2 text-[11px] text-muted-foreground">
               Tap, click, or press space to flap
@@ -318,7 +318,7 @@ export default function FlappyBird({ active }) {
         ) : null}
         {phase === "over" ? (
           <Overlay>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Game over</p>
+            <p className="text-xs text-muted-foreground">Game over</p>
             <p className="mt-1 text-3xl font-bold tabular-nums">{score}</p>
             <p className="mt-1 text-[11px] text-muted-foreground">
               Best: {Math.max(highScore, score)}

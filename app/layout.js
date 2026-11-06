@@ -1,22 +1,10 @@
-import { Barlow, Barlow_Condensed } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
-// Barlow for text, Barlow Condensed for numbers and headings (docs/DESIGN.md).
-const barlow = Barlow({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["600", "700", "800"],
-  display: "swap",
-});
+// DM Sans, the Guild UK typeface, for text and headings (Skeleton v2). next/font serves it from this site.
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-sans", display: "swap" });
 
 export const metadata = {
   metadataBase: new URL("https://health.guilduk.com"),
@@ -54,7 +42,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-GB" suppressHydrationWarning>
       <body
-        className={`${barlow.variable} ${barlowCondensed.variable} font-sans antialiased`}
+        className={`${dmSans.variable} font-sans antialiased`}
       >
         <ThemeProvider>
           <Toaster position="bottom-center" />

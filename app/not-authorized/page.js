@@ -23,10 +23,10 @@ export default function NotAuthorizedPage() {
         <div className="mx-auto flex h-12 w-12 items-center justify-center">
           <HealthMark size={48} />
         </div>
-        <p className="mt-3 font-display uppercase text-sm font-semibold text-muted-foreground">
+        <p className="mt-3 font-display font-medium tracking-tight text-sm text-muted-foreground">
           Health
         </p>
-        <h1 className="mt-4 font-display uppercase text-2xl font-bold ">
+        <h1 className="mt-4 font-display font-medium tracking-tight text-2xl ">
           You're not in a family yet.
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">

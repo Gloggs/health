@@ -51,7 +51,7 @@ export default function RestTimer({ endsAt, seconds, onSkip, onChangeSeconds }) 
             <Timer className="h-4 w-4" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            <p className="text-[10px] text-muted-foreground">
               {done ? "Rest over" : "Resting"}
             </p>
             <p className="text-xl font-bold tabular-nums">

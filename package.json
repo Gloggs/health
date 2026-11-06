@@ -46,6 +46,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.30.6",
     "pg": "^8.23.1",

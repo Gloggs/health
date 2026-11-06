@@ -85,7 +85,7 @@ export default function HowItsBuiltPage() {
         </Link>
 
         <div className="mt-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          <p className="text-xs font-semibold tracking-[0.18em] text-primary">
             Under the hood
           </p>
           <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight">

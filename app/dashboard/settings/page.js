@@ -332,7 +332,7 @@ function SettingsPageInner() {
                   </div>
                   <div className="flex items-center justify-end gap-3">
                     {profileDirty ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-warning">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold text-warning">
                         Unsaved changes
                       </span>
                     ) : null}
@@ -505,7 +505,7 @@ function SettingsPageInner() {
                   </div>
                   <div className="flex items-center justify-end gap-3">
                     {dirty ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-warning">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold text-warning">
                         Unsaved changes
                       </span>
                     ) : null}
@@ -570,7 +570,7 @@ function SettingsPageInner() {
                                 <p className="text-sm font-semibold">{label}</p>
                                 <span
                                   className={cn(
-                                    'shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wider',
+                                    'shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold',
                                     on
                                       ? 'border-primary/60 text-primary'
                                       : 'border-border text-muted-foreground'
@@ -588,7 +588,7 @@ function SettingsPageInner() {
                   </ul>
                   <div className="flex items-center justify-end gap-3">
                     {privacyDirty ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-warning">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[10px] font-semibold text-warning">
                         Unsaved changes
                       </span>
                     ) : null}

@@ -66,7 +66,7 @@ export default function PageHeader({
         </div>
       ) : null}
       <div className="flex-1">
-        <h1 className="font-display text-3xl font-extrabold uppercase leading-none">{title}</h1>
+        <h1 className="font-display font-medium tracking-tight text-3xl leading-none">{title}</h1>
         {subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}
       </div>
     </div>

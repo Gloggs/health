@@ -133,10 +133,10 @@ export default function CloseTodayCard({
               <Moon className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-primary">
+              <p className="text-[10px] font-medium tracking-[0.14em] text-primary">
                 Closed
               </p>
-              <p className="mt-0.5 font-display uppercase text-xl font-bold leading-tight">
+              <p className="mt-0.5 font-display font-medium tracking-tight text-xl leading-tight">
                 Day closed
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
@@ -176,7 +176,7 @@ export default function CloseTodayCard({
     >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <h2 className="font-display text-xl font-bold uppercase">Close the day</h2>
+          <h2 className="font-display font-medium tracking-tight text-xl">Close the day</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Mark today finished and add a note if you like.
           </p>

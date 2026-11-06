@@ -147,11 +147,11 @@ function BodyPageInner() {
       >
         Log weight
       </button>
-      <h2 className="font-display text-xl font-bold uppercase">Measurements</h2>
+      <h2 className="font-display font-medium tracking-tight text-xl">Measurements</h2>
 
       <div className="border border-foreground bg-card p-5">
         <div className="mb-4 flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Log for</p>
+          <p className="text-xs text-muted-foreground">Log for</p>
           <Input
             type="date"
             value={date}
@@ -235,7 +235,7 @@ function BodyPageInner() {
       </div>
 
       <div className="border border-foreground bg-card p-5">
-        <p className="mb-3 text-xs uppercase tracking-wider text-muted-foreground">Last 90 days</p>
+        <p className="mb-3 text-xs text-muted-foreground">Last 90 days</p>
         {history === null ? (
           <Skeleton className="h-32 w-full rounded-xl" />
         ) : history.length === 0 ? (

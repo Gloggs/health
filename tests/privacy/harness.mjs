@@ -54,4 +54,4 @@ export async function seedWorld({ visibilityA = null } = {}) {
 }
 
 /** Things only A wrote. None of them may ever reach anyone else. */
-export const SECRETS = ["SECRET-SLEEP-A", "SECRET-MOOD-A", "SECRET-MEAL-A", "SECRET-BODY-A", "SECRET-CARDIO-A", "SECRET-JOURNAL-A", "SECRET-PLANDAY-A"];
+export const SECRETS = ["SECRET-SLEEP-A", "SECRET-MOOD-A", "SECRET-MEAL-A", "SECRET-BODY-A", "SECRET-CARDIO-A", "SECRET-JOURNAL-A", "SECRET-PLANDAY-A", "SECRET-FEELING-A"];

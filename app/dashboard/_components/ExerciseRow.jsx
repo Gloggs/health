@@ -233,7 +233,7 @@ export default function ExerciseRow({
             {statusBadge ? (
               <span
                 className={cn(
-                  "rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                  "rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
                   allTargetDone
                     ? "bg-success/15 text-success"
                     : "bg-primary/15 text-primary"
@@ -243,7 +243,7 @@ export default function ExerciseRow({
               </span>
             ) : null}
             {isPR ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-warning">
+              <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 px-1.5 py-0.5 text-[10px] font-semibold text-warning">
                 <Trophy className="h-3 w-3" /> PR
               </span>
             ) : null}
@@ -372,7 +372,7 @@ export default function ExerciseRow({
                       key={s.id}
                       className="flex items-center gap-2 rounded-md border border-warning/40 bg-warning/5 px-2 py-1.5 text-xs"
                     >
-                      <span className="rounded-full bg-warning/20 px-1.5 py-0 text-[9px] font-semibold uppercase tracking-wider text-warning">
+                      <span className="rounded-full bg-warning/20 px-1.5 py-0 text-[9px] font-semibold text-warning">
                         Extra
                       </span>
                       <span className="flex-1 font-medium tabular-nums">

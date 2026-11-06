@@ -40,7 +40,7 @@ export default function GameSection() {
           <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Gamepad2 className="h-5 w-5" />
           </div>
-          <p className="text-xs font-medium uppercase tracking-wider text-primary">
+          <p className="text-xs font-medium text-primary">
             Take a break
           </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">

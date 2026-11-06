@@ -17,8 +17,8 @@ export default function TodayHeader({ streak, week, familyLogged, familyTotal })
         <div className="flex flex-col gap-1">
           <h1 className="text-sm text-chalk/80 md:text-base">{date}</h1>
           <p className="flex items-baseline gap-2.5">
-            <span className="font-display text-[64px] font-extrabold leading-[0.85] text-flame md:text-[76px]">{streak}</span>
-            <span className="font-display text-xl font-bold uppercase">day streak</span>
+            <span className="font-display font-medium tracking-tight text-[64px] leading-[0.85] text-flame md:text-[76px]">{streak}</span>
+            <span className="font-display font-medium tracking-tight text-xl">day streak</span>
           </p>
           {streak === 0 ? <p className="text-sm text-chalk/80">Log anything today to start one.</p> : null}
         </div>

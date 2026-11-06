@@ -371,7 +371,7 @@ export default function CrossyRoad({ active }) {
         />
         {phase === "ready" ? (
           <Overlay>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Crossy</p>
+            <p className="text-xs text-muted-foreground">Crossy</p>
             <p className="mt-1 text-xl font-semibold">Cross the road</p>
             <p className="mt-2 text-[11px] text-muted-foreground">
               Arrows / WASD on desktop, swipe or tap to move up on phone
@@ -387,7 +387,7 @@ export default function CrossyRoad({ active }) {
         ) : null}
         {phase === "over" ? (
           <Overlay>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Squished</p>
+            <p className="text-xs text-muted-foreground">Squished</p>
             <p className="mt-1 text-3xl font-bold tabular-nums">{score}</p>
             <p className="mt-1 text-[11px] text-muted-foreground">
               rows · Best: {Math.max(highScore, score)}

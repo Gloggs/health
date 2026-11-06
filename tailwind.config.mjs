@@ -34,9 +34,9 @@ export default {
       // older markup picks up the new faces until each screen is rebuilt.
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-sans)", "system-ui", "sans-serif"],
         handwritten: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       // Fluid type scale (clamp-based) — added in J.4. Avoids the jarring
@@ -103,9 +103,9 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        // Fixed brand colours for the app frame, the same in light and dark.
-        ink: "#142B38",
-        chalk: "#F1F1EF",
+        // The app frame: forest with white text in light, the kit's darkest green in dark (Skeleton v2 tokens).
+        ink: "hsl(var(--frame))",
+        chalk: "hsl(var(--on-frame))",
         flame: "hsl(var(--flame))",
         harbour: "hsl(var(--harbour))",
         "brand-sky": "hsl(var(--sky))",

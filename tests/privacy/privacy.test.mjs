@@ -21,6 +21,7 @@ import * as exportRoute from "@/app/api/export/route.js";
 import * as me from "@/app/api/users/me/route.js";
 import * as familyCreate from "@/app/api/family/create/route.js";
 import * as invites from "@/app/api/invites/route.js";
+import * as feelings from "@/app/api/feelings/route.js";
 
 const { A, A2, B, U } = PEOPLE;
 const d = today();
@@ -38,6 +39,7 @@ beforeAll(async () => {
     [cardio.POST, { date: d, type: "walk", durationMinutes: 20, note: "SECRET-CARDIO-A" }],
     [chat.POST, { date: d, content: "SECRET-JOURNAL-A" }],
     [water.POST, { date: d, amountMl: 500 }],
+    [feelings.POST, { date: d, what: "SECRET-FEELING-A", howBad: "moderate", better: "SECRET-FEELING-A", note: "SECRET-FEELING-A" }],
   ];
   for (const [handler, payload] of writes) {
     const r = await call(handler, { method: "POST", path: "/api/x", body: payload });
@@ -48,7 +50,7 @@ beforeAll(async () => {
 const READS = [
   ["sleep", sleep], ["mood", mood], ["meals", meals], ["body-metrics", body], ["cardio", cardio], ["chat", chat],
   ["water", water], ["dashboard", dashboard], ["family", family], ["family/activity", activity], ["family/chat", familyChat],
-  ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
+  ["feelings", feelings], ["sessions", sessions], ["sessions/today", sessionsToday], ["plans", plans], ["export", exportRoute], ["users/me", me],
 ];
 
 function leaks(text, { weight = true } = {}) {
@@ -133,9 +135,10 @@ describe("the family page and feed follow the same switches", () => {
     asUser(A);
     await call(me.PUT, { method: "PUT", body: { visibility: { body: true, sleep: true, mood: true, meals: true, cardio: true, workouts: true, water: true, daily4: true, streak: true } } });
     asUser(A2);
-    for (const mod of [chat, dashboard, familyChat, activity, family, exportRoute]) {
+    for (const mod of [chat, dashboard, familyChat, activity, family, exportRoute, feelings]) {
       const r = await call(mod.GET, { path: `/api/x?date=${d}&viewing=${A.id}` });
       expect(r.text.includes("SECRET-JOURNAL-A")).toBe(false);
+      expect(r.text.includes("SECRET-FEELING-A")).toBe(false);
     }
   });
 });
@@ -152,6 +155,30 @@ describe("small checks", () => {
     const { safeMessage } = await import("@/lib/auth.js");
     expect(safeMessage(new Error('relation "users" does not exist'))).toBe("Something went wrong. Please try again.");
     expect(safeMessage(Object.assign(new Error("email is required"), { status: 400 }))).toBe("email is required");
+  });
+});
+
+describe("how I feel", () => {
+  test("the person sees their own entries; the app keeps their words and adds no judgement", async () => {
+    asUser(A);
+    const r = await call(feelings.GET, { path: "/api/feelings" });
+    const mine = r.json.find((f) => f.what === "SECRET-FEELING-A");
+    expect(mine).toBeTruthy();
+    expect(mine.howBad).toBe("moderate");
+    expect(Object.keys(mine).some((k) => /score|risk|advice|diagnos/i.test(k))).toBe(false);
+  });
+
+  test("a made-up severity is refused, and nobody can change or delete someone else's entry", async () => {
+    asUser(A);
+    const bad = await call(feelings.POST, { method: "POST", body: { date: d, what: "Cough", howBad: "9 out of 10" } });
+    expect(bad.status).toBe(400);
+    const list = await call(feelings.GET, { path: "/api/feelings" });
+    const id = list.json[0].id;
+    asUser(B);
+    const edit = await call(feelings.PUT, { method: "PUT", body: { id, date: d, what: "changed by B" } });
+    expect(edit.status).toBe(404);
+    const del = await call(feelings.DELETE, { method: "DELETE", path: `/api/feelings?id=${id}` });
+    expect(del.status).toBe(404);
   });
 });
 

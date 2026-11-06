@@ -311,6 +311,26 @@ export const MOOD_LOGS = pgTable('mood_logs', {
   byFamilyUserDate: index('mood_logs_by_family_user_date').on(table.familyId, table.userId, table.date),
 }));
 
+// How I feel (health v2, 6 November 2026): what is going on, in the person's own words, to show a GP.
+// Always private: never shared with family, whatever the sharing switches say. The person's own words
+// only; the app never scores, interprets or advises (MHRA line, docs/RESEARCH.md).
+export const FEELINGS = pgTable('feelings', {
+  id: serial('id').primaryKey(),
+  familyId: varchar('family_id', { length: 64 }).notNull(),
+  userId: varchar('user_id', { length: 64 }).notNull(),
+  date: date('date').notNull(),
+  what: varchar('what', { length: 80 }).notNull(),           // "Headache", "Pain in my knee"
+  whereOnBody: varchar('where_on_body', { length: 60 }),    // optional
+  howBad: varchar('how_bad', { length: 10 }),               // the person's word: mild | moderate | bad
+  better: text('better'),                                   // what made it better
+  worse: text('worse'),                                     // what made it worse
+  note: text('note'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  byFamilyUserDate: index('feelings_by_family_user_date').on(table.familyId, table.userId, table.date),
+}));
+
 // Body metrics: weight + optional measurements. Weekly preferred.
 export const BODY_METRICS = pgTable('body_metrics', {
   id: serial('id').primaryKey(),

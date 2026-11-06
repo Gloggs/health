@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="512" height="512">
-  <!-- Health mark: a flame square with an ink pulse line. See docs/DESIGN.md. -->
-  <rect width="22" height="22" fill="#EB6E3A"/>
-  <path d="M4 13h4l2-6 3 10 2-4h3" fill="none" stroke="#142B38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="512" height="512" role="img" aria-label="Health">
+  <!-- health mark: the Guild UK octagon with health's pulse line. See components/HealthMark.jsx. -->
+  <rect width="22" height="22" fill="#174131"/>
+  <path d="M6.5 2H15.5L20 6.5V15.5L15.5 20H6.5L2 15.5V6.5Z" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+  <path d="M5.5 11.5h2.5l1.5-3.5 2.5 6.5 1.5-3h2" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="square" stroke-linejoin="miter"/>
+  <rect x="16" y="10.5" width="2" height="2" fill="#F39380"/>
 </svg>

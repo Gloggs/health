@@ -57,7 +57,7 @@ export default function GoalsCard() {
   return (
     <div className="border border-foreground bg-card p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
-        <h2 className="font-display text-xl font-bold uppercase">Goals</h2>
+        <h2 className="font-display font-medium tracking-tight text-xl">Goals</h2>
         <Button
           variant="outline"
           size="sm"

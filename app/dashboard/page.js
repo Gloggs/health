@@ -77,6 +77,7 @@ import MiniWorkoutsCard from "./_components/MiniWorkoutsCard";
 import CloseTodayCard from "./_components/CloseTodayCard";
 import TodayHeader from "./_components/TodayHeader";
 import WeeklyRecapCard from "./_components/WeeklyRecapCard";
+import FeelPanel from "./_components/FeelPanel";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -716,14 +717,9 @@ function TodayPageInner() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
-      {showOnboarding ? <OnboardingCard steps={onboardingSteps} /> : null}
-
-      <TodayHeader
-        streak={streak}
-        week={dots}
-        familyLogged={familyEtchedTodayCount}
-        familyTotal={familyMembers.length}
-      />
+      {/* Jobs to be Done (health v2): the job is getting ready for the GP, so Today opens on it.
+          The old set-up checklist is replaced by the one-time guide. */}
+      <FeelPanel />
 
       {/* Today's logs. Every row opens the same log sheet (components/log). */}
       {loading ? (
@@ -742,13 +738,20 @@ function TodayPageInner() {
         />
       )}
 
+      <TodayHeader
+        streak={streak}
+        week={dots}
+        familyLogged={familyEtchedTodayCount}
+        familyTotal={familyMembers.length}
+      />
+
       {/* Today's workout */}
       {loading ? (
         <Skeleton className="h-48 w-full" />
       ) : !todaySession?.plan ? (
         <div className="flex flex-col items-start gap-3 border border-foreground bg-card p-4 md:p-5">
           <div>
-            <p className="font-display text-xl font-bold uppercase">No training plan</p>
+            <p className="font-display font-medium tracking-tight text-xl">No training plan</p>
             <p className="mt-1 text-sm text-muted-foreground">Make a plan and today's session shows here.</p>
           </div>
           <Button asChild>
@@ -769,7 +772,7 @@ function TodayPageInner() {
                   {isRest ? <Bed className="h-6 w-6" /> : <Dumbbell className="h-6 w-6" />}
                 </div>
                 <div>
-                  <p className="font-display text-2xl font-bold uppercase leading-tight">
+                  <p className="font-display font-medium tracking-tight text-2xl leading-tight">
                     {todaySession.plan.name}
                   </p>
                   <p className="text-sm text-muted-foreground">
@@ -828,7 +831,7 @@ function TodayPageInner() {
                     <div className="mt-4 space-y-1.5">
                       <label
                         htmlFor="session-notes"
-                        className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground"
+                        className="text-[10px] font-medium text-muted-foreground"
                       >
                         Session notes
                       </label>
@@ -884,7 +887,7 @@ function TodayPageInner() {
                   <div className="mt-4 space-y-1.5">
                     <label
                       htmlFor="session-notes"
-                      className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground"
+                      className="text-[10px] font-medium text-muted-foreground"
                     >
                       Session notes
                     </label>
@@ -942,7 +945,7 @@ function TodayPageInner() {
           <div className="border border-foreground bg-card p-4 md:p-5">
             <div className="mb-3 flex items-start justify-between gap-2">
               <div>
-                <h2 className="font-display text-xl font-bold uppercase">This month</h2>
+                <h2 className="font-display font-medium tracking-tight text-xl">This month</h2>
               </div>
               <Link
                 href="/dashboard/trends"
@@ -996,7 +999,7 @@ function TodayPageInner() {
       >
         <summary className="flex cursor-pointer flex-wrap items-baseline justify-between gap-2 [&::-webkit-details-marker]:hidden">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground">
               Check-in
             </p>
             <p className="mt-1 text-lg font-semibold">
@@ -1078,7 +1081,7 @@ function TodayPageInner() {
           </span>
           <span
             className={cn(
-              "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wider",
+              "shrink-0 rounded-full border px-2 py-0 text-[10px] font-semibold",
               checkIn?.intentionalRest
                 ? "border-primary/60 text-primary"
                 : "border-border text-muted-foreground"
@@ -1120,7 +1123,7 @@ function OnboardingCard({ steps }) {
     <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5 shadow-paper-1">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-wider text-primary">Get set up</p>
+          <p className="text-xs text-primary">Get set up</p>
           <p className="mt-1 text-base font-semibold">
             {doneCount === 0 ? "Three quick steps to make this work" : `${doneCount} of ${steps.length} done - nearly there`}
           </p>
@@ -1246,7 +1249,7 @@ function ViewingTodayLayout({ loading, data, streak, streakAnim }) {
       {/* Hero: viewee's name, the date, and their streak */}
       <div className="flex flex-col gap-5 rounded-3xl border bg-card p-6 shadow-paper-1 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+          <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">
             {name}'s day
           </p>
           <h2 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -1265,7 +1268,7 @@ function ViewingTodayLayout({ loading, data, streak, streakAnim }) {
           <span className="text-5xl font-bold leading-none tracking-tight tabular-nums sm:text-6xl">
             {Math.round(streakAnim ?? streak ?? 0)}
           </span>
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <span className="text-xs font-medium text-muted-foreground">
             day{streak === 1 ? "" : "s"}
           </span>
         </div>
@@ -1695,7 +1698,7 @@ function TrendCard({ icon: Icon, title, metric, sub, isPrivate, children }) {
             <Lock className="h-4 w-4" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
               {title}
             </p>
             <p className="mt-0.5 text-sm font-medium text-muted-foreground">Kept private</p>
@@ -1711,7 +1714,7 @@ function TrendCard({ icon: Icon, title, metric, sub, isPrivate, children }) {
           <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
             {title}
           </p>
           <p className="mt-0.5 text-2xl font-bold leading-none tabular-nums">{metric}</p>
@@ -1739,7 +1742,7 @@ const TOOLTIP_STYLE = {
   labelStyle: {
     color: "hsl(var(--muted-foreground))",
     fontSize: "10px",
-    textTransform: "uppercase",
+    textTransform: "none",
     letterSpacing: "0.05em",
     marginBottom: "2px",
   },
@@ -1861,7 +1864,7 @@ function ViewingStat({ icon: Icon, label, value, sub, isPrivate }) {
             <Lock className="h-4 w-4" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
               {label}
             </p>
             <p className="mt-0.5 text-sm font-medium text-muted-foreground">Kept private</p>
@@ -1877,7 +1880,7 @@ function ViewingStat({ icon: Icon, label, value, sub, isPrivate }) {
           <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground">
             {label}
           </p>
           <p className="mt-0.5 text-2xl font-bold leading-none tabular-nums">

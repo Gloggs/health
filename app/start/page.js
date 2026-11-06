@@ -40,7 +40,7 @@ export default function StartPage() {
         <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
-            <span className="block font-display uppercase text-lg font-bold">Health</span>
+            <span className="block font-display font-medium tracking-tight text-lg">Health</span>
           </span>
         </Link>
         <Button asChild variant="ghost" size="sm">
@@ -51,11 +51,11 @@ export default function StartPage() {
       <main className="mx-auto max-w-6xl px-6 pb-20">
         {/* Hero */}
         <div className="mx-auto max-w-2xl pt-8 pb-12 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+          <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-semibold tracking-[0.14em] text-primary">
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             Private beta
           </span>
-          <h1 className="mt-4 font-display uppercase text-4xl font-bold sm:text-5xl">
+          <h1 className="mt-4 font-display font-medium tracking-tight text-4xl sm:text-5xl">
             Take Health for a spin
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -71,8 +71,8 @@ export default function StartPage() {
           {/* SOLO */}
           <section className="hover-paper order-2 rounded-2xl border bg-card p-6 shadow-paper-1 lg:order-none">
             <div className="flex items-center justify-between">
-              <h2 className="font-display uppercase text-2xl font-bold">Solo</h2>
-              <span className="rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              <h2 className="font-display font-medium tracking-tight text-2xl">Solo</h2>
+              <span className="rounded-full border px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground">
                 Live demo
               </span>
             </div>
@@ -90,12 +90,12 @@ export default function StartPage() {
 
           {/* FAMILY (highlighted) */}
           <section className="hover-paper relative order-1 rounded-2xl border-2 border-primary bg-card p-6 shadow-paper-2 lg:order-none">
-            <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-primary-foreground">
+            <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-[11px] font-bold tracking-wide text-primary-foreground">
               Start here
             </span>
             <div className="flex items-center justify-between">
-              <h2 className="font-display uppercase text-2xl font-bold">Family</h2>
-              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
+              <h2 className="font-display font-medium tracking-tight text-2xl">Family</h2>
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary">
                 Live demo
               </span>
             </div>
@@ -106,7 +106,7 @@ export default function StartPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <p className="mt-6 text-xs font-semibold tracking-wide text-muted-foreground">
               Everything in Solo, plus:
             </p>
             <ul className="mt-3 space-y-2.5">
@@ -120,8 +120,8 @@ export default function StartPage() {
           {/* FULL ACCESS (beta) */}
           <section className="hover-paper order-3 rounded-2xl border bg-muted/30 p-6 shadow-paper-1 lg:order-none">
             <div className="flex items-center justify-between">
-              <h2 className="font-display uppercase text-2xl font-bold">Full access</h2>
-              <span className="rounded-full border border-primary/30 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary">
+              <h2 className="font-display font-medium tracking-tight text-2xl">Full access</h2>
+              <span className="rounded-full border border-primary/30 bg-primary/5 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary">
                 Beta
               </span>
             </div>

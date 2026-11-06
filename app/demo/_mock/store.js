@@ -1051,6 +1051,33 @@ function routeApi(method, rawUrl, body) {
     return { status: 200, data: store.me };
   }
 
+  // How I feel (health v2): sample entries, made up for the demo. Kept in the browser only.
+  if (path === "/api/feelings") {
+    if (!store.feelings) {
+      const day = (n) => { const x = new Date(t + "T12:00:00"); x.setDate(x.getDate() - n); return x.toISOString().slice(0, 10); };
+      store.feelings = [
+        { id: nextId(), userId: DEMO_USER_ID, date: day(1), what: "Headache", whereOnBody: "Forehead", howBad: "moderate", better: "Water and a rest", worse: "Screens", note: "Sample entry, made up for the demo." },
+        { id: nextId(), userId: DEMO_USER_ID, date: day(3), what: "Headache", whereOnBody: "Forehead", howBad: "mild", better: "Fresh air", worse: null, note: null },
+      ];
+    }
+    if (m === "POST") {
+      const row = { id: nextId(), userId: DEMO_USER_ID, howBad: null, whereOnBody: null, better: null, worse: null, note: null, ...body };
+      store.feelings.unshift(row);
+      return { status: 201, data: row };
+    }
+    if (m === "PUT") {
+      const i = store.feelings.findIndex((f) => f.id === Number(body?.id));
+      if (i < 0) return { status: 404, data: { error: "Not found." } };
+      store.feelings[i] = { ...store.feelings[i], ...body };
+      return { status: 200, data: store.feelings[i] };
+    }
+    if (m === "DELETE") {
+      store.feelings = store.feelings.filter((f) => f.id !== Number(q.id));
+      return { status: 200, data: { ok: true } };
+    }
+    return { status: 200, data: [...store.feelings].sort((a, b) => (a.date < b.date ? 1 : -1)) };
+  }
+
   // ── Health modules: ?date= single-day reads, ?from&to ranges ──
   if (path === "/api/sleep") {
     if (m === "POST") {
