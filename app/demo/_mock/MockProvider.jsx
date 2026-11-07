@@ -106,7 +106,7 @@ export default function MockProvider({ children }) {
       } else if (href.startsWith("/api/auth/")) {
         e.preventDefault();
         e.stopPropagation();
-        router.push("/start");
+        router.push("/");
       }
     }
     document.addEventListener("click", onClick, true);

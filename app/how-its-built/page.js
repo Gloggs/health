@@ -10,7 +10,7 @@ import HealthMark from "@/components/HealthMark";
 export const metadata = {
   title: "How it's built",
   description:
-    "The stack, architecture, security and accessibility behind Health, a real, deployed multi-tenant health app.",
+    "The stack, architecture, security and accessibility behind health, a personal app that helps you get ready for your GP appointment.",
 };
 
 const SECTIONS = [
@@ -26,17 +26,18 @@ const SECTIONS = [
   {
     title: "Architecture",
     points: [
-      "Multi-tenant by design: every record is scoped to a household and a user",
+      "Every record belongs to one person, and every query is filtered by that person on the server",
       "Each API route runs through a shared server-side auth wrapper, so the per-user filter is structurally hard to forget",
       "SWR on the client with optimistic updates, so taps feel instant",
-      "Reads and writes are separated cleanly for the read-only viewing mode",
+      "The GP summary is built by one pure function, so the screen, the print-out, the PDF and the FHIR export always agree",
     ],
   },
   {
     title: "Security",
     points: [
       "Every API route is gated server-side; unauthenticated calls get a 401",
-      "Data is filtered per tenant on each query, so households never see each other's data",
+      "People's words are encrypted with AES-256-GCM before they reach the database, with the key kept apart from it",
+      "Automated privacy tests run on every change and prove one person can never read another's entries",
       "All user input is validated and length-clamped before it touches the database",
       "Queries go through a parameterised ORM, never hand-built SQL strings",
       "Secrets stay server-side; the access gate fails closed if misconfigured",
@@ -54,8 +55,9 @@ const SECTIONS = [
   {
     title: "Privacy",
     points: [
-      "Eight per-person visibility controls decide what the family can see",
-      "Your journal is always private and never shared",
+      "Only you can see your entries: there is no sharing",
+      "Health data is saved only after a separate, explicit agreement",
+      "Download or delete everything at any time, from Settings",
       "Your data is yours: never sold, never used to train AI",
     ],
   },
@@ -65,7 +67,7 @@ export default function HowItsBuiltPage() {
   return (
     <div className="min-h-[100dvh] bg-background">
       <header className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+        <Link href="/" aria-label="health home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
             <span className="block font-serif text-lg font-bold">health</span>
@@ -78,7 +80,7 @@ export default function HowItsBuiltPage() {
 
       <main className="mx-auto max-w-3xl px-6 pb-20">
         <Link
-          href="/start"
+          href="/"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" /> Back
@@ -89,11 +91,11 @@ export default function HowItsBuiltPage() {
             Under the hood
           </p>
           <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight">
-            How Health is built
+            How health is built
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-            Health is a real, deployed product, not a prototype. A family uses it for
-            real every day. Here's what's under the hood.
+            health is a real, deployed open source app, not a prototype. Here is
+            what is under the hood. The full story is in the README on GitHub.
           </p>
         </div>
 
@@ -119,7 +121,7 @@ export default function HowItsBuiltPage() {
             The fastest way to judge a build is to use it. The demo needs no sign-up.
           </p>
           <Button asChild>
-            <Link href="/start">
+            <Link href="/">
               Try the demo <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

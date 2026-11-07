@@ -78,6 +78,7 @@ import CloseTodayCard from "./_components/CloseTodayCard";
 import TodayHeader from "./_components/TodayHeader";
 import WeeklyRecapCard from "./_components/WeeklyRecapCard";
 import FeelPanel from "./_components/FeelPanel";
+import { FAMILY_SHARING } from "@/lib/features";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -150,7 +151,7 @@ function TodayPageInner() {
   // ribbon under the Today header. Skip in viewing-other mode (the viewee's
   // ribbon would just be redundant chrome).
   const { data: familyData } = useSWR(
-    isViewingOther ? null : "/api/family",
+    isViewingOther || !FAMILY_SHARING ? null : "/api/family",
     fetcher,
     { revalidateOnFocus: false, dedupingInterval: 30_000 }
   );

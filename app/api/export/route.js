@@ -21,6 +21,8 @@ import {
   REMINDERS,
   GOALS,
   USERS,
+  FEELINGS,
+  APPOINTMENTS,
 } from "@/utils/schema";
 import { withFamily, familyFilter } from "@/lib/auth";
 import { exercisesVisibleTo } from "@/lib/exercises";
@@ -55,6 +57,8 @@ export const GET = withFamily(async (_req, _ctx, { userId, familyId, email }) =>
     reminders,
     goals,
     me,
+    feelings,
+    appointments,
   ] = await Promise.all([
     db.select().from(EXERCISES).where(exercisesVisibleTo(familyId)).orderBy(desc(EXERCISES.createdAt)),
     db.select().from(PLANS).where(and(familyFilter(PLANS, familyId), eq(PLANS.userId, userId))).orderBy(desc(PLANS.createdAt)),
@@ -75,13 +79,17 @@ export const GET = withFamily(async (_req, _ctx, { userId, familyId, email }) =>
     db.select().from(REMINDERS).where(and(familyFilter(REMINDERS, familyId), eq(REMINDERS.userId, userId))),
     db.select().from(GOALS).where(and(familyFilter(GOALS, familyId), eq(GOALS.userId, userId))),
     db.select().from(USERS).where(eq(USERS.id, userId)).limit(1),
+    db.select().from(FEELINGS).where(and(familyFilter(FEELINGS, familyId), eq(FEELINGS.userId, userId))).orderBy(desc(FEELINGS.date)),
+    db.select().from(APPOINTMENTS).where(and(familyFilter(APPOINTMENTS, familyId), eq(APPOINTMENTS.userId, userId))),
   ]);
 
   return NextResponse.json({
     exportedAt: new Date().toISOString(),
-    schemaVersion: 2,
+    // Version 3 (6 November 2026) adds how you feel and your GP appointment.
+    schemaVersion: 3,
     profile: { user: me[0] ?? { id: userId, email }, goals },
     workouts: { exercises, plans, planDays, planExercises, sessions, sessionSets },
+    gp: { feelings, appointment: appointments[0] ?? null },
     health: { sleep, water, mood, body, cardio, meals, mini },
     journal: { chat, checkIns },
     coach: { context },

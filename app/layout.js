@@ -7,10 +7,11 @@ import { Toaster } from "@/components/ui/sonner";
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-sans", display: "swap" });
 
 export const metadata = {
-  metadataBase: new URL("https://health.guilduk.com"),
+  // The site's own address, from APP_URL, so a copy of health run by someone else uses its own.
+  metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
   title: { default: "health", template: "%s | health" },
   description:
-    "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two, see whether the week is on track, and share only what you choose.",
+    "Get ready for your GP appointment. Write down what is going on, in your own words, and show your GP one clear page. Free, and only you can see it.",
   applicationName: "health",
   // Added to a phone's home screen, Health opens full screen with the navy
   // top bar running up behind the status bar (AppShell pads for the notch).

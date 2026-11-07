@@ -35,13 +35,16 @@ import {
 import { cn } from '@/lib/utils';
 import { computeAge, maxAllowedDob, minAllowedDob } from '@/lib/age';
 import { DEFAULT_VISIBILITY, VISIBILITY_SECTIONS } from '@/lib/visibility';
+import { FAMILY_SHARING } from '@/lib/features';
+import YourData from '@/components/settings/YourData';
+import { usePathname } from 'next/navigation';
 
 const UNIT_KEY = 'settings.weightUnit';
 
 // Tab IDs kept short. The `coach` slug stays for backwards compat with old
 // `?tab=coach` bookmarks (notably the Me-page nudge card that used to link
 // here pre-rename); we just label it "Goals" in the UI now.
-const VALID_TABS = ['profile', 'coach', 'privacy', 'appearance'];
+const VALID_TABS = FAMILY_SHARING ? ['profile', 'coach', 'privacy', 'appearance'] : ['profile', 'coach', 'appearance'];
 
 export default function SettingsPage() {
   return (
@@ -55,6 +58,7 @@ function SettingsPageInner() {
   const { user } = useKindeBrowserClient();
   const { theme, setTheme } = useTheme();
   const searchParams = useSearchParams();
+  const isDemo = (usePathname() ?? '').startsWith('/demo');
   const tabParam = searchParams.get('tab');
   const initialTab = VALID_TABS.includes(tabParam) ? tabParam : 'profile';
   const [unit, setUnit] = useState('kg');
@@ -265,10 +269,10 @@ function SettingsPageInner() {
       </section>
 
       <Tabs defaultValue={initialTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-flex">
+        <TabsList className={cn("grid w-full sm:w-auto sm:inline-flex", FAMILY_SHARING ? "grid-cols-4" : "grid-cols-3")}>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="coach">Goals</TabsTrigger>
-          <TabsTrigger value="privacy">Privacy</TabsTrigger>
+          {FAMILY_SHARING ? <TabsTrigger value="privacy">Privacy</TabsTrigger> : null}
           <TabsTrigger value="appearance">Display</TabsTrigger>
         </TabsList>
 
@@ -278,10 +282,11 @@ function SettingsPageInner() {
               now; the Kinde row is a footer-style reference. */}
           <Card>
             <CardHeader>
-              <CardTitle>Family profile</CardTitle>
+              <CardTitle>{FAMILY_SHARING ? "Family profile" : "Profile"}</CardTitle>
               <CardDescription>
-                Your display name, date of birth and height. This is what the
-                rest of the family sees when they look at your profile.
+                {FAMILY_SHARING
+                  ? "Your display name, date of birth and height. This is what the rest of the family sees when they look at your profile."
+                  : "Your name, date of birth and height. Only you can see them."}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -529,6 +534,7 @@ function SettingsPageInner() {
           </Card>
         </TabsContent>
 
+        {FAMILY_SHARING ? (
         <TabsContent value="privacy" className="mt-6 space-y-4">
           <Card>
             <CardHeader>
@@ -612,6 +618,7 @@ function SettingsPageInner() {
             </CardContent>
           </Card>
         </TabsContent>
+        ) : null}
 
         <TabsContent value="appearance" className="mt-6 space-y-4">
           <Card>
@@ -665,6 +672,8 @@ function SettingsPageInner() {
         </TabsContent>
 
       </Tabs>
+
+      <YourData demo={isDemo} />
 
     </div>
   );

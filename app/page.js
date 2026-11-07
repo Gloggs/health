@@ -43,8 +43,8 @@ const STEPS = [
 ];
 
 const PRIVATE = [
-  "How you feel, your notes and your journal are never shared with anyone.",
-  "If you share with family, they see only the numbers you switch on, and never your words.",
+  "Only you can see what you write down. There is no sharing, and nobody else can look you up.",
+  "Your words are encrypted before they are saved, so the database only ever holds scrambled text.",
   "Download or delete everything at any time, from Settings.",
 ];
 
@@ -81,7 +81,7 @@ export default function Home() {
               <Link href="/demo" className="inline-flex h-12 items-center justify-center bg-primary px-6 text-base font-medium text-primary-foreground">Try the demo</Link>
               <a href={REGISTER} className="inline-flex h-12 items-center justify-center bg-secondary px-6 text-base font-medium text-secondary-foreground">Create a free account</a>
             </div>
-            <p className="text-sm text-muted-foreground">Free, and private to your account. The demo uses sample data and saves nothing.</p>
+            <p className="text-sm text-muted-foreground">Free, and only you can see it. The demo uses sample data and saves nothing.</p>
           </div>
           <figure className="space-y-2">
             <div className="bg-secondary p-3 sm:p-4">
@@ -107,7 +107,7 @@ export default function Home() {
 
         <section aria-labelledby="private-title" className="mx-auto grid max-w-6xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:py-20">
           <div className="space-y-4">
-            <h2 id="private-title" className="font-display text-3xl font-medium tracking-tight sm:text-4xl">Private by default</h2>
+            <h2 id="private-title" className="font-display text-3xl font-medium tracking-tight sm:text-4xl">Private to you</h2>
             <ul className="space-y-3 text-lg leading-relaxed">
               {PRIVATE.map((p) => <li key={p}>{p}</li>)}
             </ul>
@@ -126,7 +126,7 @@ export default function Home() {
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
             <h2 id="also-title" className="text-xl font-medium">Also in health</h2>
             <p className="mt-2 max-w-3xl leading-relaxed text-muted-foreground">
-              Sleep, water, meals, mood, workouts and a private journal, and a family space where each person chooses what to share.
+              Sleep, water, meals, mood, workouts and a private journal, for anyone who wants to keep track of the everyday too.
             </p>
           </div>
         </section>

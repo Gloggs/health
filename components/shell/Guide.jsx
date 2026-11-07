@@ -11,8 +11,8 @@ export function openGuide() { window.dispatchEvent(new Event(OPEN_GUIDE)); }
 export const GUIDE_STEPS = [
   { title: "Write down how you feel", text: "Today starts with \"Anything going on today?\". A few words is enough: what, where, how bad and what helps." },
   { title: "Get it ready for your GP", text: "For my GP turns your notes into one page, with your questions and medicines. Show it, print it or save it as a PDF." },
-  { title: "Log the everyday, if you like", text: "Sleep, water, meals, mood and workouts are on Today and in Log. Train, Trends and Family are under More." },
-  { title: "Private by default", text: "Nothing is shared with family until you switch it on, and never your words. Help is always in Settings." },
+  { title: "Log the everyday, if you like", text: "Sleep, water, meals, mood and workouts are on Today and in Log. Train and Trends are under More." },
+  { title: "Only you can see it", text: "Nobody else can see what you write down, and your words are encrypted before they are saved. Help and your data are always in Settings." },
 ];
 
 export default function Guide() {
