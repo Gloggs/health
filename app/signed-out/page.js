@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HealthMark from "@/components/HealthMark";
@@ -10,6 +11,16 @@ import HealthMark from "@/components/HealthMark";
 // wordmark, ox-blood CTA. Copy keeps the calm voice — no exclamation,
 // no marketing fluff.
 export default function SignedOutPage() {
+  // Set by Settings > Your data just before signing out after "Delete everything".
+  const [deleted, setDeleted] = useState(false);
+  useEffect(() => {
+    try {
+      if (window.sessionStorage.getItem("health-deleted") === "1") {
+        setDeleted(true);
+        window.sessionStorage.removeItem("health-deleted");
+      }
+    } catch { /* storage blocked: show the usual words */ }
+  }, []);
   return (
     <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-background p-6">
       {/* Soft accent glow to lift the card off the paper background.
@@ -26,14 +37,15 @@ export default function SignedOutPage() {
             <HealthMark size={48} />
           </div>
           <p className="mt-3 font-display font-medium tracking-tight text-sm ">
-            Health
+            health
           </p>
           <h1 className="mt-4 font-display font-medium tracking-tight text-2xl ">
-            Signed out.
+            {deleted ? "Everything is deleted." : "Signed out."}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Today's marks will be waiting when you come back. Nothing's
-            lost, Health only saves when you tap.
+            {deleted
+              ? "Your entries, GP page, profile and settings are gone from health. Your sign-in account at Kinde is separate: email michael@guilduk.com to have it removed too."
+              : "Your entries will be here when you come back."}
           </p>
 
           <Button asChild className="mt-6 w-full" size="lg">

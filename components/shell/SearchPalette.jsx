@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 import GlobalApi from "@/app/_services/GlobalApi";
 import { useLog } from "@/components/log/LogProvider";
 import { cn } from "@/lib/utils";
+import { FAMILY_SHARING } from "@/lib/features";
 
 // Everything search can find that does not need the network. `go` is a path
 // under the base; `log` opens a log sheet instead.
@@ -33,16 +34,15 @@ function staticItems(base) {
     page("Plans", "/plans", "programme routine week"),
     page("Exercise library", "/exercises", "lifts moves"),
     page("Trends", "/trends", "charts averages progress"),
-    page("Family", "/family", "members leaderboard"),
-    page("Family chat", "/chat", "messages room"),
+    ...(FAMILY_SHARING ? [page("Family", "/family", "members leaderboard"), page("Family chat", "/chat", "messages room")] : []),
     page("You", "/me", "profile account"),
     page("Settings", "/settings", "preferences"),
     page("Profile: name, date of birth, height", "/settings?tab=profile"),
     page("Water target and goals", "/settings?tab=coach", "target goal"),
-    page("What your family sees", "/settings?tab=privacy", "privacy visibility share hide"),
+    ...(FAMILY_SHARING ? [page("What your family sees", "/settings?tab=privacy", "privacy visibility share hide")] : []),
     page("Light or dark mode", "/settings?tab=appearance", "theme display units kg lb"),
     page("Export my data", "/me", "download json backup"),
-    page("Invite someone", "/family", "join link add member"),
+    ...(FAMILY_SHARING ? [page("Invite someone", "/family", "join link add member")] : []),
   ];
 }
 
@@ -75,7 +75,7 @@ export default function SearchPalette({ open, onOpenChange, base }) {
     setIndex(0);
     if (loaded.current) return;
     loaded.current = true;
-    Promise.allSettled([GlobalApi.ListExercises(), GlobalApi.ListPlans(), GlobalApi.GetFamily()]).then(([ex, pl, fam]) => {
+    Promise.allSettled([GlobalApi.ListExercises(), GlobalApi.ListPlans(), FAMILY_SHARING ? GlobalApi.GetFamily() : Promise.resolve(null)]).then(([ex, pl, fam]) => {
       const out = [];
       for (const e of ex.value?.data ?? []) out.push({ group: "Exercises", label: e.name, words: `${e.muscleGroup} ${e.equipment}`.toLowerCase(), go: `${base}/exercises` });
       for (const p of pl.value?.data ?? []) out.push({ group: "Plans", label: p.name, words: "plan", go: `${base}/plans/${p.id}` });

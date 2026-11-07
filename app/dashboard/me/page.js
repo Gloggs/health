@@ -12,6 +12,7 @@ import { initialsOf } from "@/lib/initials";
 import GlobalApi from "@/app/_services/GlobalApi";
 import PageHero from "../_components/PageHero";
 import GoalsCard from "../_components/GoalsCard";
+import { FAMILY_SHARING } from "@/lib/features";
 
 function downloadJson(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -97,6 +98,7 @@ export default function YouPage() {
         </Link>
       </section>
 
+      {FAMILY_SHARING ? (
       <section aria-labelledby="you-family" className="flex flex-col gap-2">
         <h2 id="you-family" className="font-display font-medium tracking-tight text-xl">What your family sees</h2>
         <div className="border border-foreground bg-card">
@@ -104,6 +106,7 @@ export default function YouPage() {
           <Row href={`${base}/family`} label="Invite someone" />
         </div>
       </section>
+      ) : null}
 
       <GoalsCard />
 

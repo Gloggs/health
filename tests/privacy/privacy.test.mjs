@@ -1,6 +1,11 @@
 // The privacy promise, tested: nobody sees another person's details unless that person chose to share them.
 // A writes private things. B (a stranger in another family) and A2 (in A's family) try to read them.
-import { describe, test, expect, beforeAll } from "vitest";
+import { describe, test, expect, beforeAll, vi } from "vitest";
+
+// Family sharing is switched off in the app (lib/features.js), but its code is still in the repository,
+// so these tests switch it back on and keep proving it never leaks. tests/privacy/standalone.test.mjs
+// tests the app as it runs today, with sharing off.
+vi.mock("@/lib/features", async (importOriginal) => ({ ...(await importOriginal()), FAMILY_SHARING: true }));
 import { asUser, call, seedWorld, PEOPLE, SECRETS, today } from "./harness.mjs";
 
 import * as sleep from "@/app/api/sleep/route.js";

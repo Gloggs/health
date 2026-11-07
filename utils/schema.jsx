@@ -13,7 +13,24 @@ import {
   uniqueIndex,
   index,
   primaryKey,
+  customType,
 } from 'drizzle-orm/pg-core';
+import { encryptText, decryptText } from '../lib/crypt.js';
+
+// People's own words are encrypted before they reach the database and decrypted after they are read
+// (lib/crypt.js, AES-256-GCM). The column is plain `text` in Postgres; it holds "enc:v1:..." values.
+// Searching or sorting these columns in SQL cannot work, so any search happens after decryption.
+const encryptedText = customType({
+  dataType() {
+    return 'text';
+  },
+  toDriver(value) {
+    return encryptText(value);
+  },
+  fromDriver(value) {
+    return decryptText(value);
+  },
+});
 
 // =====================================================================
 // WORKSPACE (F1 - Phase B of Milestone 03 - added 2026-05-22)
@@ -240,7 +257,7 @@ export const SESSIONS = pgTable('sessions', {
   planDayId: integer('plan_day_id'),
   completed: boolean('completed').notNull().default(false),
   durationMinutes: integer('duration_minutes'),
-  notes: text('notes'),
+  notes: encryptedText('notes'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('sessions_by_user_date').on(table.userId, table.date),
@@ -277,7 +294,7 @@ export const SLEEP_LOGS = pgTable('sleep_logs', {
   wakeTime: time('wake_time'),
   hours: numeric('hours', { precision: 4, scale: 2 }),
   quality: integer('quality'), // 1..5
-  note: text('note'),
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('sleep_logs_by_user_date').on(table.userId, table.date),
@@ -306,7 +323,7 @@ export const MOOD_LOGS = pgTable('mood_logs', {
   mood: integer('mood'), // 1..5
   energy: integer('energy'), // 1..5
   tags: jsonb('tags'), // short labels such as "Training" (lib/usuals.js normaliseTags)
-  note: text('note'),
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('mood_logs_by_user_date').on(table.userId, table.date),
@@ -321,12 +338,12 @@ export const FEELINGS = pgTable('feelings', {
   familyId: varchar('family_id', { length: 64 }).notNull(),
   userId: varchar('user_id', { length: 64 }).notNull(),
   date: date('date').notNull(),
-  what: varchar('what', { length: 80 }).notNull(),           // "Headache", "Pain in my knee"
-  whereOnBody: varchar('where_on_body', { length: 60 }),    // optional
-  howBad: varchar('how_bad', { length: 10 }),               // the person's word: mild | moderate | bad
-  better: text('better'),                                   // what made it better
-  worse: text('worse'),                                     // what made it worse
-  note: text('note'),
+  what: encryptedText('what').notNull(),           // "Headache", "Pain in my knee"
+  whereOnBody: encryptedText('where_on_body'),    // optional
+  howBad: encryptedText('how_bad'),               // the person's word: mild | moderate | bad
+  better: encryptedText('better'),                                   // what made it better
+  worse: encryptedText('worse'),                                     // what made it worse
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
@@ -340,8 +357,8 @@ export const APPOINTMENTS = pgTable('appointments', {
   familyId: varchar('family_id', { length: 64 }).notNull(),
   userId: varchar('user_id', { length: 64 }).notNull(),
   date: date('date'),                 // optional: when it is
-  questions: text('questions'),       // one per line, the person's 2 or 3 most important
-  medicines: text('medicines'),       // one per line, including vitamins and supplements
+  questions: encryptedText('questions'),       // one per line, the person's 2 or 3 most important
+  medicines: encryptedText('medicines'),       // one per line, including vitamins and supplements
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   oneEach: uniqueIndex('appointments_one_per_user').on(table.familyId, table.userId),
@@ -359,7 +376,7 @@ export const BODY_METRICS = pgTable('body_metrics', {
   armsCm: numeric('arms_cm', { precision: 5, scale: 1 }),
   hipsCm: numeric('hips_cm', { precision: 5, scale: 1 }),
   thighsCm: numeric('thighs_cm', { precision: 5, scale: 1 }),
-  note: text('note'),
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('body_metrics_by_user_date').on(table.userId, table.date),
@@ -377,7 +394,7 @@ export const MEAL_LOGS = pgTable('meal_logs', {
   userId: varchar('user_id', { length: 64 }),
   date: date('date').notNull(),
   slot: varchar('slot', { length: 12 }).notNull(),
-  description: text('description'),
+  description: encryptedText('description'),
   quality: integer('quality'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
@@ -395,7 +412,7 @@ export const CARDIO_LOGS = pgTable('cardio_logs', {
   durationMinutes: integer('duration_minutes'),
   distanceKm: numeric('distance_km', { precision: 6, scale: 2 }),
   steps: integer('steps'),
-  note: text('note'),
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('cardio_logs_by_user_date').on(table.userId, table.date),
@@ -424,7 +441,7 @@ export const CHAT_MESSAGES = pgTable('chat_messages', {
   familyId: varchar('family_id', { length: 64 }).notNull(),
   userId: varchar('user_id', { length: 64 }),
   date: date('date').notNull(),
-  content: text('content').notNull(),
+  content: encryptedText('content').notNull(),
   source: varchar('source', { length: 20 }).notNull().default('user'), // 'user' | 'check_in'
   tags: jsonb('tags'), // legacy - reserved for batch parsing that never landed
   redacted: boolean('redacted').notNull().default(false), // legacy Claude-redact flag
@@ -450,7 +467,7 @@ export const DAILY_CHECK_INS = pgTable('daily_check_ins', {
   followThroughScore: numeric('follow_through_score', { precision: 4, scale: 2 }), // 0..1 or 0..10 (we'll pick a convention in the scoring layer)
   intentionalRest: boolean('intentional_rest').notNull().default(false),
   closedAt: timestamp('closed_at', { withTimezone: true }),
-  note: text('note'),
+  note: encryptedText('note'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   byUserDate: index('daily_check_ins_by_user_date').on(table.userId, table.date),
@@ -477,13 +494,13 @@ export const USER_CONTEXT = pgTable('user_context', {
   id: serial('id').primaryKey(),
   familyId: varchar('family_id', { length: 64 }).notNull(),
   userId: varchar('user_id', { length: 64 }),
-  goals: text('goals'),
+  goals: encryptedText('goals'),
   // `restrictions` covers both diet/lifestyle limits AND injuries (the UI
   // labels the field "Restrictions / injuries"). We previously had a
   // separate `injuriesNotes` column that no UI wrote to - dropped to keep
   // the schema honest with the form.
-  restrictions: text('restrictions'),
-  preferences: text('preferences'),
+  restrictions: encryptedText('restrictions'),
+  preferences: encryptedText('preferences'),
   chatRetentionDays: integer('chat_retention_days'),
   waterTargetMl: integer('water_target_ml'),
   waterContainers: jsonb('water_containers'), // [{ name, ml }] (lib/usuals.js normaliseContainers)

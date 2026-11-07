@@ -16,6 +16,8 @@ export default defineConfig({
       NEON_LOCAL_SQL_URL: "http://127.0.0.1:4447/sql",
       KINDE_CLIENT_ID: "test", KINDE_CLIENT_SECRET: "test", KINDE_ISSUER_URL: "https://example.kinde.com",
       KINDE_SITE_URL: "http://localhost:3000", APP_URL: "http://localhost:3000",
+      // A test-only key (32 zero bytes). Real deployments use their own random key: see .env.example.
+      HEALTH_DATA_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
     },
   },
 });

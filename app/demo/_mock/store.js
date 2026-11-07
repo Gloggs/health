@@ -15,6 +15,7 @@ import { buildFhirBundle } from "@/lib/fhir";
 //   'solo'   — just "You"; Family/Chat stay out of the nav (DemoShell)
 
 import { computeStreak } from "@/lib/streak";
+import { FAMILY_SHARING } from "@/lib/features";
 
 export const DEMO_USER_ID = "demo-you";
 const MODE_KEY = "etch-demo-mode";
@@ -602,6 +603,8 @@ function seed(mode) {
 // Mode is decided once per tab: URL param wins, then sessionStorage,
 // default 'family'. Called by MockProvider before the first fetch.
 export function resolveMode(searchParams) {
+  // health is a personal app while family sharing is off (lib/features.js): the demo is one person.
+  if (!FAMILY_SHARING) return "solo";
   let fromUrl = null;
   try {
     fromUrl = searchParams?.get?.("mode") ?? null;
@@ -1450,7 +1453,7 @@ function routeApi(method, rawUrl, body) {
         createdAt: new Date().toISOString(),
         expiresAt: iso(daysAgo(-14), "12:00"),
         token,
-        link: `https://health.guilduk.com/join/${token}`,
+        link: `${window.location.origin}/join/${token}`,
       };
       store.invites.unshift(invite);
       return { status: 200, data: { invite, emailDelivered: false } };

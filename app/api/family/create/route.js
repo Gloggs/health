@@ -23,11 +23,13 @@ import { eq } from "drizzle-orm";
 import { requireKindeOnly, safeMessage } from "@/lib/auth";
 import { generateFamilyId } from "@/lib/tokens";
 import { clampString } from "@/lib/validate";
+import { FAMILY_SHARING } from "@/lib/features";
 
 export async function POST(req) {
   let auth;
   try {
-    auth = await requireKindeOnly({ requireVerified: true });
+    // The verified-email rule protects invites; with family sharing off there are none.
+    auth = await requireKindeOnly({ requireVerified: FAMILY_SHARING });
   } catch (e) {
     return NextResponse.json({ error: safeMessage(e) }, { status: e.status ?? 500 });
   }
@@ -44,18 +46,23 @@ export async function POST(req) {
     );
   }
 
-  let body;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "invalid json" }, { status: 400 });
+  let body = {};
+  if (FAMILY_SHARING) {
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "invalid json" }, { status: 400 });
+    }
   }
 
-  let name;
-  try {
-    name = clampString(body?.name, "name", 60);
-  } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 400 });
+  // Family sharing off: every account gets a private space of its own, with a fixed name nobody sees.
+  let name = FAMILY_SHARING ? null : "My space";
+  if (FAMILY_SHARING) {
+    try {
+      name = clampString(body?.name, "name", 60);
+    } catch (e) {
+      return NextResponse.json({ error: e.message }, { status: e.status ?? 400 });
+    }
   }
   if (!name || name.length < 2) {
     return NextResponse.json(

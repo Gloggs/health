@@ -24,8 +24,8 @@ health organises what you tell it. It never scores, rates, interprets, warns or 
 | --- | --- | --- |
 | Jobs to be Done | What is core and what is extra | Today opens on "Anything going on today?"; the menu is Today, How I feel, For my GP, Log, More |
 | The NHS's own advice | The fields and the order of the summary | How I feel and For my GP |
-| Progressive disclosure | Simple without losing features | Train, Trends, Family and Settings are one tap away under More, each with one sentence saying what it is for |
-| Privacy by default (UK GDPR special category data) | What anyone else can see | Nothing shared until switched on; notes never shared; a separate agreement before anything is saved |
+| Progressive disclosure | Simple without losing features | Train, Trends and Settings are one tap away under More, each with one sentence saying what it is for |
+| Privacy by design (UK GDPR special category data) | What anyone else can see | Nothing is shared at all; words encrypted before saving; a separate agreement before anything is saved; download or delete everything (`docs/PRIVACY.md`) |
 | Nielsen's 10 usability heuristics | The review checklist | The review below |
 | WCAG 2.2 AA | Access for everyone | axe checks on every main screen, light and dark |
 | Guild UK Skeleton v2 | The look | Below |
@@ -39,7 +39,7 @@ health organises what you tell it. It never scores, rates, interprets, warns or 
 | How I feel | What, where, when, how bad (the person's word), what makes it better or worse, and a note. Private always |
 | For my GP | My appointment (date, questions, medicines), then the one-page summary for 2, 4 or 8 weeks: show it, print it, download a PDF, or download the entries in FHIR |
 | Log | Sleep, water, weight, cardio, meals, mood and the journal |
-| More | Train, Trends, Family, and Settings and help |
+| More | Train, Trends, and Settings, with help and your data |
 | First time | A health data agreement, then a four-step guide shown once ever; after that, Help is at the top of Settings |
 
 ## Usability review (Nielsen's 10 heuristics)

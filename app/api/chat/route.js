@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { and, eq, gte, lt, lte, desc, ilike } from "drizzle-orm";
+import { and, eq, gte, lt, lte, desc } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { CHAT_MESSAGES, USER_CONTEXT } from "@/utils/schema";
 import { withFamily, withFamilyWrite, familyFilter } from "@/lib/auth";
@@ -55,15 +55,18 @@ export const GET = withFamily(async (req, _ctx, { userId, familyId }) => {
   ];
   if (from) filters.push(gte(CHAT_MESSAGES.date, from));
   if (to) filters.push(lte(CHAT_MESSAGES.date, to));
-  if (q) filters.push(ilike(CHAT_MESSAGES.content, "%" + q + "%"));
 
+  // The journal is encrypted in the database (lib/crypt.js), so SQL cannot search it. With a search
+  // term, read this person's journal (newest first, at most 5,000 entries) and search the decrypted text.
   const rows = await db
     .select()
     .from(CHAT_MESSAGES)
     .where(and(...filters))
     .orderBy(desc(CHAT_MESSAGES.createdAt))
-    .limit(limit);
-  return NextResponse.json(rows);
+    .limit(q ? 5000 : limit);
+  if (!q) return NextResponse.json(rows);
+  const term = q.toLowerCase();
+  return NextResponse.json(rows.filter((r) => (r.content ?? "").toLowerCase().includes(term)).slice(0, limit));
 });
 
 export const POST = withFamilyWrite(async (req, _ctx, { userId, familyId }) => {

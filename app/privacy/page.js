@@ -2,66 +2,66 @@ import LegalPage from "../_components/LegalPage";
 
 export const metadata = {
   title: "Privacy",
-  description: "What Health collects, why, and the choices you have.",
+  description: "What health collects, why, who can see it, and your rights.",
 };
 
+// Kept in step with docs/PRIVACY.md, which has the full detail and the tests behind each promise.
 const SECTIONS = [
+  {
+    heading: "The short version",
+    body: [
+      "health is a personal app. Nobody else can see what you write down: not other people using health, and not anyone looking at the database.",
+      "What you write is encrypted before it is saved. You can download or delete everything at any time.",
+    ],
+  },
   {
     heading: "What we collect",
     body: [
-      "Account details: your name and email address, handled through our authentication provider, Kinde.",
-      "What you log: the health information you choose to enter, workouts, sleep, water, mood, meals, body measurements and journal notes.",
-      "Basic technical logs (such as error and access records) needed to keep the service running and secure.",
+      "Your account: your name and email address, through our sign-in provider, Kinde.",
+      "What you choose to write down: how you feel, your GP questions and medicines, sleep, water, mood, meals, weight, workouts and your journal. This is health data, which UK GDPR calls special category data.",
+      "Basic technical logs, such as errors, needed to keep the service running and secure. They never contain what you wrote.",
     ],
   },
   {
-    heading: "Why we use it",
+    heading: "Why we use it, and our legal basis",
     body: [
-      "To run the app: save your entries, show your trends, and share what you choose with the people in your household.",
-      "To keep the service secure and working properly.",
-      "We do not sell your data, and we do not use it to train AI.",
+      "Only to run the app for you: save your entries, show them back to you, and build the page for your GP.",
+      "Your health data is used only with your explicit consent, which you give on a separate screen before anything is saved (UK GDPR Article 9(2)(a)). Your account is used to provide the service you asked for (Article 6(1)(b)).",
+      "We do not sell your data, show you adverts, or use your data to train AI. health sends your data nowhere unless you download it yourself.",
     ],
   },
   {
-    heading: "What your household can see",
+    heading: "Who can see it",
     body: [
-      "A household shares one space. You decide what others see using eight per-person visibility settings. Your journal is always private and is never shared.",
+      "Only you, when signed in. Every request is checked on the server against your account, and automated tests prove that one person can never read another person's entries.",
+      "The words you write (how you feel, notes, your journal, questions, medicines and goals) are encrypted with AES-256 before they are saved. The key is kept apart from the database, so the database and its backups hold only scrambled text.",
+      "To be clear about the limit: the app's server holds the key, so it can read your words in order to show them to you. We do not look at people's entries. If we ever had to, for example because the law required it, we would tell you unless the law stopped us.",
     ],
   },
   {
-    heading: "Who helps us run Health",
+    heading: "Who helps us run health",
     body: [
-      "We use trusted providers to operate the service: Kinde (sign-in), Neon (database), Vercel (hosting) and Resend (email). They process data on our behalf, under their own terms.",
+      "Kinde (sign-in), Neon (the database) and Vercel (hosting). They process data only on our instructions, under data processing agreements. health sends no emails.",
     ],
   },
   {
-    heading: "Where your data lives, and security",
+    heading: "Keeping your data, and your rights",
     body: [
-      "Your data is stored in a managed Postgres database. It is encrypted in transit. Access is gated on the server and scoped to your household, so families cannot see each other's data.",
+      "We keep your data while your account is open. Delete your account in Settings and your entries are deleted straight away.",
+      "You have the right to see, download, correct and delete your data, and to withdraw your consent at any time. Download and delete are in Settings. For anything else, email michael@guilduk.com.",
+      "If you are unhappy with how we handle your data, you can complain to the Information Commissioner's Office (ico.org.uk).",
     ],
   },
   {
-    heading: "Your choices and rights",
+    heading: "Not medical advice",
     body: [
-      "You can view, export, correct or delete your data. To make a request, email michael@guilduk.com. If you are in the UK or EU, you have rights under data-protection law, including access and erasure.",
-    ],
-  },
-  {
-    heading: "Children",
-    body: [
-      "Health is made for families. A parent or guardian is responsible for any information they choose to add about a child.",
-    ],
-  },
-  {
-    heading: "Keeping your data",
-    body: [
-      "We keep your information while your account is active. Delete your account and we remove your data.",
+      "health keeps your own words in order. It never scores, rates or diagnoses anything. If you need help urgently, call NHS 111, or 999 in an emergency.",
     ],
   },
   {
     heading: "Changes and contact",
     body: [
-      "We will update this notice as Health grows beyond the beta. Questions? Email michael@guilduk.com.",
+      "If this notice changes, we will say so here with the date. Questions? Email michael@guilduk.com.",
     ],
   },
 ];
@@ -70,8 +70,8 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy"
-      updated="2 June 2026"
-      intro="Health is a health app for families, currently in a private beta. This notice explains what we collect, why, and the choices you have. It covers the beta and may evolve before public launch."
+      updated="6 November 2026"
+      intro="health helps you get ready for your GP appointment. This notice explains what it collects, why, who can see it, and your rights. health is an open source project by Michael Ijisonuwe, who is responsible for your data."
       sections={SECTIONS}
     />
   );

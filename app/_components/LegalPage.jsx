@@ -11,7 +11,7 @@ export default function LegalPage({ title, updated, intro, sections }) {
   return (
     <div className="min-h-[100dvh] bg-background">
       <header className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <Link href="/" aria-label="Health, home" className="flex items-center gap-2.5">
+        <Link href="/" aria-label="health home" className="flex items-center gap-2.5">
           <HealthMark size={34} />
           <span className="leading-none">
             <span className="block font-display font-medium tracking-tight text-lg">health</span>
@@ -54,7 +54,7 @@ export default function LegalPage({ title, updated, intro, sections }) {
           <Link href="/terms" className="text-primary hover:underline">
             Terms
           </Link>
-          <Link href="/start" className="text-muted-foreground hover:text-foreground">
+          <Link href="/" className="text-muted-foreground hover:text-foreground">
             Get started
           </Link>
         </div>

@@ -7,7 +7,7 @@ export default function manifest() {
     name: "health",
     short_name: "health",
     description:
-      "A health log for families. Log sleep, water, weight, workouts and meals in a tap or two.",
+      "Get ready for your GP appointment: your own words on one clear page for your GP.",
     start_url: "/dashboard",
     display: "standalone",
     background_color: "#FFFFFF",

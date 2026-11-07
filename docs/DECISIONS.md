@@ -2,6 +2,16 @@
 
 Short records of the main choices, newest first.
 
+## November 2026: a personal app, with people's words encrypted
+
+health is now for one person getting ready for their GP, not a family tracker. Family sharing is switched off in code (`lib/features.js`): the family pages, chat, invites and viewing another person are gone, and each account gets a private space behind the scenes, which is how the existing `family_id` column keeps people apart. The family code stays in the repository, still covered by the privacy tests with sharing switched back on, until it is removed in a later change along with the `family_id` model.
+
+Taking sharing away also makes the privacy promise simple and checkable: nobody else can see your entries. To go further, the words people write are encrypted with AES-256-GCM before they reach the database (`lib/crypt.js`, through Drizzle column types), with the key kept in the hosting settings. @noble/ciphers was chosen over Node's own `crypto` because it is audited, has no dependencies and also runs in the Edge runtime that `middleware.js` uses.
+
+End-to-end encryption (only the person's device holds the key) was considered and rejected for now: the GP page, the PDF and the FHIR export are built from the words, and a forgotten passphrase would lose everything with no way back. The limit that follows, that the running server can read the words, is stated plainly on the privacy page and in `docs/PRIVACY.md`.
+
+The same change added "Delete everything" (the right to erasure), which the front page had already promised, and put how you feel and the GP appointment into "Download everything".
+
 ## October 2026: one log sheet for everything
 
 Each kind of log used to have its own controls: fixed +250 and +500 buttons for water, time boxes for sleep, a typed number for weight, and so on. They now share one sheet (`components/log/`): a title, a date that can be changed, the value in big numbers, your usuals, one control, and Save. Usuals come from your own history (`lib/usuals.js`, covered by tests) rather than fixed amounts: your water containers, your normal bedtime, your usual run. Numbers use a swipe ruler that is a real slider to screen readers; feelings and quality use a five-step scale. Every save and delete shows Undo instead of asking "are you sure". The pattern follows the apps that do each part best: WaterMinder and Waterllama for containers, Hevy and Strong for last time's numbers, Daylio for two-tap moods.

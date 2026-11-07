@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/utils/dbConfig";
 import { USERS, MEMBERSHIPS } from "@/utils/schema";
+import { FAMILY_SHARING, isFamilyOnlyPath } from "@/lib/features";
 
 // Gate for every /dashboard route + /onboarding.
 //
@@ -47,6 +48,19 @@ export async function middleware(request) {
 }
 
 async function runMiddleware(request) {
+  // health is a personal app: while family sharing is off, its pages and API routes do not exist.
+  if (!FAMILY_SHARING && isFamilyOnlyPath(request.nextUrl.pathname)) {
+    if (request.nextUrl.pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    const to = request.nextUrl.pathname.startsWith("/demo") ? "/demo" : "/dashboard";
+    return NextResponse.redirect(new URL(to, request.url));
+  }
+
+  // The family-only paths are matched only to be blocked above; everything else below is the
+  // dashboard and onboarding gate.
+  if (!request.nextUrl.pathname.startsWith("/dashboard") && request.nextUrl.pathname !== "/onboarding") return;
+
   const session = getKindeServerSession();
 
   // Kinde's `isAuthenticated()` can THROW on certain malformed / expired
@@ -131,5 +145,15 @@ async function runMiddleware(request) {
 // auth + allow-list gates run on the wizard too - unauthenticated users
 // can't reach it.
 export const config = {
-  matcher: ["/dashboard/:path*", "/onboarding"],
+  matcher: [
+    "/dashboard/:path*",
+    "/onboarding",
+    "/demo/family/:path*",
+    "/demo/chat/:path*",
+    "/join/:path*",
+    "/api/family",
+    "/api/family/:path*",
+    "/api/invites/:path*",
+    "/api/invites",
+  ],
 };

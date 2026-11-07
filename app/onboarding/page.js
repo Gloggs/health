@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import GlobalApi from "@/app/_services/GlobalApi";
+import { FAMILY_SHARING } from "@/lib/features";
 import { DEFAULT_VISIBILITY, VISIBILITY_SECTIONS } from "@/lib/visibility";
 import { computeAge, maxAllowedDob, minAllowedDob } from "@/lib/age";
 
@@ -42,7 +43,11 @@ import { computeAge, maxAllowedDob, minAllowedDob } from "@/lib/age";
 // INITIAL STEP DERIVATION: on mount we fetch /api/users/me (which now
 // returns `hasFamily`) and jump to whichever step still has missing data.
 
-const STEP_KEYS = ["consent", "family", "name", "details", "privacy"];
+// With family sharing off (lib/features.js) there is no family to name and nothing to share, so the
+// family and privacy steps drop out; a private space is made behind the scenes after the agreement.
+const STEP_KEYS = FAMILY_SHARING
+  ? ["consent", "family", "name", "details", "privacy"]
+  : ["consent", "name", "details"];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -95,10 +100,10 @@ export default function OnboardingPage() {
         );
         let i = 0;
         if (!hc) i = liveSteps.indexOf("consent"); // 0
-        else if (!hf) i = liveSteps.indexOf("family");
+        else if (!hf && FAMILY_SHARING) i = liveSteps.indexOf("family");
         else if (!dn) i = liveSteps.indexOf("name");
         else if (!dob && !h) i = liveSteps.indexOf("details");
-        else i = liveSteps.indexOf("privacy");
+        else i = FAMILY_SHARING ? liveSteps.indexOf("privacy") : liveSteps.indexOf("details");
         setStep(Math.max(0, i));
       })
       .catch(() => {
@@ -120,6 +125,10 @@ export default function OnboardingPage() {
     try {
       if (currentKey === "consent") {
         await GlobalApi.UpdateMe({ healthConsent: true });
+        if (!FAMILY_SHARING && !hasFamily) {
+          await GlobalApi.CreateFamily({});
+          setHasFamily(true);
+        }
         setConsented(true);
         setStep(0); // the consent step drops out of the list; the next step is now first
       } else if (currentKey === "family") {
@@ -129,13 +138,24 @@ export default function OnboardingPage() {
         // drops out) and advance to "name".
         setStep(0); // family was index 0; after drop, name is now index 0
       } else if (currentKey === "name") {
+        // Agreed on another device but the private space was not made yet: make it now.
+        if (!FAMILY_SHARING && !hasFamily) {
+          await GlobalApi.CreateFamily({});
+          setHasFamily(true);
+        }
         await GlobalApi.UpdateMe({ displayName: displayName.trim() });
         setStep((s) => s + 1);
       } else if (currentKey === "details") {
         await GlobalApi.UpdateMe({
           dateOfBirth: dateOfBirth || null,
           heightCm: heightCm === "" ? null : Number(heightCm),
+          // Nothing is shared in a personal app: save the all-private settings and finish here.
+          ...(FAMILY_SHARING ? {} : { visibility: DEFAULT_VISIBILITY }),
         });
+        if (!FAMILY_SHARING) {
+          router.push("/dashboard");
+          return;
+        }
         setStep((s) => s + 1);
       } else if (currentKey === "privacy") {
         await GlobalApi.UpdateMe({ visibility });
@@ -474,7 +494,7 @@ function StepPrivacy({ visibility, onChange, stepLabel }) {
   );
 }
 
-// Wording approved by Michael on 6 November 2026. Separate from everything else, and names the kind of data,
+// Wording approved by Michael on 6 November 2026; updated for the personal app (awaiting approval). Separate from everything else, and names the kind of data,
 // as the ICO expects for explicit consent to special category data.
 function StepConsent({ agree, onChange }) {
   return (
@@ -482,9 +502,9 @@ function StepConsent({ agree, onChange }) {
       <div>
         <h1 className="mt-1 font-display font-medium tracking-tight text-3xl sm:text-4xl">Before you start</h1>
         <p className="mt-3 text-base leading-relaxed">
-          Health stores health information about you: sleep, mood, weight, meals, workouts and anything you
-          write. It is private to your account. Your family only sees what you switch on, and never your notes
-          or journal. You can download or delete everything at any time in Settings.
+          health stores health information about you: how you feel, sleep, mood, weight, meals, workouts and
+          anything you write. Only you can see it, and your words are encrypted before they are saved. You can
+          download or delete everything at any time in Settings.
         </p>
       </div>
       <label htmlFor="ob-consent" className="flex min-h-11 cursor-pointer items-start gap-3 text-base">

@@ -2,12 +2,13 @@
 // More (health v2): the extras, one tap away. Each row says what it is for in plain words.
 import Link from "next/link";
 import { Dumbbell, ChartLine, Users, Settings } from "lucide-react";
+import { FAMILY_SHARING } from "@/lib/features";
 
 const ROWS = [
   { href: "/dashboard/train", icon: Dumbbell, title: "Train", text: "Workout plans, today's session and your best lifts." },
   { href: "/dashboard/trends", icon: ChartLine, title: "Trends", text: "Your week against last week, and charts for each thing you log." },
-  { href: "/dashboard/family", icon: Users, title: "Family", text: "Who has logged today, the family chat, and what each person chose to share." },
-  { href: "/dashboard/settings", icon: Settings, title: "Settings and help", text: "How to use health, your profile, what your family sees, and your data." },
+  ...(FAMILY_SHARING ? [{ href: "/dashboard/family", icon: Users, title: "Family", text: "Who has logged today, the family chat, and what each person chose to share." }] : []),
+  { href: "/dashboard/settings", icon: Settings, title: "Settings and help", text: FAMILY_SHARING ? "How to use health, your profile, what your family sees, and your data." : "How to use health, your profile, and your data." },
 ];
 
 export default function MorePage() {
