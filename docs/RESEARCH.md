@@ -52,7 +52,7 @@ The NHS exchanges health data in HL7 FHIR, using the UK Core profiles ([FHIR UK 
 | Tool | What for | Checked |
 | --- | --- | --- |
 | react-pdf (`@react-pdf/renderer` 4.9.0, MIT) | The one-page summary as a PDF to print or bring | Supports React 18; updated August 2026 |
-| FHIR type definitions (`@types/fhir`, MIT) | Building correct FHIR Observations for the export | Updated October 2026 |
+| HL7 FHIR R4 and NHS England UK Core | The export: Observations claim the UK Core Observation profile; sleep (LOINC 93832-4) and weight (LOINC 29463-7) use codes checked on loinc.org; symptoms and mood stay as the person's words | Codes checked 6 November 2026; not yet run through an official validator |
 | Vitest | The privacy tests | In use |
 
 ## Not verified
@@ -60,4 +60,4 @@ The NHS exchanges health data in HL7 FHIR, using the UK Core profiles ([FHIR UK 
 - How many people already keep a symptom diary before a GP visit, and what they use. No survey was found.
 - Whether GPs find a one-page summary helpful. This needs asking real GPs; the plan is to show a sample to two or three before calling the feature done.
 - Named symptom-diary apps and how they compare. Not checked yet, so none are named.
-- Whether the FHIR export validates against UK Core in an official validator. To check when it is built.
+- Whether the FHIR export validates against UK Core in an official validator. It is built (`lib/fhir.js`) but not yet checked in one.

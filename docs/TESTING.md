@@ -2,7 +2,7 @@
 
 ## Unit tests (`npm test`)
 
-Pure logic (usuals, dates) with Node's own test runner.
+Pure logic with Node's own test runner: usuals and dates, the GP summary builder (`lib/summary.js`: grouping, the period, what helps or worsens, sleep and mood on those days, the person's own lines, and a check that it adds no judgement words), and the FHIR export (`lib/fhir.js`: one Patient with only the chosen name, the person's words kept as text, checked LOINC codes for sleep and weight, UK Core profile on every Observation).
 
 ## Privacy tests (`npm run test:privacy`)
 
@@ -29,6 +29,7 @@ They call the app's real API route handlers (Vitest), against a real Postgres, a
 | Invite limit | A family cannot send more than 10 invites a day |
 | Your own family only | Recording a profile view for someone outside your family fails |
 | Safe errors | Database errors never reach the browser as raw text |
+| How I feel, the summary, the appointment and the FHIR export | Private always: nobody but the person can get them, not even family, not by asking for them by name |
 | Agreement first | Until the person agrees to how health stores their health information, nothing can be saved and no family started; once they agree, it works |
 
 ### How the database works in tests
@@ -42,3 +43,21 @@ The app talks to Neon over HTTP. The tests use a throwaway Postgres instead, wit
 3. `npm run test:privacy`
 
 In GitHub Actions the same runs against a Postgres service (`.github/workflows/ci.yml`).
+
+
+## Browser tests (`npm run test:e2e`)
+
+Playwright runs the front page and the demo at phone (390px) and laptop (1280px) sizes. The demo uses sample data in the browser, so no database or sign-in is needed.
+
+| Test | What it proves |
+| --- | --- |
+| The front page | Says the job, shows the sample summary and what health is not, and leads to the demo |
+| The guide | Shows once, stays away after a reload, and opens again from Settings |
+| The job end to end | Write down how you feel, find it on the page for the GP, download the PDF and the FHIR file (a Bundle containing the entry) |
+| Accessibility, light and dark | axe finds no serious or critical WCAG 2.2 AA problems on the front page, Today, How I feel, For my GP, More and Settings, and nothing scrolls sideways |
+
+Run them: `npm run build`, `npx playwright install chromium`, then `npm run test:e2e`. GitHub Actions runs all three kinds of test on every pull request.
+
+## Not covered automatically
+
+Signing in with Kinde, the real onboarding screens (they need a real sign-in), printing on paper, and real phones. These are checked by hand.
