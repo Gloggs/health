@@ -1,10 +1,18 @@
-import { DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
-// DM Sans, the Guild UK typeface, for text and headings (Skeleton v2). next/font serves it from this site.
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-sans", display: "swap" });
+// DM Sans, the Guild UK typeface, for text and headings (Skeleton v2), served from this site. The file comes
+// from @fontsource-variable/dm-sans (SIL Open Font Licence), so builds never depend on downloading it from
+// Google, which failed builds in CI twice on 6 and 7 November 2026.
+const dmSans = localFont({
+  src: "../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2",
+  weight: "100 1000",
+  style: "normal",
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata = {
   // The site's own address, from APP_URL, so a copy of health run by someone else uses its own.
