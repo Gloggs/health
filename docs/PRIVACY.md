@@ -44,7 +44,9 @@ Why not end-to-end encryption, where only your device holds the key? Because the
 | Neon | The Postgres database | Everything in the table above; the words are encrypted |
 | Vercel | Hosting | Requests passing through, and technical logs |
 
-health sends no email: Resend, the email provider in the code, is used only by the family invites, which are switched off. Each processor works under its own data processing agreement. See "Still to confirm" for where each one stores data.
+health sends no email: Resend, the email provider in the code, is used only by the family invites, which are switched off. Each processor works under its own data processing agreement.
+
+Where it runs (checked 7 November 2026): the database is in Neon's London region (AWS eu-west-2), and the app's server code runs in Vercel's London region (`lhr1`, set in `vercel.json`). Before that date the server code ran in Vercel's default region in Washington DC, so requests and the data in them passed through the United States. Kinde's region is still to confirm.
 
 ## How long data is kept
 
@@ -102,7 +104,7 @@ Security problems can be reported privately as described in `SECURITY.md`.
 
 These have not been checked yet, so nothing on the privacy page depends on them.
 
-- **Where each processor stores data.** The Neon project's region (shown in the Neon console), the region Vercel runs the app's functions in (Vercel's default is in the United States), and Kinde's data region. If any is outside the UK, the privacy page should say so and name the safeguard, such as the UK-US data bridge or the ICO's international data transfer agreement.
+- **Kinde's data region.** Neon and Vercel are confirmed as London (see "Who processes it"). If Kinde stores names and emails outside the UK, the privacy page should say so and name the safeguard, such as the UK-US data bridge or the ICO's international data transfer agreement.
 - **Neon's backup window** for this plan, so "How long data is kept" can give a number.
 - **The ICO data protection fee.** Whether Michael needs to pay it for health. The ICO has a short self-assessment on its website.
 - **A minimum age.** Whether health should say it is for people aged 16 or 18 and over. Health data from children needs extra care under the ICO's Children's Code.
