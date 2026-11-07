@@ -10,6 +10,7 @@ import SearchPalette from "./SearchPalette";
 import Guide from "./Guide";
 import { activeKey, navItems } from "./nav";
 import { cn } from "@/lib/utils";
+import { FAMILY_SHARING } from "@/lib/features";
 
 /**
  * The app frame for the real app and the demo alike:
@@ -108,7 +109,8 @@ export default function AppShell({ base, user, signOut, banner, top, children })
               >
                 <Search className="h-5 w-5" aria-hidden />
               </button>
-              <NotificationsBell className="text-chalk" />
+              {/* The bell only shows family activity, so it goes while family sharing is off. */}
+              {FAMILY_SHARING ? <NotificationsBell className="text-chalk" /> : null}
               <Link
                 href={youHref}
                 aria-label="You and settings"
@@ -130,7 +132,7 @@ export default function AppShell({ base, user, signOut, banner, top, children })
               <span className="flex-1">Search logs, exercises, plans, settings</span>
               <kbd className="border border-border px-1.5 text-xs">/</kbd>
             </button>
-            <NotificationsBell />
+            {FAMILY_SHARING ? <NotificationsBell /> : null}
           </header>
 
           {top}
